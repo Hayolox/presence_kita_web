@@ -16,7 +16,7 @@
 
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="{{ Route('lecturer') }}">
             <span>Kelola Data Dosen</span></a>
     </li>
 
