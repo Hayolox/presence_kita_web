@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -26,8 +25,8 @@ return new class extends Migration
             $table->string('subject_course_code');
             $table->foreign('subject_course_code')->references('course_code')->on('subjects')->onDelete('cascade');
             $table->integer("year");
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->unsignedBigInteger('room_id');
+            $table->foreign('room_id')->references('id')->on('rooms');
             $table->timestamps();
         });
     }
