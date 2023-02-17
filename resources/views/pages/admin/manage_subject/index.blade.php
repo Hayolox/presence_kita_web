@@ -11,33 +11,31 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Dosen</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar Mata Kuliah</h6>
                     </div>
                     <div class="card-body">
-                        <a href="{{ route('ManageLecturer.create') }}">   <div class="btn btn-primary mb-4">Tambah Dosen</div></a>
+                        <div class="btn btn-primary mb-4">Tambah Matakuliah</div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>NIP</th>
-                                        <th>Nama</th>
-                                        <th>Jurusan</th>
-                                        <th>Mata Kuliah</th>
+                                        <th>Kode Matakuliah</th>
+                                        <th>Nama Matakuliah</th>
+                                        <th>Semester</th>
                                         <th>Action</th>
 
                                     </tr>
                                 </thead>
-                                @foreach ( $lecturers  as $data => $item )
+                                @foreach ( $subjects  as $data => $item )
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ $lecturers->firstItem() + $data }}</th>
-                                        <td>{{ $item->nip }}</td>
+                                        <th scope="row">{{ $subjects->firstItem() + $data }}</th>
+                                        <td>{{ $item->course_code }}</td>
                                         <td>{{ $item->full_name }}</td>
-                                        <td>{{ $item->major->name }}</td>
-                                        <td><a href="" class="btn btn-info">Detail</a></td>
+                                        <td>{{ $item->semester_id }}</td>
                                         <td>  <a href="" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
-                                            <form action="{{ route('ManageLecturer.destroy', $item->nip) }}" method="POST" class="d-inline-block">
+                                            <form action="{{ route('lecturer-delete',$item->nip) }}" method="POST" class="d-inline-block">
                                               @csrf
                                               @method('delete')
                                                 <button type="submit" onclick="return confirm('Yakin untuk menghapus?')" class="btn btn-danger btn-circle btn-lg"><i class="fas fa-trash"></i></button>
@@ -45,7 +43,7 @@
 
                                     </tr>
                                 </tbody>
-                                {{ $lecturers->links() }}
+                                {{ $subjects->links() }}
                                 @endforeach
                             </table>
                         </div>

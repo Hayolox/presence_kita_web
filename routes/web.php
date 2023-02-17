@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ManageLecturerDataController;
+use App\Http\Controllers\Admin\ManageLecturerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +20,9 @@ Route::prefix('Admin')->group(function(){
     Route::get('/Dashboard', [DashboardController::class, 'index'])->name('Dashboard');
 
 
-    Route::get('/ManageLecturer', [ManageLecturerDataController::class, 'index'])->name('lecturer');
-    Route::delete('/ManageLecturer-Delete/{id}', [ManageLecturerDataController::class, 'delete'])->name('lecturer-delete');
+    Route::resource('/ManageLecturer', ManageLecturerController::class);
+
+
+
 });
 

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('full_name', 100);
             $table->string('username', 100);
             $table->string('password');
+            $table->unsignedBigInteger('major_id');
+            $table->foreign('major_id')->references('id')->on('majors');
             $table->timestamps();
         });
     }
