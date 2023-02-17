@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\lecturer;
 use App\Models\major;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class ManageLecturerController extends Controller
 {
@@ -53,6 +55,7 @@ class ManageLecturerController extends Controller
         'password' =>bcrypt($request->username.'123'),
         'major_id' => $request->major_id,
        ]);
+       Alert::success('Success', 'Data Berhasil Ditambahkan');
        return back();
 
 
@@ -102,6 +105,7 @@ class ManageLecturerController extends Controller
     {
         $lecturer = lecturer::where('nip', $id)->first();
         $lecturer->delete();
+        Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
     }
 }

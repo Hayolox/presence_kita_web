@@ -28,6 +28,7 @@
     <div id="wrapper">
 
         @include('includes.admin.sidebar')
+        @include('sweetalert::alert')
 
         @yield('content')
 
