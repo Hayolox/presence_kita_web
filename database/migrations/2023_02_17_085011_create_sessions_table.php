@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->string("title", 100);
-            $table->string('start');
-            $table->string('finish');
+            $table->time('start');
+            $table->time('finish');
             $table->string('lecturer_nip');
             $table->foreign('lecturer_nip')->references('nip')->on('lecturers');
             $table->unsignedBigInteger('semester_id');

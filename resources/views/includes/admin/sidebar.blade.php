@@ -28,6 +28,13 @@
     </li>
 
 
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('ManageStudent.index') }}">
+            <span>Kelola Mahasiswa</span></a>
+    </li>
+
+
     <!-- Nav Item - Tables -->
     <li class="nav-item">
         <a class="nav-link" href="tables.html">

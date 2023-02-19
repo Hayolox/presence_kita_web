@@ -9,4 +9,13 @@ class student extends Model
 {
     use HasFactory;
     protected $primaryKey = 'nsn';
+
+
+    protected $fillable = ['nsn', 'name', 'generation', 'password', 'major_id'];
+
+
+    public function major()
+    {
+        return $this->hasOne(major::class, 'id', 'major_id');
+    }
 }
