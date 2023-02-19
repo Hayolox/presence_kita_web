@@ -14,16 +14,30 @@
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Dosen</h6>
                     </div>
                     <div class="card-body">
-                        <a href="{{ route('ManageLecturer.create') }}">   <div class="btn btn-primary mb-4">Tambah Dosen</div></a>
+
+
+
+                            <div class="col-12  d-flex  d-inline d-flex justify-content-end">
+                                <a href="{{ route('ManageLecturer.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+                                <form action="{{ route('ManageLecturer.index') }}">
+                                    <div class="input-group col-12 mb-3">
+                                        <input type="search" name="search" class="form-control rounded" placeholder="Search Username" aria-label="Search"
+                                          aria-describedby="search-addon" />
+                                        <button type="submit" class="btn btn-outline-primary">search</button>
+                                      </div>
+                                </form>
+                            </div>
+
+
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>NIP</th>
-                                        <th>Nama</th>
+                                        <th>Full Name</th>
+                                        <th>Username</th>
                                         <th>Jurusan</th>
-                                        <th>Mata Kuliah</th>
                                         <th>Action</th>
 
                                     </tr>
@@ -34,9 +48,9 @@
                                         <th scope="row">{{ $lecturers->firstItem() + $data }}</th>
                                         <td>{{ $item->nip }}</td>
                                         <td>{{ $item->full_name }}</td>
+                                        <td>{{ $item->username }}</td>
                                         <td>{{ $item->major->name }}</td>
-                                        <td><a href="" class="btn btn-info">Detail</a></td>
-                                        <td>  <a href="" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
+                                        <td>  <a href="{{ route('ManageLecturer.edit',$item->nip) }}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
                                             <form action="{{ route('ManageLecturer.destroy', $item->nip) }}" method="POST" class="d-inline-block">
                                               @csrf
                                               @method('delete')
@@ -45,9 +59,9 @@
 
                                     </tr>
                                 </tbody>
-                                {{ $lecturers->links() }}
                                 @endforeach
                             </table>
+                            {{ $lecturers->links() }}
                         </div>
                     </div>
                 </div>

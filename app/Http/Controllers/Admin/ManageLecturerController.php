@@ -16,9 +16,14 @@ class ManageLecturerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $lecturers = lecturer::paginate(10);
+
+        if($request->has('search'))
+        {
+            $lecturers = lecturer::where('username', 'LIKE', '%' .$request->search. '%')->paginate(10);
+        }
         return view('pages.admin.manage_lecturer.index', compact('lecturers'));
     }
 
@@ -42,9 +47,9 @@ class ManageLecturerController extends Controller
     public function store(Request $request)
     {
        $request->validate([
-            'nip' => 'required',
+            'nip' => 'required|unique:lecturers,nip',
             'full_name' => 'required',
-            'username' => 'required',
+            'username' => 'required|unique:lecturers,username',
             'major_id' => 'required',
        ]);
 
@@ -80,7 +85,9 @@ class ManageLecturerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $lecturer = lecturer::findOrfail($id);
+        $majors = major::get();
+        return view('pages.admin.manage_lecturer.edit', compact(['lecturer','majors']));
     }
 
     /**
@@ -92,7 +99,35 @@ class ManageLecturerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+
+        $request->validate([
+            'nip' => 'required|unique:lecturers,nip',
+            'full_name' => 'required',
+            'username' => 'required|unique:lecturers,username',
+            'major_id' => 'required',
+       ]);
+
+        $lecturer = lecturer::findOrFail($id);
+
+        if($request->password){
+            $aatr = bcrypt($request->password);
+        }else{
+            $aatr = $lecturer->password;
+
+        }
+
+        $lecturer->update([
+            'nip' => $request->nip,
+            'full_name' => $request->full_name,
+            'username' => $request->username,
+            'password' =>bcrypt($aatr),
+            'major_id' => $request->major_id,
+        ]);
+
+
+        Alert::success('Success', 'Data Berhasil Diedit');
+        return back();
     }
 
     /**

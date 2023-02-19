@@ -19,38 +19,42 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-2">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Tambah Dosen</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Edit Dosen</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form action="{{ route('ManageLecturer.store') }}" method="POST">
+                            <form action="{{ route('ManageLecturer.update', $lecturer->nip) }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 <div class="mb-3">
                                     <label  class="form-label">NIP</label>
-                                    <input type="number" name="nip" class="form-control">
+                                    <input type="number" name="nip" value="{{ $lecturer->nip }}" class="form-control">
                                   </div>
                                 <div class="mb-3">
                                   <label  class="form-label">Nama Panjang</label>
-                                  <input type="text" name="full_name" class="form-control">
+                                  <input type="text" value="{{ $lecturer->full_name }}" name="full_name" class="form-control" >
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Username</label>
-                                    <input type="text" name="username" class="form-control">
+                                    <input type="text" value="{{ $lecturer->username }}" name="username" class="form-control" >
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label  class="form-label">password</label>
+                                    <input type="text"  name="password" class="form-control">
                                 </div>
 
 
                                 <div class="mb-3">
                                     <select class="form-select" name="major_id" aria-label="Default select example">
-                                        <option selected>Pilih Jurusan</option>
+
                                         @foreach ($majors as $item )
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option {{ $lecturer->major_id == $item->major_id ? selected : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                       </select>
                                 </div>
-
-
-
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
                               </form>
