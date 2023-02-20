@@ -48,12 +48,13 @@
 
                                 <div class="mb-3">
                                     <select class="form-select" name="major_id" aria-label="Default select example">
-                                        <option selected>Pilih Jurusan</option>
+
                                         @foreach ($majors as $item )
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option {{ $student->major_id == $item->major_id ? selected : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                       </select>
                                 </div>
+
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
                               </form>
