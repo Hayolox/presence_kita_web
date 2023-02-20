@@ -22,7 +22,7 @@ class ManageSubjectsController extends Controller
 
         if($request->has('search'))
         {
-            $lecturers = subject::where('full_name', 'LIKE', '%' .$request->search. '%')->paginate(10);
+            $subjects = subject::where('full_name', 'LIKE', '%' .$request->search. '%')->paginate(10);
         }
         return view('pages.admin.manage_subject.index', compact('subjects'));
     }
