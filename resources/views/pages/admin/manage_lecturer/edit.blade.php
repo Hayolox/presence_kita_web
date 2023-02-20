@@ -51,7 +51,7 @@
                                     <select class="form-select" name="major_id" aria-label="Default select example">
 
                                         @foreach ($majors as $item )
-                                        <option {{ $lecturer->major_id == $item->major_id ? selected : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option {{ $lecturer->major_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                       </select>
                                 </div>
