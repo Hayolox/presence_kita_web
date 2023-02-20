@@ -14,36 +14,38 @@
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Mahasiswa</h6>
                     </div>
                     <div class="card-body">
-
-
-
                             <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                                 <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary mb-4 mr-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Import Data
-                            </button>
+                                <button type="button" class="btn btn-primary mt-2 mb-4 mr-3" data-toggle="modal" data-target="#exampleModal">
+                                    Import Data
+                                </button>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                    ...
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Import Data Mahasiswa File Excel</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <input type="file" name="file">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                </div>
-                            </div>
-                                <a href="{{ route('ManageStudent.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+                                <a href="{{ route('ManageStudent.create') }}" class="btn btn-primary  mt-2 mb-4">Tambah Data</a>
                                 <form action="{{ route('ManageStudent.index') }}">
-                                    <div class="input-group col-12 mb-3">
+                                    <div class="input-group col-12 mb-4 mt-2">
                                         <input type="search" name="search" class="form-control rounded" placeholder="Search Username" aria-label="Search"
                                           aria-describedby="search-addon" />
                                         <button type="submit" class="btn btn-outline-primary">search</button>
