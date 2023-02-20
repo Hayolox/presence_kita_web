@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ManageLecturerController;
 use App\Http\Controllers\Admin\ManageStudentController;
+use App\Http\Controllers\Admin\ManageSubjectsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,9 @@ Route::prefix('Admin')->group(function(){
     Route::resource('/ManageLecturer', ManageLecturerController::class);
     Route::resource('/ManageStudent', ManageStudentController::class);
     Route::post('/ManageStudent-import', [ManageStudentController::class, 'import'])->name('ManageStudent.import');
+
+    Route::resource('/ManageSubject', ManageSubjectsController::class);
+
 
 
 

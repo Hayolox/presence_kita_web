@@ -14,15 +14,31 @@
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Mata Kuliah</h6>
                     </div>
                     <div class="card-body">
-                        <div class="btn btn-primary mb-4">Tambah Matakuliah</div>
+
+
+
+                            <div class="col-12  d-flex  d-inline d-flex justify-content-end">
+                                <a href="{{ route('ManageSubject.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+                                <form action="{{ route('ManageSubject.index') }}">
+                                    <div class="input-group col-12 mb-3">
+                                        <input type="search" name="search" class="form-control rounded" placeholder="Search Username" aria-label="Search"
+                                          aria-describedby="search-addon" />
+                                        <button type="submit" class="btn btn-outline-primary">search</button>
+                                      </div>
+                                </form>
+                            </div>
+
+
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Kode Matakuliah</th>
-                                        <th>Nama Matakuliah</th>
-                                        <th>Semester</th>
+                                        <th>Kode Mata Kuliah</th>
+                                        <th>Nama Panjang</th>
+                                        <th>Nickname</th>
+                                        <th>Jurusan</th>
+                                        <th>semester</th>
                                         <th>Action</th>
 
                                     </tr>
@@ -31,11 +47,15 @@
                                 <tbody>
                                     <tr>
                                         <th scope="row">{{ $subjects->firstItem() + $data }}</th>
-                                        <td>{{ $item->course_code }}</td>
+                                        <td>{{ $item->course_code}}</td>
                                         <td>{{ $item->full_name }}</td>
-                                        <td>{{ $item->semester_id }}</td>
-                                        <td>  <a href="" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
-                                            <form action="{{ route('lecturer-delete',$item->nip) }}" method="POST" class="d-inline-block">
+                                        <td>{{ $item->nickname }}</td>
+                                        <td>{{ $item->major->name }}</td>
+                                        <td>{{ $item->semester->name }}</td>
+                                        <td>
+                                            <a href="{{ route('ManageSubject.edit',$item->course_code) }}" class="btn btn-primary">Tambah Dosen</a>
+                                            <a href="{{ route('ManageSubject.edit',$item->course_code) }}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
+                                            <form action="{{ route('ManageSubject.destroy', $item->course_code) }}" method="POST" class="d-inline-block">
                                               @csrf
                                               @method('delete')
                                                 <button type="submit" onclick="return confirm('Yakin untuk menghapus?')" class="btn btn-danger btn-circle btn-lg"><i class="fas fa-trash"></i></button>
@@ -43,9 +63,9 @@
 
                                     </tr>
                                 </tbody>
-                                {{ $subjects->links() }}
                                 @endforeach
                             </table>
+                            {{ $subjects->links() }}
                         </div>
                     </div>
                 </div>
