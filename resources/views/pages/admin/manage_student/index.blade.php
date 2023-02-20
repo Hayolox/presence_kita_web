@@ -13,6 +13,15 @@
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Mahasiswa</h6>
                     </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-4">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="card-body">
                             <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                                 <!-- Button trigger modal -->
@@ -30,7 +39,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('ManageStudent.import') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <input type="file" name="file">

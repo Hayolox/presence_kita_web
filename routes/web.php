@@ -23,7 +23,7 @@ Route::prefix('Admin')->group(function(){
 
     Route::resource('/ManageLecturer', ManageLecturerController::class);
     Route::resource('/ManageStudent', ManageStudentController::class);
-    Route::post('/ManageStudent-import', [ManageStudentController::class, 'import'])->name('import');
+    Route::post('/ManageStudent-import', [ManageStudentController::class, 'import'])->name('ManageStudent.import');
 
 
 

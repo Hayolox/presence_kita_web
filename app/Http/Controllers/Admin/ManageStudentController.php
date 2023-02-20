@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\StudentsImport;
 use App\Models\major;
 use App\Models\student;
-use App\Rules\UniqueNsnRule;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ManageStudentController extends Controller
@@ -146,18 +147,8 @@ class ManageStudentController extends Controller
 
     public function import(Request $request)
     {
-        if ($request->hasFile('csv_file')) {
-            $file = $request->file('csv_file');
-            $rows = array_map('str_getcsv', file($file));
-
-            $header = array_shift($rows);
-            dd(   $header);
-            foreach ($rows as $row) {
-                print$row;
-            }
-            return redirect()->back()->with('success', 'Data imported successfully.');
-        } else {
-            return redirect()->back()->with('error', 'No file uploaded.');
-        }
+        $file =  $request->file('file');
+        (new StudentsImport)->import($file);
+        return back();
     }
 }
