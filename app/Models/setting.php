@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class setting extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['semester_id', 'year', 'sus'];
 }
