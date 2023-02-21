@@ -27,6 +27,12 @@ Route::prefix('Admin')->group(function(){
     Route::post('/ManageStudent-import', [ManageStudentController::class, 'import'])->name('ManageStudent.import');
 
     Route::resource('/ManageSubject', ManageSubjectsController::class);
+    Route::get('/ManageSubject-detail-lecturer/{id}', [ManageSubjectsController::class, 'dataLecturer'])->name('ManageSubject.lecturer');
+    Route::get('/ManageSubject-detail-student/{id}', [ManageSubjectsController::class, 'dataStudent'])->name('ManageSubject.student');
+    Route::post('/ManageSubject-detail-lecturer-store/{id}', [ManageSubjectsController::class, 'dataLecturerStore'])->name('ManageSubject.lecturer-store');
+    Route::post('/ManageSubject-import-student', [ManageSubjectsController::class, 'import'])->name('ManageSubject.import');
+    Route::delete('/ManageSubject-detail-lecturer-destroy/{id}', [ManageSubjectsController::class, 'dataLecturerDestroy'])->name('ManageSubject.lecturerDestroy');
+    Route::delete('/ManageSubject-detail-student-destroy/{id}', [ManageSubjectsController::class, 'dataStudentDestroy'])->name('ManageSubject.studentDestroy');
 
 
 

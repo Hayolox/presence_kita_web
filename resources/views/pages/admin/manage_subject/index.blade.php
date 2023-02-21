@@ -21,7 +21,7 @@
                                 <a href="{{ route('ManageSubject.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
                                 <form action="{{ route('ManageSubject.index') }}">
                                     <div class="input-group col-12 mb-3">
-                                        <input type="search" name="search" class="form-control rounded" placeholder="Search Username" aria-label="Search"
+                                        <input type="search" name="search" class="form-control rounded" placeholder="Search Nama Panjang" aria-label="Search"
                                           aria-describedby="search-addon" />
                                         <button type="submit" class="btn btn-outline-primary">search</button>
                                       </div>
@@ -53,7 +53,8 @@
                                         <td>{{ $item->major->name }}</td>
                                         <td>{{ $item->semester->name }}</td>
                                         <td>
-                                            <a href="{{ route('ManageSubject.edit',$item->course_code) }}" class="btn btn-primary">Tambah Dosen</a>
+                                            <a href="{{ route('ManageSubject.student',$item->course_code) }}" class="btn btn-primary">Mahasiswa</a>
+                                            <a href="{{ route('ManageSubject.lecturer',$item->course_code) }}" class="btn btn-primary">Dosen</a>
                                             <a href="{{ route('ManageSubject.edit',$item->course_code) }}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
                                             <form action="{{ route('ManageSubject.destroy', $item->course_code) }}" method="POST" class="d-inline-block">
                                               @csrf
