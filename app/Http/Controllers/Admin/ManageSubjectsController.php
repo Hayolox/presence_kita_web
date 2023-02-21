@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\lecturer;
+use App\Models\lecturer_subject;
 use App\Models\major;
 use App\Models\semester;
 use App\Models\subject;
@@ -124,7 +126,7 @@ class ManageSubjectsController extends Controller
         'semester_id' => $request->semester_id,
        ]);
        Alert::success('Success', 'Data Berhasil Diedit');
-       return back();
+       return redirect()->route('ManageSubject.index');
     }
 
     /**
@@ -137,6 +139,34 @@ class ManageSubjectsController extends Controller
     {
         $student = subject::where('course_code', $id)->first();
         $student->delete();
+        Alert::success('Success', 'Data Berhasil Dihapus');
+        return back();
+    }
+
+    public function dataLecturer($id){
+        $course_id = $id;
+        $lecturers = lecturer_subject::where('subject_course_code', $id)->paginate(10);
+        $lecturerss = lecturer::get();
+        return view('pages.admin.manage_subject.dataLecturer', compact('lecturers','course_id','lecturerss'));
+    }
+
+    public function dataLecturerStore(Request $request, $course_id){
+
+        if($request->lecturer_nip == 0){
+            Alert::warning('Warning ', 'Harus Memilih Dosen');
+        }else{
+            lecturer_subject::create([
+                'lecturer_nip' => $request->lecturer_nip,
+                'subject_course_code' => $course_id,
+            ]);
+        }
+         return back();
+    }
+
+
+    public function dataLecturerDestroy($id){
+        $lecturers = lecturer_subject::findOrFail($id);
+        $lecturers->delete();
         Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
     }
