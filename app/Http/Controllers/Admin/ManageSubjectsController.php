@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\StudentSubjectImport;
 use App\Models\lecturer;
 use App\Models\lecturer_subject;
 use App\Models\major;
 use App\Models\semester;
+use App\Models\student;
+use App\Models\student_subject;
 use App\Models\subject;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ManageSubjectsController extends Controller
@@ -145,6 +149,23 @@ class ManageSubjectsController extends Controller
 
     public function dataLecturer($id){
         $course_id = $id;
+
+        $duplicates = lecturer_subject::select('lecturer_nip', 'subject_course_code')
+        ->selectRaw('COUNT(*) as count')
+        ->groupBy('lecturer_nip', 'subject_course_code')
+        ->having('count', '>', 1)
+        ->get();
+
+        foreach ($duplicates as $duplicate) {
+            lecturer_subject::where('lecturer_nip', $duplicate->lecturer_nip)
+                ->where('subject_course_code', $duplicate->subject_course_code)
+                ->whereNotIn('id', function($query) use ($duplicate) {
+                    $query->selectRaw('MIN(id)')
+                        ->from('lecturer_subjects')
+                        ->where('lecturer_nip', $duplicate->lecturer_nip)
+                        ->where('subject_course_code', $duplicate->subject_course_code);
+        })->delete();
+    }
         $lecturers = lecturer_subject::where('subject_course_code', $id)->paginate(10);
         $lecturerss = lecturer::get();
         return view('pages.admin.manage_subject.dataLecturer', compact('lecturers','course_id','lecturerss'));
@@ -170,4 +191,53 @@ class ManageSubjectsController extends Controller
         Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
     }
+
+    public function dataStudent(Request $request, $id){
+        $course_id = $id;
+
+
+
+        $duplicates = student_subject::select('student_nsn', 'subject_course_code')
+                ->selectRaw('COUNT(*) as count')
+                ->groupBy('student_nsn', 'subject_course_code')
+                ->having('count', '>', 1)
+                ->get();
+
+                foreach ($duplicates as $duplicate) {
+                    student_subject::where('student_nsn', $duplicate->student_nsn)
+                        ->where('subject_course_code', $duplicate->subject_course_code)
+                        ->whereNotIn('id', function($query) use ($duplicate) {
+                            $query->selectRaw('MIN(id)')
+                                ->from('student_subjects')
+                                ->where('student_nsn', $duplicate->student_nsn)
+                                ->where('subject_course_code', $duplicate->subject_course_code);
+                })->delete();
+            }
+
+
+        $students = student_subject::where('subject_course_code', $id)->paginate(10);
+
+        if($request->has('search'))
+        {
+            $students = student_subject::where('student_nsn', 'LIKE', '%' .$request->search. '%')->where('subject_course_code', $course_id)->paginate(10);
+        }
+        $studentss = student::get();
+        return view('pages.admin.manage_subject.dataStudent', compact('students','course_id','studentss'));
+    }
+
+    public function import(Request $request)
+    {
+        $file =  $request->file('file');
+        (new StudentSubjectImport)->import($file);
+        return back();
+    }
+
+    public function dataStudentDestroy($id){
+        $lecturers = student_subject::findOrFail($id);
+        $lecturers->delete();
+        Alert::success('Success', 'Data Berhasil Dihapus');
+        return back();
+    }
+
+
 }

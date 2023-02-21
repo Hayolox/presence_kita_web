@@ -19,9 +19,6 @@ return new class extends Migration
             $table->foreign('student_nsn')->references('nsn')->on('students');
             $table->string('subject_course_code');
             $table->foreign('subject_course_code')->references('course_code')->on('subjects');
-            $table->unsignedBigInteger('semester_id');
-            $table->foreign('semester_id')->references('id')->on('semesters');
-            $table->integer("year");
             $table->timestamps();
         });
     }

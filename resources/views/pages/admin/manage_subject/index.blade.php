@@ -53,7 +53,8 @@
                                         <td>{{ $item->major->name }}</td>
                                         <td>{{ $item->semester->name }}</td>
                                         <td>
-                                            <a href="{{ route('ManageSubject.lecturer',$item->course_code) }}" class="btn btn-primary">Tambah Dosen</a>
+                                            <a href="{{ route('ManageSubject.student',$item->course_code) }}" class="btn btn-primary">Mahasiswa</a>
+                                            <a href="{{ route('ManageSubject.lecturer',$item->course_code) }}" class="btn btn-primary">Dosen</a>
                                             <a href="{{ route('ManageSubject.edit',$item->course_code) }}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
                                             <form action="{{ route('ManageSubject.destroy', $item->course_code) }}" method="POST" class="d-inline-block">
                                               @csrf

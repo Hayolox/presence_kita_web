@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('student_nsn');
             $table->foreign('student_nsn')->references('nsn')->on('students');
             $table->string("status")->default("alpha");
+            $table->unsignedBigInteger('semester_id');
+            $table->foreign('semester_id')->references('id')->on('semesters');
+            $table->integer("year");
             $table->timestamps();
         });
     }

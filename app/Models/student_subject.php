@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class student_subject extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['student_nsn', 'subject_course_code'];
+
+
+
+    public function student()
+    {
+        return $this->hasOne(student::class, 'nsn', 'student_nsn');
+    }
 }
