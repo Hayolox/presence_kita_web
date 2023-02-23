@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('student_subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('student_nsn');
-            $table->foreign('student_nsn')->references('nsn')->on('students');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('id')->on('students');
             $table->string('subject_course_code');
             $table->foreign('subject_course_code')->references('course_code')->on('subjects');
             $table->timestamps();

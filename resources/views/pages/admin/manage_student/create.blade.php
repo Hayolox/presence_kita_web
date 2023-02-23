@@ -27,7 +27,7 @@
                                 @csrf
                                 <div class="mb-3">
                                     <label  class="form-label">NIM</label>
-                                    <input type="number" name="nsn" class="form-control">
+                                    <input type="text" name="nsn" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
