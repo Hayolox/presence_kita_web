@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('check_logins', function (Blueprint $table) {
             $table->id();
-            $table->string('student_nsn');
-            $table->foreign('student_nsn')->references('nsn')->on('students');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('id')->on('students');
             $table->string('IMEI');
             $table->timestamps();
         });
