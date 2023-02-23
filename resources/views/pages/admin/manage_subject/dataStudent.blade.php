@@ -45,7 +45,7 @@
                                 </div>
                                 <form action="{{ route('ManageSubject.student', $course_id) }}">
                                     <div class="input-group col-12 mb-3 mt-2 mb-4">
-                                        <input type="search" name="search" class="form-control rounded" placeholder="Search Nama Panjang" aria-label="Search"
+                                        <input type="search" name="search" class="form-control rounded" placeholder="Search NIM" aria-label="Search"
                                           aria-describedby="search-addon" />
                                         <button type="submit" class="btn btn-outline-primary">search</button>
                                       </div>
