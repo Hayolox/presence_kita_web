@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class student extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+    protected $primaryKey = 'nsn';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+
 
     protected $fillable = ['nsn', 'name', 'generation', 'password', 'major_id'];
 

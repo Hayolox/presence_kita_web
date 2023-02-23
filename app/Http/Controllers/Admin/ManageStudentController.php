@@ -54,8 +54,6 @@ class ManageStudentController extends Controller
             'major_id' => 'required',
        ]);
 
-       dd($request->nsn);
-
        student::create([
         'nsn' => $request->nsn,
         'name' => $request->name,
