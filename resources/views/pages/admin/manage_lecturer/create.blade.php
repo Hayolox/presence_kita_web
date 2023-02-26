@@ -42,7 +42,7 @@
 
                                 <div class="mb-3">
                                     <select class="form-select" name="major_id" aria-label="Default select example">
-                                        <option selected>Pilih Jurusan</option>
+                                        <option value="" selected>Pilih Jurusan</option>
                                         @foreach ($majors as $item )
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach

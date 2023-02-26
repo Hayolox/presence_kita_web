@@ -15,6 +15,6 @@ class student_subject extends Model
 
     public function student()
     {
-        return $this->hasOne(student::class, 'id', 'student_id');
+        return $this->hasOne(student::class, 'nsn', 'student_nsn');
     }
 }

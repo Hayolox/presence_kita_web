@@ -102,7 +102,7 @@ class ManageLecturerController extends Controller
 
 
         $request->validate([
-            'nip' => 'required|unique:lecturers,nip',
+            'nip' => 'required',
             'full_name' => 'required',
             'username' => 'required|unique:lecturers,username',
             'major_id' => 'required',
