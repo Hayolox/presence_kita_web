@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CheckLoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ManageLecturerController;
 use App\Http\Controllers\Admin\ManageStudentController;
@@ -28,6 +29,9 @@ Route::prefix('Admin')->group(function(){
     Route::resource('/ManageSystem', ManageSystemController::class);
     Route::post('/ManageStudent-import', [ManageStudentController::class, 'import'])->name('ManageStudent.import');
 
+    Route::get('/Check-Login', [CheckLoginController::class, 'index'])->name('check.login');
+    Route::delete('/check-login/{id}', [CheckLoginController::class, 'destroy'])->name('check.login.destroy');
+
     Route::resource('/ManageSubject', ManageSubjectsController::class);
     Route::get('/ManageSubject-detail-lecturer/{id}', [ManageSubjectsController::class, 'dataLecturer'])->name('ManageSubject.lecturer');
     Route::get('/ManageSubject-detail-student/{id}', [ManageSubjectsController::class, 'dataStudent'])->name('ManageSubject.student');
@@ -35,6 +39,7 @@ Route::prefix('Admin')->group(function(){
     Route::post('/ManageSubject-import-student', [ManageSubjectsController::class, 'import'])->name('ManageSubject.import');
     Route::delete('/ManageSubject-detail-lecturer-destroy/{id}', [ManageSubjectsController::class, 'dataLecturerDestroy'])->name('ManageSubject.lecturerDestroy');
     Route::delete('/ManageSubject-detail-student-destroy/{id}', [ManageSubjectsController::class, 'dataStudentDestroy'])->name('ManageSubject.studentDestroy');
+
 
 
 

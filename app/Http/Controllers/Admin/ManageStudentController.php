@@ -119,12 +119,20 @@ class ManageStudentController extends Controller
 
         }
 
+        if($request->imei){
+            $imei = null;
+        }else{
+            $imei = $student->imei;
+
+        }
+
         $student->update([
             'nsn' => $request->nsn,
             'name' => $request->name,
             'generation' => $request->generation,
             'password' =>bcrypt($aatr),
             'major_id' => $request->major_id,
+            'IMEI' => $imei,
         ]);
 
            Alert::success('Success', 'Data Berhasil Diedit');

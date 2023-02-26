@@ -47,6 +47,11 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label  class="form-label">IMEI</label>
+                                    <input type="text"  name="imei" class="form-control">
+                                </div>
+
+                                <div class="mb-3">
                                     <select class="form-select" name="major_id" aria-label="Default select example">
 
                                         @foreach ($majors as $item )

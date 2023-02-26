@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('major_id');
             $table->foreign('major_id')->references('id')->on('majors');
+            $table->string('IMEI')->nullable();
             $table->timestamps();
         });
     }

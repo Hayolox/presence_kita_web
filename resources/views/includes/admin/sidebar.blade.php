@@ -39,6 +39,10 @@
         <a class="nav-link" href="{{ route('ManageSystem.index') }}">
             <span>Kelola Sistem</span></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('check.login') }}">
+            <span>Kelola Kecurangan</span></a>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

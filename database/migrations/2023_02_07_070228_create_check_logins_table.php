@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('student_nsn');
             $table->foreign('student_nsn')->references('nsn')->on('students');
-            $table->string('IMEI');
             $table->timestamps();
         });
     }
