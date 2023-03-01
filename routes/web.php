@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ManageLecturerController;
 use App\Http\Controllers\Admin\ManageStudentController;
 use App\Http\Controllers\Admin\ManageSubjectsController;
+use App\Http\Controllers\Admin\ManageSUSController;
 use App\Http\Controllers\Admin\ManageSystemController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,8 +44,12 @@ Route::prefix('Admin')->group(function(){
 
 
 
-    Route::get('/change-password-admin', [ChangePasswordController::class, 'index'])->name('change.password.admin');
-    Route::post('/change-password-admin-update', [ChangePasswordController::class, 'update'])->name('change.password.admin.update');
+    Route::get('/Change-password-admin', [ChangePasswordController::class, 'index'])->name('change.password.admin');
+    Route::post('/Change-password-admin-update', [ChangePasswordController::class, 'update'])->name('change.password.admin.update');
+
+
+    Route::get('/Manage-SUS', [ManageSUSController::class, 'index'])->name('ManageSUS');
+    Route::get('/Manage-SUS-Detail', [ManageSUSController::class, 'sus'])->name('ManageSUS.detail');
 
 });
 
