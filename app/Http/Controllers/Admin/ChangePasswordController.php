@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Crypt;
 
 class ChangePasswordController extends Controller
 {
@@ -14,21 +16,34 @@ class ChangePasswordController extends Controller
     }
 
     public function update(Request $request){
+
+
         $request->validate([
             'old_password' => 'required',
-            'new_password' => 'required|confirmed',
+            'new_password' => 'required',
         ]);
 
 
-        #Match The Old Password
-        if(!Hash::check($request->old_password, auth()->user()->password)){
-            return back()->with("error", "Old Password Doesn't match!");
+
+        if(Hash::check($request->old_password, auth()->user()->password)){
+
+            User::whereId(auth()->user()->id)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+
+            Alert::success('Succes', 'Password Berhasil Diubah');
+            return back();
+
+        }else{
+            Alert::warning('Gagal', 'Password Lama Salah');
+            return back();
         }
 
 
-        #Update the new Password
-        User::whereId(auth()->user()->id)->update([
-            'password' => Hash::make($request->new_password)
-        ]);
+
+
+
+
+
     }
 }

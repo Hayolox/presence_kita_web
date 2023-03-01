@@ -23,18 +23,16 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form action="" method="POST">
+                            <form action="{{ route('change.password.admin.update') }}" method="POST">
                                 @csrf
-                                @method('PUT')
-
                                 <div class="mb-3">
                                     <label  class="form-label">Password Lama</label>
-                                    <input type="password"  name="password" class="form-control">
+                                    <input type="password"  name="old_password" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Password Baru</label>
-                                    <input type="password"  name="password" class="form-control">
+                                    <input type="password"  name="new_password" class="form-control">
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Submit</button>

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ManageStudentController;
 use App\Http\Controllers\Admin\ManageSubjectsController;
 use App\Http\Controllers\Admin\ManageSUSController;
 use App\Http\Controllers\Admin\ManageSystemController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,9 +21,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::post('/login-proses', [LoginController::class, 'login'])->name('login.proses');
+Route::get('/login-logout', [LoginController::class, 'logout'])->name('login.logout');
 
 
-Route::prefix('Admin')->group(function(){
+Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::get('/Dashboard', [DashboardController::class, 'index'])->name('Dashboard');
 
 

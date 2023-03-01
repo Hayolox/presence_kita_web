@@ -54,6 +54,12 @@
         <a class="nav-link" href="{{ route('ManageSUS') }}">
             <span>SUS</span></a>
     </li>
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('login.logout') }}">
+            <span>Logout</span></a>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
