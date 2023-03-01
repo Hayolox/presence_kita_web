@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ChangePasswordController;
 use App\Http\Controllers\Admin\CheckLoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ManageLecturerController;
@@ -42,7 +43,8 @@ Route::prefix('Admin')->group(function(){
 
 
 
-
+    Route::get('/change-password-admin', [ChangePasswordController::class, 'index'])->name('change.password.admin');
+    Route::post('/change-password-admin-update', [ChangePasswordController::class, 'update'])->name('change.password.admin.update');
 
 });
 
