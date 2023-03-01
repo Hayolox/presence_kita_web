@@ -12,13 +12,23 @@ use Illuminate\Support\Facades\DB;
 
 class CheckLoginController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 
         $duplicateRecords = DB::table('check_logins')
                     ->selectRaw('student_nsn , COUNT(*) as count')
                     ->groupBy('student_nsn')
                     ->havingRaw('COUNT(*) > 1')
                     ->get();
+
+            if($request->has('search'))
+            {
+                $duplicateRecords = DB::table('check_logins')
+                ->selectRaw('student_nsn , COUNT(*) as count')
+                ->groupBy('student_nsn')
+                ->havingRaw('COUNT(*) > 1')
+                ->where('student_nsn', 'LIKE', '%' .$request->search. '%')
+                ->get();
+            }
 
         return view('pages.admin.check_login.index', compact('duplicateRecords'));
     }

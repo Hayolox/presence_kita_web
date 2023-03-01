@@ -14,6 +14,15 @@
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Kecurangan</h6>
                     </div>
                     <div class="card-body">
+                        <div class="col-12  d-flex  d-inline d-flex justify-content-end">
+                            <form action="{{ route('check.login') }}">
+                                <div class="input-group col-12 mb-3">
+                                    <input type="search" name="search" class="form-control rounded" placeholder="Search NIM" aria-label="Search"
+                                      aria-describedby="search-addon" />
+                                    <button type="submit" class="btn btn-outline-primary">search</button>
+                                  </div>
+                            </form>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
