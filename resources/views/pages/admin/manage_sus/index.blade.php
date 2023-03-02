@@ -29,58 +29,58 @@
                         </div>
 
                         <div class="table-responsive">
-                            <form action="" method="POST">
+                            <form action="{{ route('ManageSUS.update') }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q1</label>
-                                    <input type="text" value="{{ $sus->Q1 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q1 }}" name="Q1" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q2</label>
-                                    <input type="text" value="{{ $sus->Q3 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q2 }}" name="Q2" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q3</label>
-                                    <input type="text" value="{{ $sus->Q3 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q3 }}" name="Q3" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q4</label>
-                                    <input type="text" value="{{ $sus->Q4 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q4 }}" name="Q4" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q5</label>
-                                    <input type="text" value="{{ $sus->Q5 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q5 }}" name="Q5" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q6</label>
-                                    <input type="text" value="{{ $sus->Q6 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q6 }}" name="Q6" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q7</label>
-                                    <input type="text" value="{{ $sus->Q7 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q7 }}" name="Q7" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q8</label>
-                                    <input type="text" value="{{ $sus->Q8 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q8 }}" name="Q8" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q9</label>
-                                    <input type="text" value="{{ $sus->Q9 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q9 }}" name="Q9" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label  class="form-label">Q10</label>
-                                    <input type="text" value="{{ $sus->Q10 }}" name="course_code" class="form-control">
+                                    <input type="text" value="{{ $sus->Q10 }}" name="Q10" class="form-control">
                                 </div>
 
 

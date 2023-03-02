@@ -54,6 +54,7 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
 
     Route::get('/Manage-SUS', [ManageSUSController::class, 'index'])->name('ManageSUS');
     Route::get('/Manage-SUS-Detail', [ManageSUSController::class, 'sus'])->name('ManageSUS.detail');
+    Route::put('/Manage-SUS-update', [ManageSUSController::class, 'update'])->name('ManageSUS.update');
 
 });
 

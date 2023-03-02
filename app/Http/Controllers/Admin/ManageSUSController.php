@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\sus;
 use App\Models\sus_student;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ManageSUSController extends Controller
 {
@@ -119,5 +121,39 @@ class ManageSUSController extends Controller
             'Q10CountAnswerOne','Q10CountAnswerTwo','Q10CountAnswerThree','Q10CountAnswerFour','Q10CountAnswerFive',
             )
         );
+    }
+
+    public function update(Request $request){
+        $request->validate([
+            'Q1' => 'required',
+            'Q2' => 'required',
+            'Q3' => 'required',
+            'Q4' => 'required',
+            'Q5' => 'required',
+            'Q6' => 'required',
+            'Q7' => 'required',
+            'Q8' => 'required',
+            'Q9' => 'required',
+            'Q10' => 'required',
+        ]);
+
+        $last = sus::all()->last();
+        $sus = sus::findOrfail($last->id);
+
+        $sus->update([
+            'Q1' => $request->Q1,
+            'Q2' => $request->Q2,
+            'Q3' => $request->Q3,
+            'Q4' => $request->Q4,
+            'Q5' => $request->Q5,
+            'Q6' => $request->Q6,
+            'Q7' => $request->Q7,
+            'Q8' => $request->Q8,
+            'Q9' => $request->Q9,
+            'Q10' => $request->Q10,
+        ]);
+
+        Alert::success('Success', 'Data Berhasil Diedit');
+        return back();
     }
 }
