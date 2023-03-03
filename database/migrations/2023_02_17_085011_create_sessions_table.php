@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
+            $table->string('Qr-Code', 20);
             $table->string("title", 100);
             $table->time('start');
             $table->time('finish');
+            $table->date('date');
             $table->string('lecturer_nip');
             $table->foreign('lecturer_nip')->references('nip')->on('lecturers');
             $table->unsignedBigInteger('semester_id');
@@ -27,6 +29,7 @@ return new class extends Migration
             $table->integer("year");
             $table->unsignedBigInteger('room_id');
             $table->foreign('room_id')->references('id')->on('rooms');
+            $table->boolean('geolocation');
             $table->timestamps();
         });
     }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('session_id')->references('id')->on('sessions');
             $table->string('student_nsn');
             $table->foreign('student_nsn')->references('nsn')->on('students');
-            $table->string("status")->default("alpha");
+            $table->string("status")->nullable();
             $table->timestamps();
         });
     }

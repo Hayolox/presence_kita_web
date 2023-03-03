@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('room_name');
+            $table->string('name');
             $table->string('latitude');
             $table->string('longitude');
             $table->timestamps();

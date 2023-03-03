@@ -36,6 +36,12 @@
 
      <!-- Nav Item - Charts -->
      <li class="nav-item">
+        <a class="nav-link" href="{{ route('ManagePresence') }}">
+            <span>Kelola Presensi</span></a>
+    </li>
+
+     <!-- Nav Item - Charts -->
+     <li class="nav-item">
         <a class="nav-link" href="{{ route('ManageSystem.index') }}">
             <span>Kelola Sistem</span></a>
     </li>

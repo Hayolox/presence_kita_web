@@ -8,4 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class session extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+
+    'Qr-Code', 'title', 'start', 'finish',
+
+    'date', 'lecturer_nip', 'semester_id',
+
+    'subject_course_code', 'year', 'room_id', 'geolocation'
+
+    ];
+
+
+    public function lecturer()
+    {
+        return $this->hasOne(lecturer::class, 'nip', 'lecturer_nip');
+    }
 }

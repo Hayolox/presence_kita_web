@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ManageStudentController;
 use App\Http\Controllers\Admin\ManageSubjectsController;
 use App\Http\Controllers\Admin\ManageSUSController;
 use App\Http\Controllers\Admin\ManageSystemController;
+use App\Http\Controllers\Admin\PresenceController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,8 +54,14 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
 
 
     Route::get('/Manage-SUS', [ManageSUSController::class, 'index'])->name('ManageSUS');
-    Route::get('/Manage-SUS-Detail', [ManageSUSController::class, 'sus'])->name('ManageSUS.detail');
+    Route::get('/Manage-SUS-detail', [ManageSUSController::class, 'sus'])->name('ManageSUS.detail');
     Route::put('/Manage-SUS-update', [ManageSUSController::class, 'update'])->name('ManageSUS.update');
+
+    Route::get('/Manage-presence', [PresenceController::class, 'index'])->name('ManagePresence');
+    Route::get('/Manage-presence-session/{id}', [PresenceController::class, 'session'])->name('ManagePresence.session');
+    Route::get('/Manage-presence/create/{id}', [PresenceController::class, 'createSession'])->name('ManagePresence.session.create');
+    Route::post('/Manage-presence/create/{id}', [PresenceController::class, 'storeSession'])->name('ManagePresence.session.store');
+    Route::get('/Manage-presence/{id}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
 
 });
 
