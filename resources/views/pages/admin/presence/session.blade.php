@@ -29,6 +29,7 @@
                                         <th>Tanggal</th>
                                         <th>Geolocation</th>
                                         <th>Nama Dosen</th>
+                                        <th>QrCode</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -42,6 +43,9 @@
                                         <td>{{ $item->date }}</td>
                                         <td>{{ $item->geolocation == 1 ? 'true' : 'false' }}</td>
                                         <td>{{ $item->lecturer->full_name  }}</td>
+                                        <td>
+                                            <a href="{{ route('ManagePresence.QrCode', $item->id) }}" target="_blank" class="btn btn-secondary">Qr-Code</a>
+                                        </td>
                                         <td>
                                             <a href="{{ route('ManagePresence.presence', $item->id) }}" class="btn btn-primary">Mahasiswa</a>
                                             <a href="{{ route('ManagePresence.session.edit', [$item->id, $course_code]) }}" class="btn btn-info">Edit</a>

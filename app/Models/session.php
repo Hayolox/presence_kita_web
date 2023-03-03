@@ -11,7 +11,7 @@ class session extends Model
 
     protected $fillable = [
 
-    'Qr-Code', 'title', 'start', 'finish',
+    'QrCode', 'title', 'start', 'finish',
 
     'date', 'lecturer_nip', 'semester_id',
 

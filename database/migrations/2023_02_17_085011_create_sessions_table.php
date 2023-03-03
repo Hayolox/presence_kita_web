@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
-            $table->string('Qr-Code', 20);
+            $table->string('QrCode', 20);
             $table->string("title", 100);
             $table->time('start');
             $table->time('finish');

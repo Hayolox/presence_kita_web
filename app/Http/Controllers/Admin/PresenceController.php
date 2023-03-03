@@ -58,7 +58,7 @@ class PresenceController extends Controller
         $year = $setting->year;
         $qrCode = Str::random(20);
         session::create([
-            'Qr-Code' => $qrCode,
+            'QrCode' => $qrCode,
             'title' => $request->title,
             'start' => $request->start,
             'finish' => $request->finish,
@@ -115,5 +115,11 @@ class PresenceController extends Controller
 
         $students = presence::where('session_id', $id)->paginate();
         return view('pages.admin.presence.presence', compact('students'));
+    }
+
+
+    public function qRCode($id){
+        $session = session::findOrFail($id);
+        return view('pages.admin.presence.QrCode', compact('session'));
     }
 }
