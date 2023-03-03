@@ -61,6 +61,8 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::get('/Manage-presence-session/{id}', [PresenceController::class, 'session'])->name('ManagePresence.session');
     Route::get('/Manage-presence/create/{id}', [PresenceController::class, 'createSession'])->name('ManagePresence.session.create');
     Route::post('/Manage-presence/create/{id}', [PresenceController::class, 'storeSession'])->name('ManagePresence.session.store');
+    Route::get('/Manage-presence/edit/{id}/{course_code}', [PresenceController::class, 'editSession'])->name('ManagePresence.session.edit');
+    Route::put('/Manage-presence/update/{id}/{course_code}', [PresenceController::class, 'updateSession'])->name('ManagePresence.session.update');
     Route::get('/Manage-presence/{id}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
 
 });

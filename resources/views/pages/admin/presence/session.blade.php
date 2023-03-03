@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-body">
                       <div class="col-12  d-flex  d-inline d-flex justify-content-end">
-                        <a href="{{ url()->previous() }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
+                        <a href="{{ route('ManagePresence') }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
                         <a href="{{ route('ManagePresence.session.create',$course_code) }}" class="btn btn-secondary mb-4">Tambah Data</a>
                         </div>
                         <div class="table-responsive">
@@ -27,6 +27,7 @@
                                         <th>Mulai</th>
                                         <th>Berakhir</th>
                                         <th>Tanggal</th>
+                                        <th>Geolocation</th>
                                         <th>Nama Dosen</th>
                                         <th>Action</th>
                                     </tr>
@@ -39,11 +40,12 @@
                                         <td>{{ $item->start }}</td>
                                         <td>{{ $item->finish }}</td>
                                         <td>{{ $item->date }}</td>
+                                        <td>{{ $item->geolocation == 1 ? 'true' : 'false' }}</td>
                                         <td>{{ $item->lecturer->full_name  }}</td>
                                         <td>
-                                            <a href="{{ route('ManagePresence.presence', $item->id) }}" class="btn btn-info">Mahasiswa</a>
+                                            <a href="{{ route('ManagePresence.presence', $item->id) }}" class="btn btn-primary">Mahasiswa</a>
+                                            <a href="{{ route('ManagePresence.session.edit', [$item->id, $course_code]) }}" class="btn btn-info">Edit</a>
                                         </td>
-
                                     </tr>
                                 </tbody>
                                 @endforeach

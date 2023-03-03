@@ -28,8 +28,8 @@ class PresenceController extends Controller
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
         $session = session::where('subject_course_code', $course_code)
-                    ->orWhere('semester_id', $setting->semester_id)
-                    ->orWhere('year', $setting->year)->paginate();
+                    ->where('semester_id', $setting->semester_id)
+                    ->where('year', $setting->year)->paginate();
 
         return view('pages.admin.presence.session', compact('session','course_code'));
     }
@@ -73,11 +73,46 @@ class PresenceController extends Controller
         ]);
 
         Alert::success('Success', 'Data Berhasil Ditambahkan');
-        return back();
+        return redirect()->route('ManagePresence.session', ['id' => $course_code]);
+    }
+
+    public function editSession($id,$course_code){
+
+        $session = session::findOrFail($id);
+        $rooms = room::get();
+        $lecturers = lecturer_subject::where('subject_course_code',$course_code)->get();
+       return view('pages.admin.presence.edit', compact('session','rooms', 'lecturers','course_code'));
+    }
+
+    public function updateSession($id,$course_code, Request $request){
+
+        $session = session::findOrFail($id);
+        $request->validate([
+            'title' => 'required',
+            'start' => 'required',
+            'finish' => 'required',
+            'date' => 'required',
+            'room_id' => 'required',
+            'lecturer_nip' => 'required',
+            'geolocation' => 'required',
+        ]);
+
+        $session->update([
+            'title' => $request->title,
+            'start' => $request->start,
+            'finish' => $request->finish,
+            'date' => $request->date,
+            'lecturer_nip' => $request->lecturer_nip,
+            'room_id' => $request->room_id,
+            'geolocation' => $request->geolocation,
+        ]);
+        Alert::success('Success', 'Data Berhasil Ditambahkan');
+        return redirect()->route('ManagePresence.session', ['id' => $course_code]);
     }
 
 
     public function presence($id){
+
         $students = presence::where('session_id', $id)->paginate();
         return view('pages.admin.presence.presence', compact('students'));
     }
