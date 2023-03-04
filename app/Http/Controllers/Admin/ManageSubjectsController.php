@@ -225,10 +225,10 @@ class ManageSubjectsController extends Controller
         return view('pages.admin.manage_subject.dataStudent', compact('students','course_id','studentss'));
     }
 
-    public function import(Request $request)
+    public function import(Request $request, $subject_course_code)
     {
         $file =  $request->file('file');
-        (new StudentSubjectImport)->import($file);
+        (new StudentSubjectImport($subject_course_code))->import($file);
         return back();
     }
 

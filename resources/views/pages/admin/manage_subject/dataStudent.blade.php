@@ -30,7 +30,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ route('ManageSubject.import') }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('ManageSubject.import', $course_id) }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <input type="file" name="file">
