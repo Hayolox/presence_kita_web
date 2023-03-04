@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessChangeQrCode;
 use App\Models\lecturer;
 use App\Models\lecturer_subject;
 use App\Models\presence;
@@ -13,6 +14,7 @@ use App\Models\subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Queue;
 
 class PresenceController extends Controller
 {
@@ -30,6 +32,7 @@ class PresenceController extends Controller
         $session = session::where('subject_course_code', $course_code)
                     ->where('semester_id', $setting->semester_id)
                     ->where('year', $setting->year)->paginate();
+
 
         return view('pages.admin.presence.session', compact('session','course_code'));
     }
@@ -118,8 +121,10 @@ class PresenceController extends Controller
     }
 
 
-    public function qRCode($id){
-        $session = session::findOrFail($id);
+    public function qRCode($id, $qrCode){
+
+        ProcessChangeQrCode::dispatch($id)->delay(now()->addMinutes(1));
+        $session = session::where('id', $id)->where('QrCode',$qrCode )->firstOrFail();
         return view('pages.admin.presence.QrCode', compact('session'));
     }
 }

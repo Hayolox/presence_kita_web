@@ -64,7 +64,7 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::get('/Manage-presence/edit/{id}/{course_code}', [PresenceController::class, 'editSession'])->name('ManagePresence.session.edit');
     Route::put('/Manage-presence/update/{id}/{course_code}', [PresenceController::class, 'updateSession'])->name('ManagePresence.session.update');
     Route::get('/Manage-presence/{id}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
-    Route::get('/Manage-presence/Qr-Code/{id}', [PresenceController::class, 'qRCode'])->name('ManagePresence.QrCode');
+    Route::get('/Manage-presence/Qr-Code/{id}/{QrCode}', [PresenceController::class, 'qRCode'])->name('ManagePresence.QrCode');
 
 });
 

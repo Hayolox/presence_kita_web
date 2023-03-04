@@ -44,7 +44,7 @@
                                         <td>{{ $item->geolocation == 1 ? 'true' : 'false' }}</td>
                                         <td>{{ $item->lecturer->full_name  }}</td>
                                         <td>
-                                            <a href="{{ route('ManagePresence.QrCode', $item->id) }}" target="_blank" class="btn btn-secondary">Qr-Code</a>
+                                            <a href="{{ route('ManagePresence.QrCode',[$item->id, $item->QrCode]) }}" target="_blank" class="btn btn-secondary">Qr-Code</a>
                                         </td>
                                         <td>
                                             <a href="{{ route('ManagePresence.presence', $item->id) }}" class="btn btn-primary">Mahasiswa</a>
