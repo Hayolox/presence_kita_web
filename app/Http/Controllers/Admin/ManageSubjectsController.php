@@ -225,6 +225,25 @@ class ManageSubjectsController extends Controller
         return view('pages.admin.manage_subject.dataStudent', compact('students','course_id','studentss'));
     }
 
+    public function dataStudentCreate($subject_course_code){
+
+        return view('pages.admin.manage_subject.dataStudentCreate', compact('subject_course_code'));
+    }
+
+    public function dataStudentStore($subject_course_code, Request $request){
+        $request->validate([
+            'student_nsn' => 'required'
+        ]);
+
+        student_subject::create([
+            'student_nsn' =>$request->student_nsn,
+            'subject_course_code' => $subject_course_code,
+        ]);
+
+        Alert::success('Success', 'Data Berhasil Ditambahkan');
+        return back();
+    }
+
     public function import(Request $request, $subject_course_code)
     {
         $file =  $request->file('file');
