@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessChangeQrCode;
+use App\Models\check_que;
 use App\Models\lecturer;
 use App\Models\lecturer_subject;
 use App\Models\presence;
@@ -123,7 +124,16 @@ class PresenceController extends Controller
 
     public function qRCode($id, $qrCode){
 
-        ProcessChangeQrCode::dispatch($id)->delay(now()->addMinutes(1));
+        $countQue = check_que::where('QrCode', $qrCode)->count();
+
+        if($countQue == 0){
+            check_que::create([
+                'QrCode' => $qrCode
+            ]);
+            $job = new ProcessChangeQrCode($id, $qrCode);
+
+            ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(1));
+        }
         $session = session::where('id', $id)->where('QrCode',$qrCode )->firstOrFail();
         return view('pages.admin.presence.QrCode', compact('session'));
     }
