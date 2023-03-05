@@ -34,7 +34,9 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::resource('/ManageLecturer', ManageLecturerController::class);
     Route::resource('/ManageStudent', ManageStudentController::class);
     Route::resource('/ManageSystem', ManageSystemController::class);
-    Route::post('/ManageStudent-import', [ManageStudentController::class, 'import'])->name('ManageStudent.import');
+    Route::post('/ManageStudent-import-student', [ManageStudentController::class, 'import'])->name('ManageStudent.import');
+    Route::get('/ManageStudent-download-import-student', [ManageStudentController::class, 'downloadTemplate'])->name('ManageStudent.template.import.student');
+
 
     Route::get('/Check-Login', [CheckLoginController::class, 'index'])->name('check.login');
     Route::delete('/check-login/{id}', [CheckLoginController::class, 'destroy'])->name('check.login.destroy');
@@ -43,6 +45,7 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::get('/ManageSubject-detail-lecturer/{id}', [ManageSubjectsController::class, 'dataLecturer'])->name('ManageSubject.lecturer');
     Route::get('/ManageSubject-detail-student/{id}', [ManageSubjectsController::class, 'dataStudent'])->name('ManageSubject.student');
     Route::get('/ManageSubject-create-student/{subject_course_code}', [ManageSubjectsController::class, 'dataStudentCreate'])->name('ManageSubject.dataStudentCreate');
+    Route::get('/ManageSubject-create-student/download/template', [ManageSubjectsController::class, 'downloadTemplate'])->name('ManageSubject.dataStudentDownloadTemplate');
     Route::post('/ManageSubject-store-student/{subject_course_code}', [ManageSubjectsController::class, 'dataStudentStore'])->name('ManageSubject.dataStudentStore');
     Route::post('/ManageSubject-detail-lecturer-store/{id}', [ManageSubjectsController::class, 'dataLecturerStore'])->name('ManageSubject.lecturer-store');
     Route::post('/ManageSubject-import-student/{id}', [ManageSubjectsController::class, 'import'])->name('ManageSubject.import');

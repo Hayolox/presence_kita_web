@@ -159,4 +159,9 @@ class ManageStudentController extends Controller
         (new StudentsImport)->import($file);
         return back();
     }
+
+    public function downloadTemplate(){
+        $templatePath = public_path('template/template_import_student.xlsx');
+        return response()->download($templatePath, 'template_untuk_import_mahasisswa.xlsx');
+    }
 }

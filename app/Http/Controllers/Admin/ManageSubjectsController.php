@@ -251,6 +251,11 @@ class ManageSubjectsController extends Controller
         return back();
     }
 
+    public function downloadTemplate(){
+        $templatePath = public_path('template/template_import_student_to_subject.xlsx');
+        return response()->download($templatePath, 'template_untuk_import_mahasisswa_ke_matakuliah.xlsx');
+    }
+
     public function dataStudentDestroy($id){
         $lecturers = student_subject::findOrFail($id);
         $lecturers->delete();

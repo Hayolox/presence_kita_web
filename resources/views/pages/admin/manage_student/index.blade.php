@@ -52,6 +52,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="{{ route('ManageStudent.template.import.student') }}" class="btn btn-primary  mt-2 mb-4 mr-3">Download Template</a>
                                 <a href="{{ route('ManageStudent.create') }}" class="btn btn-primary  mt-2 mb-4">Tambah Data</a>
                                 <form action="{{ route('ManageStudent.index') }}">
                                     <div class="input-group col-12 mb-4 mt-2">

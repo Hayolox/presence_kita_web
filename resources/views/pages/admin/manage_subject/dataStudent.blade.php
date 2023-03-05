@@ -14,8 +14,11 @@
                         <h6 class="m-0 font-weight-bold text-primary">Daftar Mahasiswa</h6>
                     </div>
                     <div class="card-body">
+
+
                             <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                                  <!-- Button trigger modal -->
+
                                  <button type="button" class="btn btn-primary mt-2 mb-4 mr-3" data-toggle="modal" data-target="#exampleModal">
                                     Import Data
                                 </button>
@@ -43,6 +46,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="{{ route('ManageSubject.dataStudentDownloadTemplate') }}">   <div class="btn btn-primary mt-2 mb-4 mr-3">Download Template</div></a>
                                 <a href="{{ route('ManageSubject.dataStudentCreate', $course_id) }}">   <div class="btn btn-primary mt-2 mb-4 mr-3">Tambah Mahasiswa</div></a>
                                 <form action="{{ route('ManageSubject.student', $course_id) }}">
                                     <div class="input-group col-12 mb-3 mt-2 mb-4">
