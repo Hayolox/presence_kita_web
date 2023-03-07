@@ -12,7 +12,7 @@
 <body>
 <form id="slick-login" action="{{ route('login.proses') }}" method="POST">
         @csrf
-        <label for="username">Email</label><input type="text" name="email" class="placeholder" placeholder="me@tutsplus.com">
+        <label for="username">Email</label><input type="text" name="nsn" class="placeholder" placeholder="me@tutsplus.com">
         @error('email')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror

@@ -27,7 +27,7 @@ Route::post('/login-proses', [LoginController::class, 'login'])->name('login.pro
 Route::get('/login-logout', [LoginController::class, 'logout'])->name('login.logout');
 
 
-Route::prefix('Admin')->middleware('auth')->group(function(){
+Route::prefix('Admin')->middleware('auth:student')->group(function(){
     Route::get('/Dashboard', [DashboardController::class, 'index'])->name('Dashboard');
 
 
