@@ -132,7 +132,18 @@ class PresenceController extends Controller
             ]);
             $job = new ProcessChangeQrCode($id, $qrCode);
 
-            ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(1));
+
+            $queue = Queue::getFacadeRoot();
+            $count = $queue->size();
+
+            if($count > 1){
+                ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(1));
+            }elseif($count > 2){
+                ProcessChangeQrCode::dispatch($id, $qrCode );
+            }
+            else{
+                ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(2));
+            }
         }
         $session = session::where('id', $id)->where('QrCode',$qrCode )->firstOrFail();
         return view('pages.admin.presence.QrCode', compact('session'));
