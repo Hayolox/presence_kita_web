@@ -22,7 +22,9 @@ class PresenceController extends Controller
     public function index(){
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
-        $subjects = subject::where('semester_id',$setting->semester_id)->orWhere('semester_id', 3)->paginate(10);
+        $subjects = subject::where('semester_id',$setting->semester_id)
+                            ->orWhere('semester_id', 3)
+                            ->paginate(10);
         return view('pages.admin.presence.index', compact('subjects'));
     }
 
