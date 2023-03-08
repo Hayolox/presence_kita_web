@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\AuthContorller;
+use App\Http\Controllers\API\HomeApiController;
+use App\Http\Controllers\API\SessionApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +18,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login-proses-student', [AuthContorller::class, 'login']);
+Route::get('/logout-proses-student', [AuthContorller::class, 'logout']);
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/home', [HomeApiController::class, 'index']);
+    Route::get('/session-subject', [SessionApiController::class, 'index']);
+    Route::get('/session-detail-do-not-attend', [SessionApiController::class, 'doNotAttend']);
+    Route::post('/create-session', [SessionApiController::class, 'store']);
+});

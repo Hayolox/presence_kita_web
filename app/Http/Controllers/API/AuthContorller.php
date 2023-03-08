@@ -49,4 +49,14 @@ class AuthContorller extends Controller
         ]);
       }
     }
+
+    public function logout(){
+        Auth::logout();
+        return ResponseFormatter::success(
+            [
+                "message" => "Logout Berhasil"
+            ],
+            'Logout Berhasil'
+        );
+    }
 }

@@ -17,4 +17,9 @@ class student_subject extends Model
     {
         return $this->hasOne(student::class, 'nsn', 'student_nsn');
     }
+
+    public function subject()
+    {
+        return $this->hasOne(subject::class, 'course_code', 'subject_course_code');
+    }
 }
