@@ -31,5 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/session-get-lecturer-By-Subject', [SessionApiController::class, 'getLecturerBySubject']);
     Route::put('/update-session', [SessionApiController::class, 'update']);
     Route::post('/presence-present', [PresenceApiController::class, 'present']);
+    Route::post('/presence-izin', [PresenceApiController::class, 'izin']);
     Route::post('/change-password', [AuthContorller::class, 'changePassword']);
 });
