@@ -5,12 +5,13 @@ namespace App\Http\Controllers\API;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\API\ResponseFormatter as APIResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\check_login;
 use App\Models\student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class AuthContorller extends Controller
+class   AuthContorller extends Controller
 {
     public function login(Request $request){
 
@@ -33,6 +34,10 @@ class AuthContorller extends Controller
         }
 
         $tokenResult = $student->createToken('mobile')->plainTextToken;
+
+        check_login::create([
+            'student_nsn' => $student->nsn
+        ]);
 
         return ResponseFormatter::success(
             [
@@ -58,5 +63,34 @@ class AuthContorller extends Controller
             ],
             'Logout Berhasil'
         );
+    }
+
+
+    public function changePassword(Request $request){
+
+        if(Hash::check($request->old_password, auth()->user()->password)){
+
+            $student =   student::where('nsn', Auth::user()->nsn)->firstOrFail();
+
+            $student->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+
+            return ResponseFormatter::success(
+                [
+                    "message" => "Ganti Password Berhasil"
+                ],
+                'Ganti Password Berhasil'
+            );
+
+
+        }else{
+            return ResponseFormatter::error(
+                [
+                    "message" => "Ganti Password Gagal"
+                ],
+                'Ganti Password Gagal'
+            );
+        }
     }
 }

@@ -19,7 +19,7 @@ class HomeApiController extends Controller
         $studentSubject = $studentSubject->whereHas('subject', function( $query ) use ( $request ){
                             $lastSetting = setting::all()->last();
                             $setting = setting::findOrfail($lastSetting->id);
-                                $query->where('semester_id',     $setting->semester_id);
+                                $query->where('semester_id', $setting->semester_id);
                             });
 
 

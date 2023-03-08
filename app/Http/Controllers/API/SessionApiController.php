@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\lecturer_subject;
 use App\Models\presence;
 use App\Models\session;
 use App\Models\setting;
@@ -54,8 +55,6 @@ class SessionApiController extends Controller
         );
     }
 
-
-
     public function store(Request $request){
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
@@ -84,5 +83,47 @@ class SessionApiController extends Controller
         );
     }
 
+
+    public function update(Request $request){
+
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+        $semester_id = $setting->semester_id;
+
+        $session = session::findOrFail($request->session_id);
+        $session->update([
+            'title' => $request->title,
+            'start' => $request->start,
+            'finish' => $request->finish,
+            'date' => $request->date,
+            'lecturer_nip' => $request->lecturer_nip,
+            'semester_id' => $semester_id,
+            'room_id' => $request->room_id,
+            'geolocation' => $request->geolocation,
+        ]);
+
+        return ResponseFormatter::success(
+            [
+               "message" => "Berhasil Edit Session"
+            ],
+            'Berhasil Edit Session'
+        );
+    }
+
+    public function getLecturerBySubject(Request $request){
+        $lecturerBySubject = lecturer_subject::
+                             with('lecturer')
+                             ->where('subject_course_code', $request->subject_course_code)
+                             ->get()->pluck('lecturer');
+
+
+
+        return ResponseFormatter::success(
+
+                $lecturerBySubject
+            ,
+                'Berhasil Get Data'
+         );
+    }
 
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthContorller;
 use App\Http\Controllers\API\HomeApiController;
+use App\Http\Controllers\API\PresenceApiController;
 use App\Http\Controllers\API\SessionApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/session-subject', [SessionApiController::class, 'index']);
     Route::get('/session-detail-do-not-attend', [SessionApiController::class, 'doNotAttend']);
     Route::post('/create-session', [SessionApiController::class, 'store']);
+    Route::get('/session-get-lecturer-By-Subject', [SessionApiController::class, 'getLecturerBySubject']);
+    Route::put('/update-session', [SessionApiController::class, 'update']);
+    Route::post('/presence-present', [PresenceApiController::class, 'present']);
+    Route::post('/change-password', [AuthContorller::class, 'changePassword']);
 });
