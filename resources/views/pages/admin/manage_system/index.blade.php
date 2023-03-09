@@ -20,9 +20,9 @@
                 <div class="card shadow mb-4 mt-2">
                     <div class="card-header py-3">
                         @if ($count < 1)
-                            <h6 class="m-0 font-weight-bold text-primary">Tambah Sistem</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tambah Sistem haha</h6>
                         @else
-                            <h6 class="m-0 font-weight-bold text-primary">Edit Sistem</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Edit Sistem haha</h6>
                         @endif
                     </div>
                     <div class="card-body">
