@@ -11,6 +11,8 @@ use App\Models\presence;
 use App\Models\room;
 use App\Models\session;
 use App\Models\setting;
+use App\Models\student;
+use App\Models\student_subject;
 use App\Models\subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -117,10 +119,52 @@ class PresenceController extends Controller
     }
 
 
-    public function presence($id){
+    public function presence($id, $course_code){
+        $session_id = $id;
+        $students = presence::where('session_id', $session_id)->paginate();
+        return view('pages.admin.presence.presence', compact('students', 'course_code', 'session_id'));
+    }
 
-        $students = presence::where('session_id', $id)->paginate();
-        return view('pages.admin.presence.presence', compact('students'));
+    public function addStudentToPresence($session_id, $course_code){
+
+
+        return view('pages.admin.presence.add_student_to_session', compact('session_id', 'course_code'));
+    }
+
+    public function storeAddStudentToPresence($session_id, $course_code, Request $request){
+        $checkStudent = student::where('nsn', $request->nim)->first();
+
+        if(!$checkStudent){
+
+            Alert::warning('Student Tidak Terdaftar', 'Maaf Akun Student Tidak Di Temukan');
+            return back();
+        }
+
+        $checkStudent = student_subject::where('subject_course_code', $course_code)->where('student_nsn', $request->nim)->first();
+
+        if(!$checkStudent){
+            Alert::warning('Student Tidak Terdaftar', 'Maaf Student Tidak Terdaftar Pada Mata Kuliah');
+            return back();
+        }
+
+        $checkStudent = presence::where('session_id', $session_id)
+                                  ->where('subject_course_code', $course_code)
+                                  ->where('student_nsn', $request->nim)->first();
+
+        if($checkStudent){
+            Alert::warning('Student Sudah Melakukan Presensi', 'Maaf Student Sudah Melakukan Presensi');
+            return back();
+        }
+
+        presence::create([
+            'session_id' => $session_id,
+            'subject_course_code' => $course_code,
+            'student_nsn' => $request->nim,
+            'status' => 'hadir'
+        ]);
+
+        Alert::success('Succes', 'Student Berhasil Ditambahkan Ke Presensi');
+        return back();
     }
 
 

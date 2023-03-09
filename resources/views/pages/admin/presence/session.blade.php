@@ -47,7 +47,7 @@
                                             <a href="{{ route('ManagePresence.QrCode',[$item->id, $item->QrCode]) }}" target="_blank" class="btn btn-secondary">Qr-Code</a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('ManagePresence.presence', $item->id) }}" class="btn btn-primary">Mahasiswa</a>
+                                            <a href="{{ route('ManagePresence.presence', [$item->id, $course_code]) }}" class="btn btn-primary">Mahasiswa</a>
                                             <a href="{{ route('ManagePresence.session.edit', [$item->id, $course_code]) }}" class="btn btn-info">Edit</a>
                                         </td>
                                     </tr>

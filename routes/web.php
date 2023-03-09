@@ -68,7 +68,9 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::post('/Manage-presence/create/{id}', [PresenceController::class, 'storeSession'])->name('ManagePresence.session.store');
     Route::get('/Manage-presence/edit/{id}/{course_code}', [PresenceController::class, 'editSession'])->name('ManagePresence.session.edit');
     Route::put('/Manage-presence/update/{id}/{course_code}', [PresenceController::class, 'updateSession'])->name('ManagePresence.session.update');
-    Route::get('/Manage-presence/{id}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
+    Route::get('/Manage-presence/{id}/{course_code}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
+    Route::get('/Manage-presence/add/to/presence/{id}/{course_code}', [PresenceController::class, 'addStudentToPresence'])->name('ManagePresence.presence.add.student');
+    Route::post('/Manage-presence/store/to/presence/{id}/{course_code}', [PresenceController::class, 'storeAddStudentToPresence'])->name('ManagePresence.presence.store.student');
     Route::get('/Manage-presence/Qr-Code/{id}/{QrCode}', [PresenceController::class, 'qRCode'])->name('ManagePresence.QrCode');
 
 });
