@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\setting;
 use App\Models\student_subject;
+use App\Models\sus_student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,6 +23,18 @@ class HomeApiController extends Controller
                                 $query->where('semester_id', $setting->semester_id);
                             });
 
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+
+        $checkSUS = $setting->SUS;
+
+        if($checkSUS == 1){
+                $checkStudent = sus_student::where('student_nsn', Auth::user()->nsn)->first();
+                    if($checkStudent){
+                        $checkSUS = 0;
+                    }
+        }
+
 
         $studentSubject = $studentSubject->get();
 
@@ -34,6 +47,7 @@ class HomeApiController extends Controller
 
         return ResponseFormatter::success(
             [
+                'SUS' => $checkSUS,
                 'countStudentInSubject' => $countStudentInSubject,
                 'subject' => $studentSubject,
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthContorller;
 use App\Http\Controllers\API\HomeApiController;
 use App\Http\Controllers\API\PresenceApiController;
 use App\Http\Controllers\API\SessionApiController;
+use App\Http\Controllers\API\SUSController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,5 +33,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/update-session', [SessionApiController::class, 'update']);
     Route::post('/presence-present', [PresenceApiController::class, 'present']);
     Route::post('/presence-izin', [PresenceApiController::class, 'izin']);
+
+
+    Route::get('/sus-Question', [SUSController::class, 'getQuestion']);
+    Route::post('/sus-Answer', [SUSController::class, 'postAnswer']);
+
     Route::post('/change-password', [AuthContorller::class, 'changePassword']);
 });
