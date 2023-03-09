@@ -33,6 +33,7 @@
                                 <div class="mb-3">
                                     <select class="form-select" name="year" aria-label="Default select example">
                                         <option selected>Pilih Tahun</option>
+                                        <option value="2022">2022</option>
                                         <option value="2023">2023</option>
                                         <option value="2024">2024</option>
                                         <option value="2025">2025</option>
@@ -68,6 +69,7 @@
                                 <div class="mb-3">
                                     <p>Year</p>
                                     <select class="form-select" name="year" aria-label="Default select example">
+                                        <option {{ $setting->year == 2022 ? 'selected' : '' }} value="2022">2022</option>
                                         <option {{ $setting->year == 2023 ? 'selected' : '' }} value="2023">2023</option>
                                         <option {{ $setting->year == 2024 ? 'selected' : '' }} value="2024">2024</option>
                                         <option {{ $setting->year == 2025 ? 'selected' : '' }} value="2025">2025</option>
