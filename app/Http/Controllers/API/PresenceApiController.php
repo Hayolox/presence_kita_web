@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\file;
 use App\Models\presence;
+use App\Models\session;
 use App\Models\setting;
 use App\Models\sus_student;
 use Carbon\Carbon;
@@ -33,6 +34,17 @@ class PresenceApiController extends Controller
                     }
 
 
+        }
+
+        $checkQrCode = session::find($request->session_id);
+
+        if($checkQrCode->QrCode != $request->QrCode){
+            return ResponseFormatter::error(
+                [
+                   "message" => "QrCode Tidak Sama"
+                ],
+                'QrCode Tidak Sama'
+            );
         }
         presence::create([
             'session_id' => $request->session_id,
