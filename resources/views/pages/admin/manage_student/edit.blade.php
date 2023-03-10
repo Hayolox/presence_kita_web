@@ -47,8 +47,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label  class="form-label">IMEI</label>
-                                    <input type="text"  name="imei" class="form-control">
+                                    <label  class="form-label">anroid id</label>
+                                    <input type="text"  name="android_id" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
@@ -57,6 +57,14 @@
                                         @foreach ($majors as $item )
                                         <option {{ $student->major_id == $item->major_id ? selected : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
+                                      </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <p>Roles</p>
+                                    <select class="form-select" name="roles" aria-label="Default select example">
+                                        <option {{ $student->roles == "mahasiswa" ? 'selected' : '' }} value="mahasiswa">Mahasiswa</option>
+                                        <option {{ $student->roles == "komti" ? 'selected' : '' }} value="komti">Komti</option>
                                       </select>
                                 </div>
 

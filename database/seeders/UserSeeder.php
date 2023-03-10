@@ -22,5 +22,27 @@ class UserSeeder extends Seeder
             'email' => 'akiklii72@gmail.com',
             'password' => Hash::make('1234'),
         ]);
+
+        DB::table('semesters')->insert([
+            'name' => 'ganjil',
+        ]);
+
+        DB::table('semesters')->insert([
+            'name' => 'genap',
+        ]);
+
+        DB::table('semesters')->insert([
+            'name' => 'none',
+        ]);
+
+        DB::table('rooms')->insert([
+            'name' => 'FT 9',
+            'latitude' => 'DAWDAWD',
+            'longitude' => 'DAWDAWD'
+        ]);
+
+        DB::table('majors')->insert([
+            'name' => 'Teknik informatika',
+        ]);
     }
 }

@@ -119,10 +119,10 @@ class ManageStudentController extends Controller
 
         }
 
-        if($request->imei){
-            $imei = null;
+        if($request->android_id){
+            $android_id = null;
         }else{
-            $imei = $student->imei;
+            $android_id = $student->android_id;
 
         }
 
@@ -132,7 +132,8 @@ class ManageStudentController extends Controller
             'generation' => $request->generation,
             'password' =>bcrypt($aatr),
             'major_id' => $request->major_id,
-            'IMEI' => $imei,
+            'android_id' => $android_id,
+            'roles' => $request->roles
         ]);
 
            Alert::success('Success', 'Data Berhasil Diedit');

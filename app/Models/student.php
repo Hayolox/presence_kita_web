@@ -17,7 +17,7 @@ class student extends Model
 
 
 
-    protected $fillable = ['nsn', 'name', 'generation', 'password', 'major_id', 'IMEI'];
+    protected $fillable = ['nsn', 'name', 'generation', 'password', 'major_id', 'android_id', 'roles'];
 
 
     public function major()
