@@ -35,6 +35,25 @@ class   AuthContorller extends Controller
 
         $tokenResult = $student->createToken('mobile')->plainTextToken;
 
+        $check_login = check_login::where('student_nsn', $student->nsn)->count();
+
+        if($student->android_id == null){
+            $student->update([
+                'android_id' => $request->android_id,
+            ]);
+        }else{
+            if($student->android_id != $request->android_id || $check_login > 2){
+                return ResponseFormatter::error(
+                    ["message" => "Terdeteksi Curang"],
+                    'Terdeteksi Curang',
+                     404
+
+                );
+            }
+        }
+
+
+
         check_login::create([
             'student_nsn' => $student->nsn
         ]);
