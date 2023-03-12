@@ -17,7 +17,7 @@ class SessionApiController extends Controller
     public function index(Request $request){
 
 
-        $session = session::with('lecturer')->where('subject_course_code', $request->subject_course_code)->get();
+        $session = session::where('subject_course_code', $request->subject_course_code)->get();
         $presence = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'hadir')->count();
         $permission  = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'izin')->count();
         $status_session = [];
