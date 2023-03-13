@@ -38,7 +38,7 @@ class SessionApiController extends Controller
 
             }else{
               $date =   Carbon::parse($item->date);
-                if($date->day > $now){
+                if($date->day > $now->day){
                     array_push($status_session, 'alpha');
                 }else{
                     array_push($status_session, 'none');
