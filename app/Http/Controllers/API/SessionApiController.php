@@ -37,12 +37,12 @@ class SessionApiController extends Controller
                 array_push($status_session, $checkPresences->status);
 
             }else{
-              $date =   Carbon::parse($item->date);
-                if($date->day > $now->day){
-                    array_push($status_session, 'alpha');
-                }else{
-                    array_push($status_session, 'none');
-                }
+            //   $date =   Carbon::parse($item->date);
+            //     if($date->day > $now->day){
+            //         array_push($status_session, 'alpha');
+            //     }else{
+            //         array_push($status_session, 'none');
+            //     }
 
             }
 
