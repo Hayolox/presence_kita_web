@@ -8,6 +8,7 @@ use App\Models\lecturer_subject;
 use App\Models\presence;
 use App\Models\session;
 use App\Models\setting;
+use App\Models\student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -20,6 +21,7 @@ class SessionApiController extends Controller
         $session = session::with('lecturer')->where('subject_course_code', $request->subject_course_code)->get();
         $presence = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'hadir')->count();
         $permission  = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'izin')->count();
+        $student = student::where('nsn', Auth::user()->nsn)->first();
         $status_session = [];
 
         foreach ($session as $item) {
@@ -50,6 +52,7 @@ class SessionApiController extends Controller
                 'alpha' => $count_none,
                 'status_session' => $status_session,
                 'sessions' => $session,
+                'roles' => $student->roles,
             ],
             'Berhasil Ambil Data'
         );
