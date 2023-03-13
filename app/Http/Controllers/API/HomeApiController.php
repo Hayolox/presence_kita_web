@@ -32,6 +32,8 @@ class HomeApiController extends Controller
                 $checkStudent = sus_student::where('student_nsn', Auth::user()->nsn)->first();
                     if($checkStudent){
                         $checkSUS = 0;
+                    }else{
+                        $checkSUS = 1;
                     }
         }
 
