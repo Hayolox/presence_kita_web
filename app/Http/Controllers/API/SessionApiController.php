@@ -9,7 +9,6 @@ use App\Models\presence;
 use App\Models\session;
 use App\Models\setting;
 use App\Models\student;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -24,7 +23,6 @@ class SessionApiController extends Controller
         $permission  = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'izin')->count();
         $student = student::where('nsn', Auth::user()->nsn)->first();
         $status_session = [];
-        $now = Carbon::now();
 
         foreach ($session as $item) {
 
@@ -37,32 +35,21 @@ class SessionApiController extends Controller
                 array_push($status_session, $checkPresences->status);
 
             }else{
-            //   $date =   Carbon::parse($item->date);
-            //     if($date->day > $now->day){
-            //         array_push($status_session, 'alpha');
-            //     }else{
-            //         array_push($status_session, 'none');
-            //     }
-
+                array_push($status_session, 'none');
             }
 
         }
         if (isset(array_count_values($status_session)['none'])) {
-           array_count_values($status_session)['none'];
-
-        }
-
-        if (isset(array_count_values($status_session)['alpha'])) {
-            $count_alpha = array_count_values($status_session)['alpha'];
+            $count_none = array_count_values($status_session)['none'];
 
         } else {
-            $count_alpha = 0;
+            $count_none = 0;
         }
         return ResponseFormatter::success(
             [
                 'presence' => $presence,
                 'permission' => $permission,
-                'alpha' => $count_alpha,
+                'alpha' => $count_none,
                 'status_session' => $status_session,
                 'sessions' => $session,
                 'roles' => $student->roles,
