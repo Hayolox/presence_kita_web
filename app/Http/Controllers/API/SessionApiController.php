@@ -19,7 +19,7 @@ class SessionApiController extends Controller
     public function index(Request $request){
 
 
-        $session = session::with('lecturer')->where('subject_course_code', $request->subject_course_code)->get();
+        $session = session::with(['lecturer', 'room'])->where('subject_course_code', $request->subject_course_code)->get();
         $presence = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'hadir')->count();
         $permission  = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'izin')->count();
         $student = student::where('nsn', Auth::user()->nsn)->first();
@@ -30,13 +30,6 @@ class SessionApiController extends Controller
             $checkPresences = presence::where('session_id', $item->id)
                                     ->where("subject_course_code",$request->subject_course_code)
                                     ->where('student_nsn', Auth::user()->nsn)->first();
-            $room = room::where('id', $item->room_id)->first();
-
-            $room = array(
-                'latitude' => $room->latitude,
-                'longitude' => $room->longitude,
-            );
-
             if($checkPresences){
 
                 array_push($status_session, $checkPresences->status);
@@ -60,7 +53,6 @@ class SessionApiController extends Controller
                 'status_session' => $status_session,
                 'sessions' => $session,
                 'roles' => $student->roles,
-                'room' => $room,
             ],
             'Berhasil Ambil Data'
         );

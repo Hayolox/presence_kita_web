@@ -24,4 +24,9 @@ class session extends Model
     {
         return $this->hasOne(lecturer::class, 'nip', 'lecturer_nip');
     }
+
+    public function room()
+    {
+        return $this->hasOne(room::class, 'id', 'room_id');
+    }
 }
