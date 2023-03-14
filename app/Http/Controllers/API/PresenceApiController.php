@@ -67,6 +67,13 @@ class PresenceApiController extends Controller
      $path = $file->storeAs('pdf/sakit', uniqid().'.'.$file->extension(), ['disk'=> 'public']);
     //  Storage::url($path)
 
+    presence::create([
+        'session_id' => $request->session_id,
+        'subject_course_code' => $request->subject_course_code,
+        'student_nsn' => Auth::user()->nsn,
+        'status' => 'proses',
+    ]);
+
     file::create([
         'session_id' => $request->session_id,
         'student_nsn' => Auth::user()->nsn,
@@ -75,6 +82,8 @@ class PresenceApiController extends Controller
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now()
     ]);
+
+
 
      return ResponseFormatter::success(
         [
