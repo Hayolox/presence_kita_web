@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\lecturer_subject;
 use App\Models\presence;
+use App\Models\room;
 use App\Models\session;
 use App\Models\setting;
 use App\Models\student;
@@ -29,6 +30,12 @@ class SessionApiController extends Controller
             $checkPresences = presence::where('session_id', $item->id)
                                     ->where("subject_course_code",$request->subject_course_code)
                                     ->where('student_nsn', Auth::user()->nsn)->first();
+            $room = room::where('id', $item->room_id)->first();
+
+            $room = array(
+                'latitude' => $room->latitude,
+                'longitude' => $room->longitude,
+            );
 
             if($checkPresences){
 
@@ -53,6 +60,7 @@ class SessionApiController extends Controller
                 'status_session' => $status_session,
                 'sessions' => $session,
                 'roles' => $student->roles,
+                'room' => $room,
             ],
             'Berhasil Ambil Data'
         );
