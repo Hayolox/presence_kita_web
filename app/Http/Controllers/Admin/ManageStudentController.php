@@ -7,6 +7,7 @@ use App\Imports\StudentsImport;
 use App\Models\major;
 use App\Models\student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -112,12 +113,15 @@ class ManageStudentController extends Controller
 
 
 
+        //update akun
         if($request->password){
-            $aatr = bcrypt($request->password);
+            $password = bcrypt($request->password);
         }else{
-            $aatr = $student->password;
+           $password = $student->password;
 
         }
+
+
 
         if($request->android_id){
             $android_id = null;
@@ -130,7 +134,7 @@ class ManageStudentController extends Controller
             'nsn' => $request->nsn,
             'name' => $request->name,
             'generation' => $request->generation,
-            'password' =>bcrypt($aatr),
+            'password' => $password,
             'major_id' => $request->major_id,
             'android_id' => $android_id,
             'roles' => $request->roles
