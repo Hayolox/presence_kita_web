@@ -26,7 +26,11 @@ class ManageSubjectsController extends Controller
      */
     public function index(Request $request)
     {
-        $subjects = subject::paginate(10);
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+        $subjects = subject::where('semester_id',$setting->semester_id)
+                            ->orWhere('semester_id', 3)
+                            ->paginate(10);
 
         if($request->has('search'))
         {
