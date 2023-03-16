@@ -15,11 +15,13 @@ class StudentSubjectImport implements ToCollection, WithHeadingRow
 {
     use Importable;
 
-    protected $subject_course_code;
+    protected $classrooms_id;
+    protected $year;
 
-    public function __construct($subject_course_code)
+    public function __construct($classrooms_id, $year)
     {
-        $this->subject_course_code = $subject_course_code;
+        $this->classrooms_id = $classrooms_id;
+        $this->year = $year;
     }
 
 
@@ -29,7 +31,8 @@ class StudentSubjectImport implements ToCollection, WithHeadingRow
         {
             student_subject::create([
                 'student_nsn'     => $row['nim'],
-                'subject_course_code'    => $this->subject_course_code,
+                'classrooms_id'    => $this->classrooms_id,
+                'year' => $this->year
             ]);
         }
 

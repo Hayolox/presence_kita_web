@@ -33,7 +33,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ route('ManageSubject.lecturer-store', $course_id) }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('ManageSubject.lecturer-store', $classrooms_id) }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <select class="form-select" name="lecturer_nip" aria-label="Default select example">

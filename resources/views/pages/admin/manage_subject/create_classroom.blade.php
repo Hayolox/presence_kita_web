@@ -19,18 +19,16 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-2">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Tambah Mahasiswa</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Tambah Kelas Mata Kuliah</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form action="{{ route('ManageSubject.dataStudentStore', $classrooms_id) }}" method="POST">
+                            <form action="{{ route('ManageSubject.store.classroom',$subject_course_code) }}" method="POST">
                                 @csrf
-
                                 <div class="mb-3">
-                                  <label  class="form-label">NIM</label>
-                                  <input type="text" name="student_nsn" class="form-control">
+                                    <label  class="form-label">Nama Kelas</label>
+                                    <input type="text" name="name" class="form-control">
                                 </div>
-
                                 <button type="submit" class="btn btn-primary">Submit</button>
                               </form>
                         </div>

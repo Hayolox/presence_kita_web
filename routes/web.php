@@ -42,15 +42,19 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::delete('/check-login/{id}', [CheckLoginController::class, 'destroy'])->name('check.login.destroy');
 
     Route::resource('/ManageSubject', ManageSubjectsController::class);
-    Route::get('/ManageSubject-detail-lecturer/{id}', [ManageSubjectsController::class, 'dataLecturer'])->name('ManageSubject.lecturer');
-    Route::get('/ManageSubject-detail-student/{id}', [ManageSubjectsController::class, 'dataStudent'])->name('ManageSubject.student');
-    Route::get('/ManageSubject-create-student/{subject_course_code}', [ManageSubjectsController::class, 'dataStudentCreate'])->name('ManageSubject.dataStudentCreate');
+    Route::get('/ManageSubject-classrooms/{subject_course_code}', [ManageSubjectsController::class, 'classroom'])->name('ManageSubject.classroom');
+    Route::get('/ManageSubject-classrooms/create/{subject_course_code}', [ManageSubjectsController::class, 'createClassroom'])->name('ManageSubject.create.classroom');
+    Route::get('/ManageSubject-detail-lecturer/{classrooms_id}', [ManageSubjectsController::class, 'dataLecturer'])->name('ManageSubject.lecturer');
+    Route::get('/ManageSubject-detail-student/{classrooms_id}', [ManageSubjectsController::class, 'dataStudent'])->name('ManageSubject.student');
+    Route::get('/ManageSubject-create-student/{classrooms_id}', [ManageSubjectsController::class, 'dataStudentCreate'])->name('ManageSubject.dataStudentCreate');
     Route::get('/ManageSubject-create-student/download/template', [ManageSubjectsController::class, 'downloadTemplate'])->name('ManageSubject.dataStudentDownloadTemplate');
-    Route::post('/ManageSubject-store-student/{subject_course_code}', [ManageSubjectsController::class, 'dataStudentStore'])->name('ManageSubject.dataStudentStore');
-    Route::post('/ManageSubject-detail-lecturer-store/{id}', [ManageSubjectsController::class, 'dataLecturerStore'])->name('ManageSubject.lecturer-store');
-    Route::post('/ManageSubject-import-student/{id}', [ManageSubjectsController::class, 'import'])->name('ManageSubject.import');
-    Route::delete('/ManageSubject-detail-lecturer-destroy/{id}', [ManageSubjectsController::class, 'dataLecturerDestroy'])->name('ManageSubject.lecturerDestroy');
-    Route::delete('/ManageSubject-detail-student-destroy/{id}', [ManageSubjectsController::class, 'dataStudentDestroy'])->name('ManageSubject.studentDestroy');
+    Route::post('/ManageSubject-classrooms-store/{classrooms_id}', [ManageSubjectsController::class, 'storeClassromm'])->name('ManageSubject.store.classroom');
+    Route::post('/ManageSubject-store-student/{classrooms_id}', [ManageSubjectsController::class, 'dataStudentStore'])->name('ManageSubject.dataStudentStore');
+    Route::post('/ManageSubject-detail-lecturer-store/{classrooms_id}', [ManageSubjectsController::class, 'dataLecturerStore'])->name('ManageSubject.lecturer-store');
+    Route::post('/ManageSubject-import-student/{classrooms_id}', [ManageSubjectsController::class, 'import'])->name('ManageSubject.import');
+    Route::delete('/ManageSubject-detail-lecturer-destroy/{classrooms_id}', [ManageSubjectsController::class, 'dataLecturerDestroy'])->name('ManageSubject.lecturerDestroy');
+    Route::delete('/ManageSubject-detail-student-destroy/{classrooms_id}', [ManageSubjectsController::class, 'dataStudentDestroy'])->name('ManageSubject.studentDestroy');
+    Route::delete('/ManageSubject-classrooms-destroy/{id}', [ManageSubjectsController::class, 'destroyClassroom'])->name('ManageSubject.destroy.classroom');
 
 
 

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("course_code", 50)->primary();
             $table->string("full_name", 100);
             $table->string("nickname", 50);
+            $table->integer("sks");
+            $table->boolean("is_pratikum", 2)->default(false);
             $table->unsignedBigInteger('major_id');
             $table->foreign('major_id')->references('id')->on('majors');
             $table->unsignedBigInteger('semester_id');

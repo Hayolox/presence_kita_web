@@ -24,8 +24,8 @@ return new class extends Migration
             $table->foreign('lecturer_nip')->references('nip')->on('lecturers');
             $table->unsignedBigInteger('semester_id');
             $table->foreign('semester_id')->references('id')->on('semesters');
-            $table->string('subject_course_code');
-            $table->foreign('subject_course_code')->references('course_code')->on('subjects')->onDelete('cascade');
+            $table->unsignedBigInteger('classrooms_id');
+            $table->foreign('classrooms_id')->references('id')->on('semesters');
             $table->integer("year");
             $table->unsignedBigInteger('room_id');
             $table->foreign('room_id')->references('id')->on('rooms');

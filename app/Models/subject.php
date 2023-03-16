@@ -11,7 +11,7 @@ class subject extends Model
     protected $primaryKey = 'course_code';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['course_code', 'full_name', 'nickname', 'major_id','semester_id',];
+    protected $fillable = ['course_code', 'full_name', 'nickname', 'major_id','semester_id','sks'];
 
 
 

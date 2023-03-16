@@ -42,20 +42,25 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label  class="form-label">SKS</label>
+                                    <input type="text" value="{{ $subject->sks }}"  name="sks" class="form-control">
+                                  </div>
+
+                                {{-- <div class="mb-3">
                                     <select class="form-select" name="major_id" aria-label="Default select example">
                                         @foreach ($majors as $item )
                                         <option {{ $subject->major_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                       </select>
-                                </div>
+                                </div> --}}
 
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <select class="form-select" name="semester_id" aria-label="Default select example">
                                         @foreach ($semesters as $item )
                                         <option {{ $subject->semester_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                       </select>
-                                </div>
+                                </div> --}}
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
                               </form>
