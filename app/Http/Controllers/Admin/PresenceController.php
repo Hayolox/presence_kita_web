@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessChangeQrCode;
 use App\Models\check_que;
+use App\Models\classroom;
 use App\Models\lecturer;
 use App\Models\lecturer_subject;
 use App\Models\presence;
@@ -15,6 +16,7 @@ use App\Models\student;
 use App\Models\student_subject;
 use App\Models\subject;
 use App\Models\file;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -31,34 +33,46 @@ class PresenceController extends Controller
         return view('pages.admin.presence.index', compact('subjects'));
     }
 
+    public function classroom($subject_course_code){
+        $classrooms = classroom::where('subject_course_code', $subject_course_code)->paginate(10);
+        return view('pages.admin.presence.classrooms', compact('classrooms'));
+      }
 
-    public function session($course_code){
+
+    public function session($classrooms_id){
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
-        $session = session::where('subject_course_code', $course_code)
+        $session = session::where('classrooms_id', $classrooms_id)
                     ->where('semester_id', $setting->semester_id)
-                    ->where('year', $setting->year)->paginate();
+                    ->where('year', $setting->year)->paginate(10);
+        $countSession = session::where('classrooms_id', $classrooms_id)
+                    ->where('semester_id', $setting->semester_id)
+                    ->where('year', $setting->year)->count();
 
-        $countIzin = presence::where('subject_course_code', $course_code)->where('status', 'proses')->count();
+        $countIzin = presence::where('classrooms_id', $classrooms_id)->where('status', 'proses')->count();
 
 
-        return view('pages.admin.presence.session', compact('session','course_code', 'countIzin'));
+        return view('pages.admin.presence.session', compact('session','classrooms_id', 'countIzin','countSession'));
     }
 
-    public function izin($course_code){
+    public function izin($classrooms_id){
 
-        $presence = presence::where('subject_course_code', $course_code)->where('status', 'proses')->paginate();
+        $presence = presence::where('classrooms_id', $classrooms_id)->where('status', 'proses')->paginate();
        return view('pages.admin.presence.izin', compact('presence'));
     }
 
-    public function createSession($course_code){
-        $lecturers = lecturer_subject::where('subject_course_code',$course_code)->get();
+    public function createSession($classrooms_id){
+        $lecturers = lecturer_subject::where('classrooms_id',$classrooms_id)->get();
         $rooms = room::get();
-        return view('pages.admin.presence.create', compact('lecturers','rooms','course_code'));
+        return view('pages.admin.presence.create', compact('lecturers','rooms','classrooms_id'));
     }
 
 
-    public function storeSession(Request $request, $course_code){
+    public function storeSession(Request $request, $classrooms_id){
+
+        $classroom = classroom::where('id', $classrooms_id)->first();
+
+
         $request->validate([
             'title' => 'required',
             'start' => 'required',
@@ -74,34 +88,64 @@ class PresenceController extends Controller
         $semester_id = $setting->semester_id;
         $year = $setting->year;
         $qrCode = Str::random(20);
-        session::create([
-            'QrCode' => $qrCode,
-            'title' => $request->title,
-            'start' => $request->start,
-            'finish' => $request->finish,
-            'date' => $request->date,
-            'lecturer_nip' => $request->lecturer_nip,
-            'semester_id' => $semester_id,
-            'subject_course_code' => $course_code,
-            'year' => $year,
-            'room_id' => $request->room_id,
-            'geolocation' => $request->geolocation,
 
-        ]);
+        if($classroom->subject->is_pratikum == false){
+            $session = Session::where('classrooms_id', $classrooms_id)->latest()->first();
+            $date = $session ? $session->date : $request->date;
+            for( $i = 1; $i <= 16; $i++){
+                $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
+                Session::create([
+                    'QrCode' => $qrCode,
+                    'title' => $request->title,
+                    'start' => $request->start,
+                    'finish' => $request->finish,
+                    'date' => $date,
+                    'lecturer_nip' => $request->lecturer_nip,
+                    'semester_id' => $semester_id,
+                    'classrooms_id' => $classrooms_id,
+                    'year' => $year,
+                    'room_id' => $request->room_id,
+                    'geolocation' => $request->geolocation,
+                ]);
+            }
+        }else{
+            $session = Session::where('classrooms_id', $classrooms_id)->latest()->first();
+            $date = $session ? $session->date : $request->date;
+            for( $i = 1; $i <= 11; $i++){
+                $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
+
+                Session::create([
+                    'QrCode' => $qrCode,
+                    'title' => $request->title,
+                    'start' => $request->start,
+                    'finish' => $request->finish,
+                    'date' => $date,
+                    'lecturer_nip' => $request->lecturer_nip,
+                    'semester_id' => $semester_id,
+                    'classrooms_id' => $classrooms_id,
+                    'year' => $year,
+                    'room_id' => $request->room_id,
+                    'geolocation' => $request->geolocation,
+                ]);
+            }
+
+        }
+
+
 
         Alert::success('Success', 'Data Berhasil Ditambahkan');
-        return redirect()->route('ManagePresence.session', ['id' => $course_code]);
+        return redirect()->route('ManagePresence.session', ['classrooms_id' => $classrooms_id]);
     }
 
-    public function editSession($id,$course_code){
+    public function editSession($id,$classrooms_id){
 
         $session = session::findOrFail($id);
         $rooms = room::get();
-        $lecturers = lecturer_subject::where('subject_course_code',$course_code)->get();
+        $lecturers = lecturer_subject::where('classrooms_id',$classrooms_id)->get();
        return view('pages.admin.presence.edit', compact('session','rooms', 'lecturers','course_code'));
     }
 
-    public function updateSession($id,$course_code, Request $request){
+    public function updateSession($id,$classrooms_id, Request $request){
 
         $session = session::findOrFail($id);
         $request->validate([
@@ -124,23 +168,23 @@ class PresenceController extends Controller
             'geolocation' => $request->geolocation,
         ]);
         Alert::success('Success', 'Data Berhasil Ditambahkan');
-        return redirect()->route('ManagePresence.session', ['id' => $course_code]);
+        return redirect()->route('ManagePresence.session', ['id' => $classrooms_id]);
     }
 
 
-    public function presence($id, $course_code){
+    public function presence($id, $classrooms_id){
         $session_id = $id;
         $students = presence::where('session_id', $session_id)->paginate();
-        return view('pages.admin.presence.presence', compact('students', 'course_code', 'session_id'));
+        return view('pages.admin.presence.presence', compact('students', 'classrooms_id', 'session_id'));
     }
 
-    public function addStudentToPresence($session_id, $course_code){
+    public function addStudentToPresence($session_id, $classrooms_id){
 
 
-        return view('pages.admin.presence.add_student_to_session', compact('session_id', 'course_code'));
+        return view('pages.admin.presence.add_student_to_session', compact('session_id', 'classrooms_id'));
     }
 
-    public function storeAddStudentToPresence($session_id, $course_code, Request $request){
+    public function storeAddStudentToPresence($session_id, $classrooms_id, Request $request){
         $checkStudent = student::where('nsn', $request->nim)->first();
 
         if(!$checkStudent){
@@ -149,7 +193,7 @@ class PresenceController extends Controller
             return back();
         }
 
-        $checkStudent = student_subject::where('subject_course_code', $course_code)->where('student_nsn', $request->nim)->first();
+        $checkStudent = student_subject::where('classrooms_id', $classrooms_id)->where('student_nsn', $request->nim)->first();
 
         if(!$checkStudent){
             Alert::warning('Student Tidak Terdaftar', 'Maaf Student Tidak Terdaftar Pada Mata Kuliah');
@@ -157,7 +201,7 @@ class PresenceController extends Controller
         }
 
         $checkStudent = presence::where('session_id', $session_id)
-                                  ->where('subject_course_code', $course_code)
+                                  ->where('classrooms_id', $classrooms_id)
                                   ->where('student_nsn', $request->nim)->first();
 
         if($checkStudent){
@@ -167,7 +211,7 @@ class PresenceController extends Controller
 
         presence::create([
             'session_id' => $session_id,
-            'subject_course_code' => $course_code,
+            'classrooms_id' => $classrooms_id,
             'student_nsn' => $request->nim,
             'status' => 'hadir'
         ]);

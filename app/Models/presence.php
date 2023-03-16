@@ -9,7 +9,7 @@ class presence extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['session_id', 'subject_course_code', 'student_nsn', 'status'];
+    protected $fillable = ['session_id', 'classrooms_id', 'student_nsn', 'status'];
 
     public function student()
     {

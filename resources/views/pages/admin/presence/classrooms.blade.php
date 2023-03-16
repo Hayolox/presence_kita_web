@@ -11,7 +11,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Mata Kuliah</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar Kelas</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -19,26 +19,24 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Kode Mata Kuliah</th>
-                                        <th>Nama Mata Kuliah</th>
+                                        <th>Nama Kelas</th>
                                         <th>Aksi</th>
+
                                     </tr>
                                 </thead>
-                                @foreach ( $subjects  as $data => $item )
+                                @foreach ( $classrooms  as $data => $item )
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ $subjects->firstItem() + $data }}</th>
-                                        <td>{{ $item->course_code }}</td>
-                                        <td>{{ $item->full_name }}</td>
+                                        <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
+                                        <td>{{ $item->name}}</td>
                                         <td>
-                                            <a href="{{ route('ManagePresence.classrooms', $item->course_code) }}" class="btn btn-info">Kelas</a>
-                                        </td>
-
+                                            <a href="{{ route('ManagePresence.session', $item->id) }}" class="btn btn-info">Session</a>
+                                        <td>
                                     </tr>
                                 </tbody>
                                 @endforeach
                             </table>
-                            {{ $subjects->links() }}
+                            {{ $classrooms->links() }}
                         </div>
                     </div>
                 </div>

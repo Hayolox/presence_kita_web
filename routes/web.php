@@ -67,15 +67,16 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::put('/Manage-SUS-update', [ManageSUSController::class, 'update'])->name('ManageSUS.update');
 
     Route::get('/Manage-presence', [PresenceController::class, 'index'])->name('ManagePresence');
-    Route::get('/Manage-presence-session/{id}', [PresenceController::class, 'session'])->name('ManagePresence.session');
-    Route::get('/Manage-presence/create/{id}', [PresenceController::class, 'createSession'])->name('ManagePresence.session.create');
-    Route::post('/Manage-presence/create/{id}', [PresenceController::class, 'storeSession'])->name('ManagePresence.session.store');
-    Route::get('/Manage-presence/edit/{id}/{course_code}', [PresenceController::class, 'editSession'])->name('ManagePresence.session.edit');
-    Route::get('/Manage-presence/izin/{course_code}', [PresenceController::class, 'izin'])->name('ManagePresence.session.izin');
-    Route::put('/Manage-presence/update/{id}/{course_code}', [PresenceController::class, 'updateSession'])->name('ManagePresence.session.update');
-    Route::get('/Manage-presence/{id}/{course_code}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
-    Route::get('/Manage-presence/add/to/presence/{id}/{course_code}', [PresenceController::class, 'addStudentToPresence'])->name('ManagePresence.presence.add.student');
-    Route::post('/Manage-presence/store/to/presence/{id}/{course_code}', [PresenceController::class, 'storeAddStudentToPresence'])->name('ManagePresence.presence.store.student');
+    Route::get('/Manage-presence/classrooms/{subject_course_code}', [PresenceController::class, 'classroom'])->name('ManagePresence.classrooms');
+    Route::get('/Manage-presence-session/{classrooms_id}', [PresenceController::class, 'session'])->name('ManagePresence.session');
+    Route::get('/Manage-presence/create/{classrooms_id}', [PresenceController::class, 'createSession'])->name('ManagePresence.session.create');
+    Route::post('/Manage-presence/create/{classrooms_id}', [PresenceController::class, 'storeSession'])->name('ManagePresence.session.store');
+    Route::get('/Manage-presence/edit/{id}/{classrooms_id}', [PresenceController::class, 'editSession'])->name('ManagePresence.session.edit');
+    Route::get('/Manage-presence/izin/{classrooms_id}', [PresenceController::class, 'izin'])->name('ManagePresence.session.izin');
+    Route::put('/Manage-presence/update/{id}/{classrooms_id}', [PresenceController::class, 'updateSession'])->name('ManagePresence.session.update');
+    Route::get('/Manage-presence/{id}/{classrooms_id}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
+    Route::get('/Manage-presence/add/to/presence/{id}/{classrooms_id}', [PresenceController::class, 'addStudentToPresence'])->name('ManagePresence.presence.add.student');
+    Route::post('/Manage-presence/store/to/presence/{id}/{classrooms_id}', [PresenceController::class, 'storeAddStudentToPresence'])->name('ManagePresence.presence.store.student');
     Route::get('/Manage-presence/Qr-Code/{id}/{QrCode}', [PresenceController::class, 'qRCode'])->name('ManagePresence.QrCode');
 
 });
