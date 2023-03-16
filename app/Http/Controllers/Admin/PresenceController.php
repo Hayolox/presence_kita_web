@@ -14,6 +14,7 @@ use App\Models\setting;
 use App\Models\student;
 use App\Models\student_subject;
 use App\Models\subject;
+use App\Models\file;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -38,8 +39,16 @@ class PresenceController extends Controller
                     ->where('semester_id', $setting->semester_id)
                     ->where('year', $setting->year)->paginate();
 
+        $countIzin = presence::where('subject_course_code', $course_code)->where('status', 'proses')->count();
 
-        return view('pages.admin.presence.session', compact('session','course_code'));
+
+        return view('pages.admin.presence.session', compact('session','course_code', 'countIzin'));
+    }
+
+    public function izin($course_code){
+
+        $presence = presence::where('subject_course_code', $course_code)->where('status', 'proses')->paginate();
+       return view('pages.admin.presence.izin', compact('presence'));
     }
 
     public function createSession($course_code){

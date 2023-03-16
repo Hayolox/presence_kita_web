@@ -11,12 +11,11 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">presensi</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Izin</h6>
                     </div>
                     <div class="card-body">
                         <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                             <a href="{{ url()->previous() }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
-                            <a href="{{ route('ManagePresence.presence.add.student', [$session_id, $course_code]) }}" class="btn btn-secondary mb-4">Tambah Data</a>
                             </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -28,19 +27,23 @@
                                         <th>Status</th>
                                     </tr>
                                 </thead>
-                                @foreach ( $students  as $data => $item )
+                                @foreach ( $presence  as $data => $item )
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ $students->firstItem() + $data }}</th>
+                                        <th scope="row">{{ $presence->firstItem() + $data }}</th>
                                         <td>{{ $item->student_nsn }}</td>
                                         <td>{{ $item->student->name }}</td>
                                         <td>{{ $item->status }}</td>
-
+                                        <td>
+                                            <a href="" target="_blank" class="btn btn-info">PDF</a>
+                                            <a href="" target="_blank" class="btn btn-success">Terima</a>
+                                            <a href="" target="_blank" class="btn btn-danger">Tidak</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                                 @endforeach
                             </table>
-                            {{ $students->links() }}
+                            {{ $presence->links() }}
                         </div>
                     </div>
                 </div>

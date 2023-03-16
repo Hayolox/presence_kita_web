@@ -16,6 +16,7 @@
                     <div class="card-body">
                       <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                         <a href="{{ route('ManagePresence') }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
+                        <a href="{{ route('ManagePresence.session.izin',  $course_code) }}">  <div class=" btn btn-info mb-2 mr-2">Izin : {{ $countIzin }}</div></a>
                         <a href="{{ route('ManagePresence.session.create',$course_code) }}" class="btn btn-secondary mb-4">Tambah Data</a>
                         </div>
                         <div class="table-responsive">
