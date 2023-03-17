@@ -248,6 +248,12 @@ class PresenceController extends Controller
             }
         }
         $session = session::where('id', $id)->where('QrCode',$qrCode )->firstOrFail();
-        return view('pages.admin.presence.QrCode', compact('session'));
+        $dataArray = array(
+            'qrCode' => $session->QrCode,
+            'sessionId' => $session->id,
+            'classrooms_id' => $session->classrooms_id,
+        );
+        $dataString = json_encode($dataArray);
+        return view('pages.admin.presence.QrCode', compact('dataString'));
     }
 }

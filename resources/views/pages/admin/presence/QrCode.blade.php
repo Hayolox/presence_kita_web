@@ -15,7 +15,7 @@
 
 
     <div class="visible-print text-center mt-5">
-        {!! QrCode::size(500)->generate($session->QrCode, $session->id); !!}
+        {!! QrCode::size(500)->generate($dataString); !!}
         <p>Silahkan Scan Ini</p>
     </div>
 
