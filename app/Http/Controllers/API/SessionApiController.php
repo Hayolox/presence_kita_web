@@ -19,16 +19,16 @@ class SessionApiController extends Controller
     public function index(Request $request){
 
 
-        $session = session::with(['lecturer', 'room'])->where('subject_course_code', $request->subject_course_code)->get();
-        $presence = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'hadir')->count();
-        $permission  = presence::where('subject_course_code', $request->subject_course_code)->where('status', 'izin')->count();
+        $session = session::with(['lecturer', 'room'])->where('classrooms_id', $request->classrooms_id)->get();
+        $presence = presence::where('classrooms_id', $request->classrooms_id)->where('status', 'hadir')->count();
+        $permission  = presence::where('classrooms_id', $request->classrooms_id)->where('status', 'izin')->count();
         $student = student::where('nsn', Auth::user()->nsn)->first();
         $status_session = [];
 
         foreach ($session as $item) {
 
             $checkPresences = presence::where('session_id', $item->id)
-                                    ->where("subject_course_code",$request->subject_course_code)
+                                    ->where("classrooms_id",$request->classrooms_id)
                                     ->where('student_nsn', Auth::user()->nsn)->first();
             if($checkPresences){
 
