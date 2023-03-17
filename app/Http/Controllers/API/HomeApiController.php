@@ -37,6 +37,10 @@ class HomeApiController extends Controller
                     }
         }
 
+        if($checkSUS == 0){
+            $checkSUS = 0;
+        }
+
 
         $studentSubject = $studentSubject->get();
 
