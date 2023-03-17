@@ -287,7 +287,7 @@ class ManageSubjectsController extends Controller
         student_subject::create([
             'student_nsn' =>$request->student_nsn,
             'classrooms_id' => $classrooms_id,
-            'year' => $setting->year
+            'YEAR' => $setting->year
         ]);
 
         Alert::success('Success', 'Data Berhasil Ditambahkan');
