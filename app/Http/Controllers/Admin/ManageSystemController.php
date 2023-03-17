@@ -104,6 +104,7 @@ class ManageSystemController extends Controller
             'year_id' => 'numeric',
             'semester_id' => 'numeric',
             'sus' => 'required',
+            'count_down_qrcode' => 'required'
         ],[
             'year_id.numeric' => 'The year field is required.',
             'semester_id.numeric' => 'The semester field is required.',
@@ -115,6 +116,7 @@ class ManageSystemController extends Controller
             'semester_id' => $request->semester_id,
             'year' => $request->year,
             'sus' => $request->sus,
+            'count_down_qrcode' => $request->count_down_qrcode
         ]);
         Alert::success('Success', 'Data Berhasil Diedit');
         return back();

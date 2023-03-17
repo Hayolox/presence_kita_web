@@ -228,6 +228,9 @@ class PresenceController extends Controller
 
         $countQue = check_que::where('QrCode', $qrCode)->count();
 
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+
         if($countQue == 0){
             check_que::create([
                 'QrCode' => $qrCode
@@ -244,7 +247,8 @@ class PresenceController extends Controller
                  ProcessChangeQrCode::dispatch($id, $qrCode );
             }
             else{
-                ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(2));
+
+                ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes($setting->count_down_qrcode));
             }
         }
         $session = session::where('id', $id)->where('QrCode',$qrCode )->firstOrFail();

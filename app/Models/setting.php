@@ -9,5 +9,5 @@ class setting extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['semester_id', 'year', 'sus'];
+    protected $fillable = ['semester_id', 'year', 'sus','count_down_qrcode'];
 }

@@ -95,6 +95,11 @@
                                       </select>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label  class="form-label">Waktu Generate QrCode</label>
+                                    <input type="text" value="{{ $setting->count_down_qrcode }}"  name="count_down_qrcode" class="form-control">
+                                </div>
+
                                 <button type="submit" class="btn btn-primary">Edit</button>
                               </form>
                             @endif
