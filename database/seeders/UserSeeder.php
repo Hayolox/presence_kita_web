@@ -37,8 +37,8 @@ class UserSeeder extends Seeder
 
         DB::table('rooms')->insert([
             'name' => 'FT 9',
-            'latitude' => 'DAWDAWD',
-            'longitude' => 'DAWDAWD'
+            'latitude' => -2.2153645,
+            'longitude' => 113.8981826
         ]);
 
         DB::table('majors')->insert([
