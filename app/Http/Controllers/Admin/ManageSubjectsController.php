@@ -281,9 +281,13 @@ class ManageSubjectsController extends Controller
             'student_nsn' => 'required'
         ]);
 
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+
         student_subject::create([
             'student_nsn' =>$request->student_nsn,
             'classrooms_id' => $classrooms_id,
+            'year' => $setting->year
         ]);
 
         Alert::success('Success', 'Data Berhasil Ditambahkan');
