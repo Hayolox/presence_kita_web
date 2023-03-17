@@ -252,6 +252,8 @@ class PresenceController extends Controller
             'qrCode' => $session->QrCode,
             'sessionId' => $session->id,
             'classrooms_id' => $session->classrooms_id,
+            'latitude' => $session->latitude,
+            'longitude' => $session->longitude,
         );
         $dataString = json_encode($dataArray);
         return view('pages.admin.presence.QrCode', compact('dataString'));
