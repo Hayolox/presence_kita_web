@@ -33,7 +33,6 @@ class PresenceApiController extends Controller
                         );
                     }
 
-
         }
 
         $checkQrCode = session::find($request->session_id);
@@ -48,7 +47,7 @@ class PresenceApiController extends Controller
         }
         presence::create([
             'session_id' => $request->session_id,
-            'subject_course_code' => $request->subject_course_code,
+            'classrooms_id' => $request->classrooms_id,
             'student_nsn' => Auth::user()->nsn,
             'status' => $request->status,
         ]);
@@ -69,7 +68,7 @@ class PresenceApiController extends Controller
 
     presence::create([
         'session_id' => $request->session_id,
-        'subject_course_code' => $request->subject_course_code,
+        'classrooms_id' => $request->classrooms_id,
         'student_nsn' => Auth::user()->nsn,
         'status' => 'proses',
     ]);
