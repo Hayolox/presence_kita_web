@@ -241,7 +241,7 @@ class PresenceController extends Controller
             if($count > 1){
                 ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(1));
             }elseif($count > 2){
-                ProcessChangeQrCode::dispatch($id, $qrCode );
+                 ProcessChangeQrCode::dispatch($id, $qrCode );
             }
             else{
                 ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(2));
