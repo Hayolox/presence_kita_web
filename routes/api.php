@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login-proses-student', [AuthContorller::class, 'login']);
+Route::post('/login-proses-register', [AuthContorller::class, 'register']);
 Route::get('/logout-proses-student', [AuthContorller::class, 'logout']);
 
 

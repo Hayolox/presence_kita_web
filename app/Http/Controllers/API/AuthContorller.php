@@ -74,6 +74,34 @@ class   AuthContorller extends Controller
       }
     }
 
+    public function register(Request $request){
+        $student = student::when('nsn', $request->nsn)->first();
+
+        if($student){
+            return ResponseFormatter::error(
+                [
+                    "message" => "Ganti Password Gagal"
+                ],
+                'Ganti Password Gagal', 406
+            );
+        }else{
+            student::create([
+                'nsn' => $request->nsn,
+                'name' => $request->name,
+                'password' => $request->password,
+                'generation'=> 2019,
+                'major_id' => 1,
+                'roles' => 'mahasiswa'
+            ]);
+            return ResponseFormatter::success(
+                [
+                    "message" => "Berhasil Daftar"
+                ],
+                'Berhasil Daftar'
+            );
+        }
+    }
+
     public function logout(){
         Auth::logout();
         return ResponseFormatter::success(
