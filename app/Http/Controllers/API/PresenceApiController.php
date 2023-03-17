@@ -35,6 +35,15 @@ class PresenceApiController extends Controller
 
         }
 
+        $checkDonePresent = presence::where('session_id',$request->session_i)->where('student_nsn', Auth::user()->nsn)->first();
+        if($checkDonePresent){
+            return ResponseFormatter::error(
+                [
+                   "message" => "Anda Sudah Hadir"
+                ],
+                'Anda Sudah Hadir', 403
+            );
+        }
         $checkQrCode = session::find($request->session_id);
 
         if($checkQrCode->QrCode != $request->QrCode){
