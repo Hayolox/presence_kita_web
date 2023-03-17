@@ -18,7 +18,6 @@
 
 
                             <div class="col-12  d-flex  d-inline d-flex justify-content-end">
-                                <a href="{{ route('ManageSubject.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
                                 <form action="{{ route('ManageSubject.index') }}">
                                     <div class="input-group col-12 mb-3">
                                         <input type="search" name="search" class="form-control rounded" placeholder="Search Nama Panjang" aria-label="Search"
@@ -37,6 +36,7 @@
                                         <th>Kode Mata Kuliah</th>
                                         <th>Nama Panjang</th>
                                         <th>Nickname</th>
+                                        <th>SKS</th>
                                         <th>Jurusan</th>
                                         <th>semester</th>
                                         <th>Action</th>
@@ -50,18 +50,12 @@
                                         <td>{{ $item->course_code}}</td>
                                         <td>{{ $item->full_name }}</td>
                                         <td>{{ $item->nickname }}</td>
+                                        <td>{{ $item->sks }}</td>
                                         <td>{{ $item->major->name }}</td>
                                         <td>{{ $item->semester->name }}</td>
                                         <td>
-                                            <a href="{{ route('ManageSubject.student',$item->course_code) }}" class="btn btn-primary">Mahasiswa</a>
-                                            <a href="{{ route('ManageSubject.lecturer',$item->course_code) }}" class="btn btn-primary">Dosen</a>
+                                            <a href="{{ route('ManageSubject.classroom',$item->course_code) }}" class="btn btn-primary">Kelas</a>
                                             <a href="{{ route('ManageSubject.edit',$item->course_code) }}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-pencil-ruler"></i></a>
-                                            <form action="{{ route('ManageSubject.destroy', $item->course_code) }}" method="POST" class="d-inline-block">
-                                              @csrf
-                                              @method('delete')
-                                                <button type="submit" onclick="return confirm('Yakin untuk menghapus?')" class="btn btn-danger btn-circle btn-lg"><i class="fas fa-trash"></i></button>
-                                            </form></td>
-
                                     </tr>
                                 </tbody>
                                 @endforeach

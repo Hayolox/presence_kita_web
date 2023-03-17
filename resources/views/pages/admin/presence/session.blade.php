@@ -16,8 +16,16 @@
                     <div class="card-body">
                       <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                         <a href="{{ route('ManagePresence') }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
+<<<<<<< HEAD
                         {{-- <a href="{{ route('ManagePresence.session.izin',  $course_code) }}">  <div class=" btn btn-info mb-2 mr-2">Izin : {{ $countIzin }}</div></a> --}}
                         <a href="{{ route('ManagePresence.session.create',$course_code) }}" class="btn btn-secondary mb-4">Tambah Data</a>
+=======
+                        <a href="{{ route('ManagePresence.session.izin',  $classrooms_id) }}">  <div class=" btn btn-info mb-2 mr-2">Izin : {{ $countIzin }}</div></a>
+                        @if ($countSession == 0)
+                        <a href="{{ route('ManagePresence.session.create',$classrooms_id) }}" class="btn btn-secondary mb-4">Tambah Data</a>
+                        @endif
+
+>>>>>>> developer
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -48,8 +56,8 @@
                                             <a href="{{ route('ManagePresence.QrCode',[$item->id, $item->QrCode]) }}" target="_blank" class="btn btn-secondary">Qr-Code</a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('ManagePresence.presence', [$item->id, $course_code]) }}" class="btn btn-primary">Mahasiswa</a>
-                                            <a href="{{ route('ManagePresence.session.edit', [$item->id, $course_code]) }}" class="btn btn-info">Edit</a>
+                                            <a href="{{ route('ManagePresence.presence', [$item->id, $classrooms_id]) }}" class="btn btn-primary">Mahasiswa</a>
+                                            <a href="{{ route('ManagePresence.session.edit', [$item->id, $classrooms_id]) }}" class="btn btn-info">Edit</a>
                                         </td>
                                     </tr>
                                 </tbody>

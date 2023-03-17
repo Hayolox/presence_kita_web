@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('lecturer_nip');
             $table->foreign('lecturer_nip')->references('nip')->on('lecturers');
-            $table->string('subject_course_code');
-            $table->foreign('subject_course_code')->references('course_code')->on('subjects');
+            $table->unsignedBigInteger('classrooms_id');
+            $table->foreign('classrooms_id')->references('id')->on('semesters');
             $table->timestamps();
         });
     }

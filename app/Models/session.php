@@ -15,7 +15,7 @@ class session extends Model
 
     'date', 'lecturer_nip', 'semester_id',
 
-    'subject_course_code', 'year', 'room_id', 'geolocation'
+    'classrooms_id', 'year', 'room_id', 'geolocation'
 
     ];
 

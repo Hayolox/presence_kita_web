@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('semester_id')->references('id')->on('semesters');
             $table->integer("year");
             $table->boolean('SUS')->default(false);
+            $table->integer("count_down_qrcode")->default(2);
             $table->timestamps();
         });
     }

@@ -33,7 +33,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ route('ManageSubject.import', $course_id) }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('ManageSubject.import', $classrooms_id) }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <input type="file" name="file">
@@ -47,8 +47,8 @@
                                     </div>
                                 </div>
                                 <a href="{{ route('ManageSubject.dataStudentDownloadTemplate') }}">   <div class="btn btn-primary mt-2 mb-4 mr-3">Download Template</div></a>
-                                <a href="{{ route('ManageSubject.dataStudentCreate', $course_id) }}">   <div class="btn btn-primary mt-2 mb-4 mr-3">Tambah Mahasiswa</div></a>
-                                <form action="{{ route('ManageSubject.student', $course_id) }}">
+                                <a href="{{ route('ManageSubject.dataStudentCreate', $classrooms_id) }}">   <div class="btn btn-primary mt-2 mb-4 mr-3">Tambah Mahasiswa</div></a>
+                                <form action="{{ route('ManageSubject.student', $classrooms_id) }}">
                                     <div class="input-group col-12 mb-3 mt-2 mb-4">
                                         <input type="search" name="search" class="form-control rounded" placeholder="Search NIM" aria-label="Search"
                                           aria-describedby="search-addon" />
