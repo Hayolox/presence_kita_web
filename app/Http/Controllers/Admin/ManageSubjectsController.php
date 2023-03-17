@@ -295,7 +295,8 @@ class ManageSubjectsController extends Controller
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
         $file =  $request->file('file');
-        (new StudentSubjectImport($classrooms_id,$setting->year))->import($file);
+        dd($setting->year);
+        (new StudentSubjectImport($classrooms_id, $setting->year))->import($file);
         return back();
     }
 
