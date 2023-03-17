@@ -36,6 +36,12 @@ class PresenceApiController extends Controller
         }
 
         $checkDonePresent = presence::where('session_id',$request->session_i)->where('student_nsn', Auth::user()->nsn)->first();
+        return ResponseFormatter::error(
+            [
+               "message" => $checkDonePresent
+            ],
+            'Anda Sudah Hadir', 403
+        );
         if($checkDonePresent){
             return ResponseFormatter::error(
                 [
