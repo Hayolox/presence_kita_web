@@ -75,14 +75,14 @@ class   AuthContorller extends Controller
     }
 
     public function register(Request $request){
-        $student = student::when('nsn', $request->nsn)->first();
 
+        $student = student::where('nsn', $request->nsn)->first();
         if($student){
             return ResponseFormatter::error(
                 [
-                    "message" => "Ganti Password Gagal"
+                    "message" => "Akun Sudah Terdaftar"
                 ],
-                'Ganti Password Gagal', 406
+                'Akun Sudah Terdaftar', 406
             );
         }else{
             student::create([
@@ -95,9 +95,9 @@ class   AuthContorller extends Controller
             ]);
             return ResponseFormatter::success(
                 [
-                    "message" => "Berhasil Daftar"
+                    "message" => "Akun Berhasil Di Daftar"
                 ],
-                'Berhasil Daftar'
+                'Akun Berhasil Di Daftar'
             );
         }
     }
