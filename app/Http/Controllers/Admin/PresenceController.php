@@ -248,7 +248,6 @@ class PresenceController extends Controller
             }
         }
         $session = session::where('id', $id)->where('QrCode',$qrCode )->firstOrFail();
-        dd($session->room->latitude);
         $dataArray = array(
             'qrCode' => $session->QrCode,
             'sessionId' => $session->id,
