@@ -2,7 +2,6 @@
 
 namespace App\Imports;
 
-use App\Models\setting;
 use App\Models\student_subject;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Collection;
@@ -17,24 +16,23 @@ class StudentSubjectImport implements ToCollection, WithHeadingRow
     use Importable;
 
     protected $classrooms_id;
+    protected $year;
 
-    public function __construct($classrooms_id)
+    public function __construct($classrooms_id, $year)
     {
         $this->classrooms_id = $classrooms_id;
-
+        $this->year = $year;
     }
 
 
     public function collection(Collection $rows)
     {
-        $lastSetting = setting::all()->last();
-        $setting = setting::findOrfail($lastSetting->id);
         foreach ($rows as $row)
         {
             student_subject::create([
                 'student_nsn'     => $row['nim'],
                 'classrooms_id'    => $this->classrooms_id,
-                'year' => 2021
+                'year' => $this->year
             ]);
         }
 
