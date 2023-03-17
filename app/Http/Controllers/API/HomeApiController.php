@@ -16,12 +16,14 @@ class HomeApiController extends Controller
 
 
 
-        $studentSubject = student_subject::with('subject')->where('student_nsn', Auth::user()->nsn);
-        $studentSubject = $studentSubject->whereHas('subject', function( $query ) use ( $request ){
-                            $lastSetting = setting::all()->last();
-                            $setting = setting::findOrfail($lastSetting->id);
-                                $query->where('semester_id', $setting->semester_id);
-                            });
+        $studentSubject = student_subject::with(['classroom.subject' => function ($query) {
+            $lastSetting = setting::all()->last();
+            $setting = setting::findOrFail($lastSetting->id);
+            $query->where('semester_id', $setting->semester_id);
+        }])
+        ->where('student_nsn', Auth::user()->nsn)
+        ->get();
+
 
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
@@ -38,12 +40,13 @@ class HomeApiController extends Controller
         }
 
 
-        $studentSubject = $studentSubject->get();
 
         $countStudentInSubject = [];
 
+
+
         foreach ($studentSubject as $item) {
-         $countStudent =     student_subject::where('subject_course_code', $item->subject_course_code)->count();
+         $countStudent =  student_subject::where('classrooms_id', $item->classrooms_id)->count();
          array_push($countStudentInSubject, $countStudent);
         }
 

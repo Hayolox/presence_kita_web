@@ -93,7 +93,9 @@ class PresenceController extends Controller
             $session = Session::where('classrooms_id', $classrooms_id)->latest()->first();
             $date = $session ? $session->date : $request->date;
             for( $i = 1; $i <= 16; $i++){
-                $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
+                if($i > 1){
+                    $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
+                }
                 Session::create([
                     'QrCode' => $qrCode,
                     'title' => $request->title,
@@ -112,8 +114,9 @@ class PresenceController extends Controller
             $session = Session::where('classrooms_id', $classrooms_id)->latest()->first();
             $date = $session ? $session->date : $request->date;
             for( $i = 1; $i <= 11; $i++){
-                $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
-
+                if($i > 1){
+                    $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
+                }
                 Session::create([
                     'QrCode' => $qrCode,
                     'title' => $request->title,
@@ -142,7 +145,7 @@ class PresenceController extends Controller
         $session = session::findOrFail($id);
         $rooms = room::get();
         $lecturers = lecturer_subject::where('classrooms_id',$classrooms_id)->get();
-       return view('pages.admin.presence.edit', compact('session','rooms', 'lecturers','course_code'));
+       return view('pages.admin.presence.edit', compact('session','rooms', 'lecturers','classrooms_id'));
     }
 
     public function updateSession($id,$classrooms_id, Request $request){
@@ -168,7 +171,7 @@ class PresenceController extends Controller
             'geolocation' => $request->geolocation,
         ]);
         Alert::success('Success', 'Data Berhasil Ditambahkan');
-        return redirect()->route('ManagePresence.session', ['id' => $classrooms_id]);
+        return redirect()->route('ManagePresence.session', ['classrooms_id' => $classrooms_id]);
     }
 
 
