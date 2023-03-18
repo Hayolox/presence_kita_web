@@ -40,6 +40,12 @@
             <span>Kelola Presensi</span></a>
     </li>
 
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('ManagePresencePratikum') }}">
+            <span>Kelola Presensi Pratikum</span></a>
+    </li>
+
      <!-- Nav Item - Charts -->
      <li class="nav-item">
         <a class="nav-link" href="{{ route('ManageSystem.index') }}">

@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('asistantpratikums', function (Blueprint $table) {
+        Schema::create('student_pratikums', function (Blueprint $table) {
             $table->id();
             $table->string('student_nsn');
             $table->foreign('student_nsn')->references('nsn')->on('students');
+            $table->unsignedBigInteger('classroomspratikum_id');
+            $table->foreign('classroomspratikum_id')->references('id')->on('classroomspratikums');
+            $table->integer("year");
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asistantpratikums');
+        Schema::dropIfExists('student_pratikums');
     }
 };

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ManageSubjectsController;
 use App\Http\Controllers\Admin\ManageSUSController;
 use App\Http\Controllers\Admin\ManageSystemController;
 use App\Http\Controllers\Admin\PresenceController;
+use App\Http\Controllers\Admin\PresencePratikumController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -79,5 +80,16 @@ Route::prefix('Admin')->middleware('auth')->group(function(){
     Route::post('/Manage-presence/store/to/presence/{id}/{classrooms_id}', [PresenceController::class, 'storeAddStudentToPresence'])->name('ManagePresence.presence.store.student');
     Route::get('/Manage-presence/Qr-Code/{id}/{QrCode}', [PresenceController::class, 'qRCode'])->name('ManagePresence.QrCode');
 
+
+    Route::get('/Manage-presence-pratikum', [PresencePratikumController::class, 'index'])->name('ManagePresencePratikum');
+    Route::get('/Manage-presence/pratikum/classrooms/pratikum/{subject_course_code}', [PresencePratikumController::class, 'classroom'])->name('ManagePresence.classrooms.pratikum');
+    Route::get('/Manage-presence/pratikum/classrooms/create/{subject_course_code}', [PresencePratikumController::class, 'createClassroom'])->name('ManagePresence.classrooms.pratikum.create');
+     Route::get('/Manage-presence/pratikum/classrooms/student/create/{subject_course_code}', [PresencePratikumController::class, 'dataStudentCreate'])->name('ManagePresence.classrooms.pratikum.student.create');
+    Route::post('/Manage-presence/pratikum/classrooms/store/{subject_course_code}', [PresencePratikumController::class, 'storeClassromm'])->name('ManagePresence.classrooms.pratikum.store');
+    Route::get('/Manage-presence/pratikum/classrooms/student/{classrooms_pratikum_id}', [PresencePratikumController::class, 'dataStudent'])->name('ManagePresence.classrooms.pratikum.student');
+    Route::post('/Manage-presence/pratikum/classrooms/add/asisten/{classrooms_pratikum_id}', [PresencePratikumController::class, 'addAsistenPratikum'])->name('ManagePresence.classrooms.pratikum.addAsisten');
+    Route::put('/Manage-presence/pratikum/classrooms/edit/asisten/{classrooms_pratikum_id}', [PresencePratikumController::class, 'editAsistenPratikum'])->name('ManagePresence.classrooms.pratikum.editAsisten');
+    Route::post('/Manage-presence/pratikum/classrooms/student/import/{classrooms_pratikum_id}', [PresencePratikumController::class, 'import'])->name('ManagePresence.classrooms.pratikum.student.import');
+    Route::post('/Manage-presence/pratikum/classrooms/student/store/{subject_course_code}', [PresencePratikumController::class, 'dataStudentStore'])->name('ManagePresence.classrooms.pratikum.student.store');
 });
 
