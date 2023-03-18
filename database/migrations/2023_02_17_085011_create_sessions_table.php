@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('semester_id');
             $table->foreign('semester_id')->references('id')->on('semesters');
             $table->unsignedBigInteger('classrooms_id');
-            $table->foreign('classrooms_id')->references('id')->on('semesters');
+            $table->foreign('classrooms_id')->references('id')->on('classrooms');
             $table->integer("year");
             $table->unsignedBigInteger('room_id');
             $table->foreign('room_id')->references('id')->on('rooms');
