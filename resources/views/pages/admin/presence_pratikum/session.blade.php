@@ -15,10 +15,10 @@
                     </div>
                     <div class="card-body">
                       <div class="col-12  d-flex  d-inline d-flex justify-content-end">
-                        <a href="{{ route('ManagePresence') }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
-                        <a href="{{ route('ManagePresence.session.izin',  $classrooms_id) }}">  <div class=" btn btn-info mb-2 mr-2">Izin : {{ $countIzin }}</div></a>
+                        <a href="{{ route('ManagePresencePratikum') }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
+                        <a href="{{ route('ManagePresence.session.izin',  $classroomsPratikumId) }}">  <div class=" btn btn-info mb-2 mr-2">Izin : {{ $countIzin }}</div></a>
                         @if ($countSession == 0)
-                        <a href="{{ route('ManagePresence.session.create',$classrooms_id) }}" class="btn btn-secondary mb-4">Tambah Data</a>
+                        <a href="{{ route('ManagePresence.classrooms.pratikum.session.create',$classroomsPratikumId) }}" class="btn btn-secondary mb-4">Tambah Data</a>
                         @endif
                         </div>
                         <div class="table-responsive">
@@ -45,13 +45,13 @@
                                         <td>{{ $item->finish }}</td>
                                         <td>{{ $item->date }}</td>
                                         <td>{{ $item->geolocation == 1 ? 'true' : 'false' }}</td>
-                                        <td>{{ $item->lecturer->full_name  }}</td>
+                                        <td>{{ $item->student->name  }}</td>
                                         <td>
-                                            <a href="{{ route('ManagePresence.QrCode',[$item->id, $item->QrCode]) }}" target="_blank" class="btn btn-secondary">Qr-Code</a>
+                                            <a href="{{ route('ManagePresence.classrooms.pratikum.session.qRCode',[$item->id, $item->QrCode]) }}" target="_blank" class="btn btn-secondary">Qr-Code</a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('ManagePresence.presence', [$item->id, $classrooms_id]) }}" class="btn btn-primary">Mahasiswa</a>
-                                            <a href="{{ route('ManagePresence.session.edit', [$item->id, $classrooms_id]) }}" class="btn btn-info">Edit</a>
+                                            <a href="{{ route('ManagePresence.classrooms.pratikum.presence.student', [$item->id, $classroomsPratikumId]) }}" class="btn btn-primary">Mahasiswa</a>
+                                            <a href="{{ route('ManagePresence.classrooms.pratikum.session.edit', [$item->id, $classroomsPratikumId]) }}" class="btn btn-info">Edit</a>
                                         </td>
                                     </tr>
                                 </tbody>

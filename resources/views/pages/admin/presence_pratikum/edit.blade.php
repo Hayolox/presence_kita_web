@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <a href="{{ url()->previous() }}"> <div class=" btn btn-primary mb-2">Kembali</div></a>
                         <div class="table-responsive">
-                            <form action="{{ route('ManagePresence.session.update', [$session->id, $classrooms_id]) }}" method="POST">
+                            <form action="{{ route('ManagePresence.classrooms.pratikum.session.update', [$session->id, $classroomsPratikumId]) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
@@ -56,14 +56,7 @@
                                       </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <select class="form-select" name="lecturer_nip" aria-label="Default select example">
 
-                                        @foreach ($lecturers as $item )
-                                        <option {{ $item->lecturer_nip == $session->lecturer_nip ? 'selected' : '' }} value="{{ $item->lecturer_nip }}">{{ $item->lecturer->full_name }}</option>
-                                        @endforeach
-                                      </select>
-                                </div>
 
                                 <div class="mb-3">
                                     <select class="form-select" name="geolocation" aria-label="Default select example">

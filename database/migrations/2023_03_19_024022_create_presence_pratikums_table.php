@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('presences', function (Blueprint $table) {
+        Schema::create('presence_pratikums', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('session_id');
-            $table->foreign('session_id')->references('id')->on('sessions');
-            $table->unsignedBigInteger('classrooms_id');
-            $table->foreign('classrooms_id')->references('id')->on('classrooms');
+            $table->unsignedBigInteger('session_pratikum_id');
+            $table->foreign('session_pratikum_id')->references('id')->on('sessionpratikums');
+            $table->unsignedBigInteger('classroomspratikum_id');
+            $table->foreign('classroomspratikum_id')->references('id')->on('classroomspratikums');
             $table->string('student_nsn');
             $table->foreign('student_nsn')->references('nsn')->on('students');
             $table->string("status")->nullable();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('presences');
+        Schema::dropIfExists('presence_pratikums');
     }
 };

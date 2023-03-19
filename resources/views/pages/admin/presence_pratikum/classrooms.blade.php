@@ -33,7 +33,10 @@
                                         <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
                                         <td>{{ $item->name}}</td>
                                         <td>
-                                                <a href="{{ route('ManagePresence.session', $item->id) }}" class="btn btn-info">Session</a>
+                                                @if ($item->asisten && $item->asisten->classroomspratikum_id == $item->id)
+                                                <a href="{{ route('ManagePresence.classrooms.pratikum.session', $item->id) }}" class="btn btn-info">Session</a>
+                                                @endif
+
                                                 @if ($item->asisten && $item->asisten->classroomspratikum_id == $item->id)
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                                     Edit Asisten Pratikum

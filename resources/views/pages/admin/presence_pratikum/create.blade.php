@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <a href="{{ url()->previous() }}"> <div class=" btn btn-primary mb-2">Kembali</div></a>
                         <div class="table-responsive">
-                            <form action="{{ route('ManagePresence.session.store',$classrooms_id) }}" method="POST">
+                            <form action="{{ route('ManagePresence.classrooms.pratikum.session.store',$classroomsPratikumId) }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
                                     <label  class="form-label">Judul</label>
@@ -55,14 +55,6 @@
                                       </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <select class="form-select" name="lecturer_nip" aria-label="Default select example">
-                                        <option value="" selected>Pilih Dosen Pengajar</option>
-                                        @foreach ($lecturers as $item )
-                                        <option value="{{ $item->lecturer_nip }}">{{ $item->lecturer->full_name }}</option>
-                                        @endforeach
-                                      </select>
-                                </div>
 
                                 <div class="mb-3">
                                     <select class="form-select" name="geolocation" aria-label="Default select example">

@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                             <a href="{{ url()->previous() }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
-                            <a href="{{ route('ManagePresence.presence.add.student', [$session_id, $classrooms_id]) }}" class="btn btn-secondary mb-4">Tambah Data</a>
+                            <a href="{{ route('ManagePresence.classrooms.pratikum.presence.student.add', [$id, $classroomsPratikumId]) }}" class="btn btn-secondary mb-4">Tambah Data</a>
                             </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

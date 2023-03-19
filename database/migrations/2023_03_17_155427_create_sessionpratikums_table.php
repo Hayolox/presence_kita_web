@@ -20,8 +20,8 @@ return new class extends Migration
             $table->time('start');
             $table->time('finish');
             $table->date('date');
-            $table->string('lecturer_nip');
-            $table->foreign('lecturer_nip')->references('nip')->on('lecturers');
+            $table->string('student_nsn');
+            $table->foreign('student_nsn')->references('nsn')->on('students');
             $table->unsignedBigInteger('semester_id');
             $table->foreign('semester_id')->references('id')->on('semesters');
             $table->unsignedBigInteger('classroomspratikum_id');
