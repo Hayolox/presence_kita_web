@@ -34,12 +34,7 @@ class SessionPratikumApiController extends Controller
                                     ->where("classroomspratikum_id",$request->classroomspratikum_id)
                                     ->where('student_nsn', Auth::user()->nsn)->first();
 
-                                    return ResponseFormatter::success(
-                                        [
-                                           "message" =>   $checkPresences
-                                        ],
-                                        'Berhasil Tambah Session'
-                                    );
+
             if($checkPresences){
 
                 array_push($status_session, $checkPresences->status);
