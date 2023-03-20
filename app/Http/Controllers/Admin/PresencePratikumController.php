@@ -323,7 +323,7 @@ class PresencePratikumController extends Controller
 
         $dataArray = array(
             'qrCode' => $session->QrCode,
-            'sessionId' => $session->id,
+            'session_pratikum_id' => $session->id,
             'classroomspratikum_id' => $session->classroomspratikum_id,
             'geolocation' => $session->geolocation,
             'latitude' => $session->room->latitude,

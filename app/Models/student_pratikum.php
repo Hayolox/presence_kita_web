@@ -23,8 +23,8 @@ class student_pratikum extends Model
         return $this->hasOne(room::class, 'id', 'room_id');
     }
 
-    public function classroom()
+    public function classroompratikum()
     {
-        return $this->hasOne(classroom::class, 'id', 'classrooms_id');
+        return $this->hasOne(classroomspratikum::class, 'id', 'classroomspratikum_id');
     }
 }

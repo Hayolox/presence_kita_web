@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\setting;
+use App\Models\student_pratikum;
 use App\Models\student_subject;
 use App\Models\sus_student;
 use Illuminate\Http\Request;
@@ -17,6 +18,14 @@ class HomeApiController extends Controller
 
 
         $studentSubject = student_subject::with(['classroom.subject' => function ($query) {
+            $lastSetting = setting::all()->last();
+            $setting = setting::findOrFail($lastSetting->id);
+            $query->where('semester_id', $setting->semester_id);
+        }])
+        ->where('student_nsn', Auth::user()->nsn)
+        ->get();
+
+        $studentpratikum = student_pratikum::with(['classroompratikum.subject' => function ($query) {
             $lastSetting = setting::all()->last();
             $setting = setting::findOrFail($lastSetting->id);
             $query->where('semester_id', $setting->semester_id);
@@ -59,6 +68,7 @@ class HomeApiController extends Controller
                 'SUS' => $checkSUS,
                 'countStudentInSubject' => $countStudentInSubject,
                 'subject' => $studentSubject,
+                'pratikum' => $studentpratikum,
 
             ],
             'Berhasil Ambil Data'
