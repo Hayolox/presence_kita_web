@@ -30,7 +30,7 @@ class SessionPratikumApiController extends Controller
 
         foreach ($session as $item) {
 
-            $checkPresences = presence_pratikum::where('session_pratikum_id', $item->session_pratikum_id)
+            $checkPresences = presence_pratikum::where('session_pratikum_id', $item->id)
                                     ->where("classroomspratikum_id",$request->classroomspratikum_id)
                                     ->where('student_nsn', Auth::user()->nsn)->first();
 
