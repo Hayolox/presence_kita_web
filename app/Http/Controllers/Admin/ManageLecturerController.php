@@ -121,7 +121,7 @@ class ManageLecturerController extends Controller
             'nip' => $request->nip,
             'full_name' => $request->full_name,
             'username' => $request->username,
-            'password' =>bcrypt($aatr),
+            'password' => $aatr,
             'major_id' => $request->major_id,
         ]);
 

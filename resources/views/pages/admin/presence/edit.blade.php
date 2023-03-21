@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <a href="{{ url()->previous() }}"> <div class=" btn btn-primary mb-2">Kembali</div></a>
                         <div class="table-responsive">
-                            <form action="{{ route('ManagePresence.session.update', [$session->id, $classroomsPratikumId]) }}" method="POST">
+                            <form action="{{ route('ManagePresence.session.update', [$session->id, $classrooms_id]) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">

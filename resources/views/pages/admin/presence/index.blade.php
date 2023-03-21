@@ -26,15 +26,32 @@
                                 </thead>
                                 @foreach ( $subjects  as $data => $item )
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">{{ $subjects->firstItem() + $data }}</th>
-                                        <td>{{ $item->course_code }}</td>
-                                        <td>{{ $item->full_name }}</td>
-                                        <td>
-                                            <a href="{{ route('ManagePresence.classrooms', $item->course_code) }}" class="btn btn-info">Kelas</a>
-                                        </td>
+                                    @if (auth()->guard('web')->check())
+                                        <tr>
+                                            <th scope="row">{{ $subjects->firstItem() + $data }}</th>
+                                            <td>{{ $item->course_code }}</td>
+                                            <td>{{ $item->full_name }}</td>
+                                            <td>
+                                                <a href="{{ route('ManagePresence.classrooms', $item->course_code) }}" class="btn btn-info">Kelas</a>
+                                            </td>
 
-                                    </tr>
+                                        </tr>
+                                    @endif
+
+                                    @if (auth()->guard('lecturer')->check())
+                                        @if ($data == 0 || $item->classroom->subject->course_code != $subjects[$data-1]->classroom->subject->course_code)
+                                            <tr>
+                                                <th scope="row">{{ $subjects->firstItem() + $data }}</th>
+                                                <td>{{ $item->classroom->subject->course_code }}</td>
+                                                <td>{{ $item->classroom->subject->full_name }}</td>
+                                                <td>
+                                                    <a href="{{ route('ManagePresence.classrooms', $item->classroom->subject->course_code) }}" class="btn btn-info">Kelas</a>
+                                                </td>
+                                            </tr>
+                                    @endif
+
+                                @endif
+
                                 </tbody>
                                 @endforeach
                             </table>

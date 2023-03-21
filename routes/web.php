@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ManageSystemController;
 use App\Http\Controllers\Admin\PresenceController;
 use App\Http\Controllers\Admin\PresencePratikumController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LoginLecturerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,11 @@ Route::post('/login-proses', [LoginController::class, 'login'])->name('login.pro
 Route::get('/login-logout', [LoginController::class, 'logout'])->name('login.logout');
 
 
-Route::prefix('Admin')->middleware('auth')->group(function(){
+Route::get('/lecturer', [LoginLecturerController::class, 'index'])->name('login.lecturer');
+Route::post('/login-proses/lecturer', [LoginLecturerController::class, 'login'])->name('login.proses.lecturer');
+
+
+Route::prefix('Admin')->middleware('auth:web,lecturer')->group(function(){
     Route::get('/Dashboard', [DashboardController::class, 'index'])->name('Dashboard');
 
 

@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Model;
 
 class lecturer extends Model
 {
@@ -16,5 +17,24 @@ class lecturer extends Model
     public function major()
     {
         return $this->hasOne(major::class, 'id', 'major_id');
+    }
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return 'username';
     }
 }

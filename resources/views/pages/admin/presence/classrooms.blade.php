@@ -26,13 +26,29 @@
                                 </thead>
                                 @foreach ( $classrooms  as $data => $item )
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
-                                        <td>{{ $item->name}}</td>
-                                        <td>
-                                            <a href="{{ route('ManagePresence.session', $item->id) }}" class="btn btn-info">Session</a>
-                                        <td>
-                                    </tr>
+                                    @if (auth()->guard('web')->check())
+                                        <tr>
+                                            <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
+                                            <td>{{ $item->name}}</td>
+                                            <td>
+                                                <a href="{{ route('ManagePresence.session', $item->id) }}" class="btn btn-info">Session</a>
+                                            <td>
+                                        </tr>
+                                    @endif
+
+                                    @if (auth()->guard('lecturer')->check())
+                                        @if ($item->classroom->subject_course_code == $subject_course_code)
+                                            <tr>
+                                                <th scope="row">{{  $loop->iteration  }}</th>
+                                                <td>{{ $item->classroom->name}}</td>
+                                                <td>
+                                                    <a href="{{ route('ManagePresence.session',$item->classroom->id) }}" class="btn btn-info">Session</a>
+                                                <td>
+                                            </tr>
+                                        @endif
+
+                                @endif
+
                                 </tbody>
                                 @endforeach
                             </table>

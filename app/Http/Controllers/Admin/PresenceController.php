@@ -18,6 +18,7 @@ use App\Models\subject;
 use App\Models\file;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Queue;
@@ -27,15 +28,41 @@ class PresenceController extends Controller
     public function index(){
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
-        $subjects = subject::where('semester_id',$setting->semester_id)
-                            ->orWhere('semester_id', 3)
-                            ->paginate(10);
+
+
+        if(auth()->guard('web')->check()){
+
+            $subjects = subject::where('semester_id',$setting->semester_id)->where('is_pratikum', false)
+            ->orWhere('semester_id', 3)
+            ->paginate(10);
+        }
+
+        if(auth()->guard('lecturer')->check()){
+             $subjects = lecturer_subject::with(['classroom.subject' => function ($query) {
+                    $lastSetting = setting::all()->last();
+                    $setting = setting::findOrFail($lastSetting->id);
+                    $query->where('semester_id', $setting->semester_id)->where('is_pratikum', false);
+             }])->where('lecturer_nip', Auth::user()->nip)->paginate(10);
+        }
+
+
         return view('pages.admin.presence.index', compact('subjects'));
     }
 
     public function classroom($subject_course_code){
-        $classrooms = classroom::where('subject_course_code', $subject_course_code)->paginate(10);
-        return view('pages.admin.presence.classrooms', compact('classrooms'));
+        if(auth()->guard('web')->check()){
+            $classrooms = classroom::where('subject_course_code', $subject_course_code)->paginate(10);
+        }else{
+        $classrooms = lecturer_subject::with(['classroom.subject' => function ($query) {
+                $lastSetting = setting::all()->last();
+                $setting = setting::findOrFail($lastSetting->id);
+                $query->where('semester_id', $setting->semester_id);
+         }])->where('lecturer_nip', Auth::user()->nip)->paginate(10);
+        }
+
+
+
+        return view('pages.admin.presence.classrooms', compact('classrooms', 'subject_course_code'));
       }
 
 
@@ -87,12 +114,13 @@ class PresenceController extends Controller
         $setting = setting::findOrfail($lastSetting->id);
         $semester_id = $setting->semester_id;
         $year = $setting->year;
-        $qrCode = Str::random(20);
+
 
         if($classroom->subject->is_pratikum == false){
             $session = Session::where('classrooms_id', $classrooms_id)->latest()->first();
             $date = $session ? $session->date : $request->date;
             for( $i = 1; $i <= 16; $i++){
+                $qrCode = Str::random(20);
                 if($i > 1){
                     $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
                 }
@@ -114,6 +142,7 @@ class PresenceController extends Controller
             $session = Session::where('classrooms_id', $classrooms_id)->latest()->first();
             $date = $session ? $session->date : $request->date;
             for( $i = 1; $i <= 11; $i++){
+                $qrCode = Str::random(20);
                 if($i > 1){
                     $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
                 }

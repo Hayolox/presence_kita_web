@@ -45,4 +45,5 @@ class student extends Model
     {
         return 'nsn';
     }
+
 }

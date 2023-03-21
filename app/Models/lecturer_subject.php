@@ -16,4 +16,9 @@ class lecturer_subject extends Model
     {
         return $this->hasOne(lecturer::class, 'nip', 'lecturer_nip');
     }
+
+    public function classroom()
+    {
+        return $this->hasOne(classroom::class, 'id', 'classrooms_id');
+    }
 }

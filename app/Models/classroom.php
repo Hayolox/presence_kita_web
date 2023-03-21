@@ -16,4 +16,11 @@ class classroom extends Model
     {
         return $this->hasOne(subject::class, 'course_code', 'subject_course_code');
     }
+
+
+    public function classroom()
+    {
+        return $this->hasOne(classroom::class, 'id', 'classrooms_id');
+    }
+
 }
