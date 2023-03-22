@@ -242,7 +242,7 @@ class PresencePratikumController extends Controller
 
        if($number == 2){
         $presence->update([
-            'status' => 'hadir',
+            'status' => 'izin',
         ]);
         Storage::delete($path);
         $file->delete();
