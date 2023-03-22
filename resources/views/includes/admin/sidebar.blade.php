@@ -68,6 +68,11 @@
             <a class="nav-link" href="{{ route('ManageSUS') }}">
                 <span>SUS</span></a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('login.logout') }}">
+                <span>Logout</span></a>
+        </li>
     @endif
 
     @if (auth()->guard('lecturer')->check())
@@ -78,10 +83,20 @@
         </li>
     @endif
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('login.logout') }}">
-            <span>Logout</span></a>
-    </li>
+    @if (auth()->guard('student')->check())
+         <!-- Nav Item - Charts -->
+         <li class="nav-item">
+            <a class="nav-link" href="{{ route('ManagePresencePratikum') }}">
+                <span>Kelola Presensi Pratikum</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('login.pratikum.logout') }}">
+                <span>Logout</span></a>
+        </li>
+    @endif
+
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

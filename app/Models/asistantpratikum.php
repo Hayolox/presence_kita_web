@@ -10,4 +10,9 @@ class asistantpratikum extends Model
     use HasFactory;
 
     protected $fillable = ['student_nsn', 'classroomspratikum_id'];
+
+    public function classroompratikum()
+    {
+        return $this->hasOne(classroomspratikum::class, 'id', 'classroomspratikum_id');
+    }
 }

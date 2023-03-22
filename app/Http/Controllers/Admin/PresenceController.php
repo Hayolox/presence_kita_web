@@ -32,7 +32,7 @@ class PresenceController extends Controller
 
         if(auth()->guard('web')->check()){
 
-            $subjects = subject::where('semester_id',$setting->semester_id)->where('is_pratikum', false)
+            $subjects = subject::where('semester_id',$setting->semester_id)
             ->orWhere('semester_id', 3)
             ->paginate(10);
         }
@@ -41,7 +41,7 @@ class PresenceController extends Controller
              $subjects = lecturer_subject::with(['classroom.subject' => function ($query) {
                     $lastSetting = setting::all()->last();
                     $setting = setting::findOrFail($lastSetting->id);
-                    $query->where('semester_id', $setting->semester_id)->where('is_pratikum', false);
+                    $query->where('semester_id', $setting->semester_id);
              }])->where('lecturer_nip', Auth::user()->nip)->paginate(10);
         }
 

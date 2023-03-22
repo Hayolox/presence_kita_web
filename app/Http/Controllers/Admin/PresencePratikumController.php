@@ -19,6 +19,7 @@ use App\Models\student_pratikum;
 use App\Models\subject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Queue;
@@ -28,15 +29,37 @@ class PresencePratikumController extends Controller
     public function index(){
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
-        $subjects = subject::where('semester_id',$setting->semester_id)->where('is_pratikum', true)
-                            ->orWhere('semester_id', 3)
-                            ->paginate(10);
+
+        if(auth()->guard('web')->check()){
+
+            $subjects = subject::where('semester_id',$setting->semester_id)->where('is_pratikum', true)
+            ->orWhere('semester_id', 3)
+            ->paginate(10);
+        }
+
+        if(auth()->guard('student')->check()){
+            $subjects = asistantpratikum::with(['classroompratikum.subject' => function ($query) {
+                    $lastSetting = setting::all()->last();
+                    $setting = setting::findOrFail($lastSetting->id);
+                    $query->where('semester_id', $setting->semester_id);
+            }])->where('student_nsn', Auth::user()->nsn)->paginate(10);
+        }
 
         return view('pages.admin.presence_pratikum.index', compact('subjects'));
     }
 
     public function classroom($subject_course_code){
         $classrooms = classroomspratikum::where('subject_course_code', $subject_course_code)->paginate(10);
+
+        if(auth()->guard('web')->check()){
+            $classrooms = classroomspratikum::where('subject_course_code', $subject_course_code)->paginate(10);
+        }else{
+        $classrooms = asistantpratikum::with(['classroompratikum.subject' => function ($query) {
+                $lastSetting = setting::all()->last();
+                $setting = setting::findOrFail($lastSetting->id);
+                $query->where('semester_id', $setting->semester_id);
+        }])->where('student_nsn', Auth::user()->nsn)->paginate(10);
+        }
         return view('pages.admin.presence_pratikum.classrooms', compact('classrooms','subject_course_code'));
     }
 
