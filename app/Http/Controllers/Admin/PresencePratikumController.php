@@ -9,6 +9,7 @@ use App\Models\asistantpratikum;
 use App\Models\check_que;
 use App\Models\classroom;
 use App\Models\classroomspratikum;
+use App\Models\file_pratikum;
 use App\Models\lecturer_subject;
 use App\Models\presence_pratikum;
 use App\Models\room;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 
 class PresencePratikumController extends Controller
 {
@@ -218,6 +220,45 @@ class PresencePratikumController extends Controller
 
 
         return view('pages.admin.presence_pratikum.session', compact('session','classroomsPratikumId', 'countIzin','countSession'));
+    }
+
+    public function izin($classroomsPratikumId){
+
+       $presence = presence_pratikum::where('classroomspratikum_id', $classroomsPratikumId)->where('status', 'proses')->paginate();
+       return view('pages.admin.presence_pratikum.izin', compact('presence','classroomsPratikumId'));
+    }
+
+    public function confirmIzin($sessionId, $useriId, $number){
+
+        $presence = presence_pratikum::where('session_pratikum_id', $sessionId)->where('student_nsn', $useriId)->first();
+        $file = file_pratikum::where('session_pratikum_id', $sessionId)->where('student_nsn', $useriId)->first();
+        $path = 'public/' . $file->path;
+
+       if($number == 1){
+        $filename = basename($path);
+        return Storage::download($path, $filename, ['Content-Type' => 'application/pdf']);
+
+       }
+
+       if($number == 2){
+        $presence->update([
+            'status' => 'hadir',
+        ]);
+        Storage::delete($path);
+        $file->delete();
+
+        Alert::success('Success', 'Surat Diterima');
+       }
+
+       if($number == 3){
+            $presence->delete();
+            Storage::delete($path);
+            $file->delete();
+            Alert::success('Success', 'Surat Ditolak');
+       }
+
+       return back();
+
     }
 
     public function createSession($classroomsPratikumId){

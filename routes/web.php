@@ -104,6 +104,8 @@ Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function(
     Route::get('/Manage-presence/pratikum/classrooms/session/presence/student/add{session_id}/{classrooms_pratikum_id}', [PresencePratikumController::class, 'addStudentToPresence'])->name('ManagePresence.classrooms.pratikum.presence.student.add');
     Route::get('/Manage-presence/pratikum/classrooms/session/create/{classrooms_pratikum_id}', [PresencePratikumController::class, 'createSession'])->name('ManagePresence.classrooms.pratikum.session.create');
     Route::get('/Manage-presence/pratikum/classrooms/session/edit/{id}/{classrooms_pratikum_id}', [PresencePratikumController::class, 'editSession'])->name('ManagePresence.classrooms.pratikum.session.edit');
+    Route::get('/Manage-presence/pratikum/izin/{classrooms_id}', [PresencePratikumController::class, 'izin'])->name('ManagePresence.classrooms.pratikum.izin');
+    Route::get('/Manage-presence/pratikum/izin/{session_id}/{user_id}/{number}', [PresencePratikumController::class, 'confirmIzin'])->name('ManagePresence.pratikum.downloadPdf');
     Route::get('/Manage-presence/pratikum/classrooms/session/qrCode/{id}/{qrCode}', [PresencePratikumController::class, 'qRCode'])->name('ManagePresence.classrooms.pratikum.session.qRCode');
     Route::post('/Manage-presence/pratikum/classrooms/session/store/{classrooms_pratikum_id}', [PresencePratikumController::class, 'storeSession'])->name('ManagePresence.classrooms.pratikum.session.store');
     Route::post('/Manage-presence/pratikum/classrooms/store/{subject_course_code}', [PresencePratikumController::class, 'storeClassromm'])->name('ManagePresence.classrooms.pratikum.store');

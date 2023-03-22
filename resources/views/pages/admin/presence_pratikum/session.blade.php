@@ -16,7 +16,7 @@
                     <div class="card-body">
                       <div class="col-12  d-flex  d-inline d-flex justify-content-end">
                         <a href="{{ route('ManagePresencePratikum') }}">  <div class=" btn btn-primary mb-2 mr-2">Kembali</div></a>
-                        <a href="{{ route('ManagePresence.session.izin',  $classroomsPratikumId) }}">  <div class=" btn btn-info mb-2 mr-2">Izin : {{ $countIzin }}</div></a>
+                        <a href="{{ route('ManagePresence.classrooms.pratikum.izin',  $classroomsPratikumId) }}">  <div class=" btn btn-info mb-2 mr-2">Izin : {{ $countIzin }}</div></a>
                         @if ($countSession == 0)
                         <a href="{{ route('ManagePresence.classrooms.pratikum.session.create',$classroomsPratikumId) }}" class="btn btn-secondary mb-4">Tambah Data</a>
                         @endif
@@ -31,7 +31,7 @@
                                         <th>Berakhir</th>
                                         <th>Tanggal</th>
                                         <th>Geolocation</th>
-                                        <th>Nama Dosen</th>
+                                        <th>Nama Asprak</th>
                                         <th>QrCode</th>
                                         <th>Action</th>
                                     </tr>

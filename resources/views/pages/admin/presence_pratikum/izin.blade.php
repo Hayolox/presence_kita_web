@@ -25,6 +25,7 @@
                                         <th>NIM</th>
                                         <th>Nama</th>
                                         <th>Status</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 @foreach ( $presence  as $data => $item )
@@ -35,9 +36,9 @@
                                         <td>{{ $item->student->name }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>
-                                            <a href="" target="_blank" class="btn btn-info">PDF</a>
-                                            <a href="" target="_blank" class="btn btn-success">Terima</a>
-                                            <a href="" target="_blank" class="btn btn-danger">Tidak</a>
+                                            <a href="{{ route('ManagePresence.pratikum.downloadPdf', [$item->session_pratikum_id, $item->student_nsn, 1]) }}" class="btn btn-info">PDF</a>
+                                            <a href="{{ route('ManagePresence.pratikum.downloadPdf', [$item->session_pratikum_id, $item->student_nsn, 2]) }}" class="btn btn-success">Terima</a>
+                                            <a href="{{ route('ManagePresence.pratikum.downloadPdf', [$item->session_pratikum_id, $item->student_nsn, 3]) }}" class="btn btn-danger">Tidak</a>
                                         </td>
                                     </tr>
                                 </tbody>
