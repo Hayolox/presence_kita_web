@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 class PresenceController extends Controller
 {
@@ -85,7 +87,39 @@ class PresenceController extends Controller
     public function izin($classrooms_id){
 
         $presence = presence::where('classrooms_id', $classrooms_id)->where('status', 'proses')->paginate();
-       return view('pages.admin.presence.izin', compact('presence'));
+       return view('pages.admin.presence.izin', compact('presence','classrooms_id'));
+    }
+
+    public function confirmIzin($sessionId, $useriId, $number){
+        $presence = presence::where('session_id', $sessionId)->where('student_nsn', $useriId)->first();
+        $file = file::where('session_id', $sessionId)->where('student_nsn', $useriId)->first();
+        $path = 'public/' . $file->path;
+
+       if($number == 1){
+        $filename = basename($path);
+        return Storage::download($path, $filename, ['Content-Type' => 'application/pdf']);
+
+       }
+
+       if($number == 2){
+        $presence->update([
+            'status' => 'hadir',
+        ]);
+        Storage::delete($path);
+        $file->delete();
+
+        Alert::success('Success', 'Surat Diterima');
+       }
+
+       if($number == 3){
+            $presence->delete();
+            Storage::delete($path);
+            $file->delete();
+            Alert::success('Success', 'Surat Ditolak');
+       }
+
+       return back();
+
     }
 
     public function createSession($classrooms_id){
