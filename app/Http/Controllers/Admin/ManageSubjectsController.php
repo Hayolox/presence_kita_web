@@ -299,20 +299,8 @@ class ManageSubjectsController extends Controller
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
         $file =  $request->file('file');
-        // (new StudentSubjectImport($classrooms_id, $setting->year))->import($file);
-        // $year = $setting->year;
         $classrooms_id = intval($classrooms_id);
-
-          (new StudentSubjectImport($classrooms_id, $setting->year))->import($file);
-        // Excel::import($file, function($reader) use($classrooms_id,  $year) {
-        //     foreach ($reader->toArray() as $row) {
-        //         student_subject::create([
-        //             'student_nsn'     => $row['nim'],
-        //             'classrooms_id'    =>  $classrooms_id,
-        //             'year' =>  $year
-        //         ]);
-        //     }
-        // });
+        (new StudentSubjectImport($classrooms_id, $setting->year))->import($file);
 
         return back();
     }
