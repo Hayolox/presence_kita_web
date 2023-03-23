@@ -20,7 +20,7 @@ class HomeApiController extends Controller
         $studentSubject = student_subject::with(['classroom.subject' => function ($query) {
             $lastSetting = setting::all()->last();
             $setting = setting::findOrFail($lastSetting->id);
-            $query->where('semester_id', $setting->semester_id);
+            $query->where('semester_id', $setting->semester_id)->orWhere('semester_id', 3);
         }])
         ->where('student_nsn', Auth::user()->nsn)
         ->get();
