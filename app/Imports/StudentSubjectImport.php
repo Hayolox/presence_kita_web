@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\student;
 use App\Models\student_subject;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Collection;
@@ -27,13 +28,19 @@ class StudentSubjectImport implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows)
     {
+
         foreach ($rows as $row)
         {
-            student_subject::create([
-                'student_nsn'     => $row['nim'],
-                'classrooms_id'    => $this->classrooms_id,
-                'year' => $this->year
-            ]);
+            $student = student::where('nsn', $row['nim'])->first();
+
+            if($student){
+                student_subject::create([
+                    'student_nsn'     =>  $student->nsn,
+                    'classrooms_id'    => $this->classrooms_id,
+                    'year' => $this->year
+                ]);
+            }
+
         }
 
     }
