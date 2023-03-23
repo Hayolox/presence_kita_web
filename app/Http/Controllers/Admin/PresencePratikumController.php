@@ -202,6 +202,7 @@ class PresencePratikumController extends Controller
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
         $file =  $request->file('file');
+        $classroomsPratikumId = intval($classroomsPratikumId);
         (new StudentPratikumImport($classroomsPratikumId, $setting->year))->import($file);
         return back();
     }
