@@ -35,7 +35,7 @@ class StudentSubjectImport implements ToCollection, WithHeadingRow
             $student = student::where('nsn',$nsn)->first();
             if($student){
                 student_subject::create([
-                    'student_nsn'     =>  $student->nsn,
+                    'student_nsn'     =>  $nsn,
                     'classrooms_id'    => $this->classrooms_id,
                     'year' => $this->year
                 ]);

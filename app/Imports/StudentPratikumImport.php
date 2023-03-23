@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\student;
 use App\Models\student_pratikum;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Collection;
@@ -29,11 +30,16 @@ class StudentPratikumImport implements ToCollection, WithHeadingRow
     {
         foreach ($rows as $row)
         {
-            student_pratikum::create([
-                'student_nsn'     => $row['nim'],
-                'classroomspratikum_id'    => $this->classroomspratikum_id,
-                'year' => $this->year
-            ]);
+            $nsn = strval($row['nim']);
+            $student = student::where('nsn',$nsn)->first();
+            if($student){
+                student_pratikum::create([
+                    'student_nsn'     =>  $nsn,
+                    'classroomspratikum_id'    => $this->classroomspratikum_id,
+                    'year' => $this->year
+                ]);
+            }
+
         }
 
     }
