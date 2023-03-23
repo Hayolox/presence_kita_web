@@ -31,7 +31,8 @@ class StudentSubjectImport implements ToCollection, WithHeadingRow
 
         foreach ($rows as $row)
         {
-            $student = student::where('nsn', $row['nim'])->first();
+            $nsn = strval($row['nim']);
+            $student = student::where('nsn',$nsn)->first();
             dd($student);
             if($student){
                 student_subject::create([
