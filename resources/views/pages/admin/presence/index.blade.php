@@ -44,9 +44,9 @@
                                                 <th scope="row">{{ $subjects->firstItem() + $data }}</th>
                                                 <td>{{ $item->classroom->name }}</td>
                                                 <td>{{ $item->classroom->name }}</td>
-                                                <td>
+                                                {{-- <td>
                                                     <a href="{{ route('ManagePresence.classrooms', $item->classroom->subject->course_code) }}" class="btn btn-info">Kelas</a>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                     @endif
 
