@@ -20,7 +20,7 @@ class SessionApiController extends Controller
 
 
         $session = session::with(['lecturer', 'room'])->where('classrooms_id', $request->classrooms_id)->get();
-        $presence = presence::where('classrooms_id', $request->classrooms_id)->where('status', 'hadir')->count();
+        $presence = presence::where('classrooms_id', $request->classrooms_id)->where('status', 'hadir')->where('student_nsn', Auth::user()->nsn)->count();
         $permission  = presence::where('classrooms_id', $request->classrooms_id)->where('status', 'izin')->count();
         $student = student::where('nsn', Auth::user()->nsn)->first();
         $status_session = [];
