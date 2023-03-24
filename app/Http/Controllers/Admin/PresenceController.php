@@ -44,7 +44,7 @@ class PresenceController extends Controller
              $subjects = lecturer_subject::with(['classroom.subject' => function ($query) {
                     $lastSetting = setting::all()->last();
                     $setting = setting::findOrFail($lastSetting->id);
-                    $query->where('semester_id', $setting->semester_id);
+                    $query->where('semester_id', $setting->semester_id)->orWhere('semester_id', 3);
              }])->where('lecturer_nip',  strval(Auth::user()->nip) )->paginate(10);
         }
 
