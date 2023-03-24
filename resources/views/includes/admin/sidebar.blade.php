@@ -80,6 +80,11 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('ManagePresence') }}">
                 <span>Kelola Presensi</span></a>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('login.pratikum.logout') }}">
+                        <span>Logout</span></a>
+            </li>
         </li>
     @endif
 
