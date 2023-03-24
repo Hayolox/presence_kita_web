@@ -44,7 +44,7 @@ class PresencePratikumController extends Controller
                     $lastSetting = setting::all()->last();
                     $setting = setting::findOrFail($lastSetting->id);
                     $query->where('semester_id', $setting->semester_id);
-            }])->where('student_nsn', Auth::user()->nsn)->paginate(10);
+            }])->where('student_nsn', strval(Auth::user()->nip))->paginate(10);
         }
 
         return view('pages.admin.presence_pratikum.index', compact('subjects'));
@@ -60,7 +60,7 @@ class PresencePratikumController extends Controller
                 $lastSetting = setting::all()->last();
                 $setting = setting::findOrFail($lastSetting->id);
                 $query->where('semester_id', $setting->semester_id);
-        }])->where('student_nsn', Auth::user()->nsn)->paginate(10);
+        }])->where('student_nsn', strval(Auth::user()->nip))->paginate(10);
         }
         return view('pages.admin.presence_pratikum.classrooms', compact('classrooms','subject_course_code'));
     }

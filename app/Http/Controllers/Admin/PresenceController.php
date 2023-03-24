@@ -45,8 +45,7 @@ class PresenceController extends Controller
                     $lastSetting = setting::all()->last();
                     $setting = setting::findOrFail($lastSetting->id);
                     $query->where('semester_id', $setting->semester_id);
-             }])->where('lecturer_nip', Auth::user()->nip)->paginate(10);
-             dd($subjects);
+             }])->where('lecturer_nip',  strval(Auth::user()->nip) )->paginate(10);
         }
 
 
@@ -61,7 +60,7 @@ class PresenceController extends Controller
                 $lastSetting = setting::all()->last();
                 $setting = setting::findOrFail($lastSetting->id);
                 $query->where('semester_id', $setting->semester_id);
-         }])->where('lecturer_nip', Auth::user()->nip)->paginate(10);
+         }])->where('lecturer_nip', strval(Auth::user()->nip))->paginate(10);
         }
 
 
