@@ -51,7 +51,7 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('ManagePresence.presence', [$item->id, $classrooms_id]) }}" class="btn btn-primary">Mahasiswa</a>
-                                            <a href="{{ route('ManagePresence.session.edit', [$item->id, $classrooms_id]) }}" class="btn btn-info">Edit</a>
+                                            <a href="{{ route('ManagePresence.session.edit', [$item->id, $classrooms_id]) }}" class="btn btn-info mt-1">Edit</a>
                                         </td>
                                     </tr>
                                 </tbody>
