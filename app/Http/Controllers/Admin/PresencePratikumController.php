@@ -44,9 +44,9 @@ class PresencePratikumController extends Controller
                     $lastSetting = setting::all()->last();
                     $setting = setting::findOrFail($lastSetting->id);
                     $query->where('semester_id', $setting->semester_id)->orWhere('semester_id', 3);
-            }])->where('student_nsn', strval(Auth::user()->nip))->paginate(10);
+            }])->where('student_nsn', strval(Auth::user()->nsn))->paginate(10);
         }
-
+            dd($subjects);
         return view('pages.admin.presence_pratikum.index', compact('subjects'));
     }
 
