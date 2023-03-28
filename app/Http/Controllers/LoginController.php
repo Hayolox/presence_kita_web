@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function index(){
+        dd("tes");
         return view('pages.login');
     }
 
