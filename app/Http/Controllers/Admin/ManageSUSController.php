@@ -27,6 +27,7 @@ class ManageSUSController extends Controller
         }else{
             $total = 0;
         }
+        dd($sumAmount);
 
 
         $description = '';
