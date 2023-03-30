@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/login-proses', [LoginController::class, 'login'])->name('login.proses');
 Route::get('/login-logout', [LoginController::class, 'logout'])->name('login.logout');
@@ -39,7 +40,7 @@ Route::get('/login-pratikum-logout', [LoginPratikumController::class, 'logout'])
 
 
 
-Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function(){
+Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function () {
     Route::get('/Dashboard', [DashboardController::class, 'index'])->name('Dashboard');
 
 
@@ -87,6 +88,7 @@ Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function(
     Route::get('/Manage-presence/izin/{classrooms_id}', [PresenceController::class, 'izin'])->name('ManagePresence.session.izin');
     Route::get('/Manage-presence/izin/{session_id}/{user_id}/{number}', [PresenceController::class, 'confirmIzin'])->name('ManagePresence.session.downloadPdf');
     Route::put('/Manage-presence/update/{id}/{classrooms_id}', [PresenceController::class, 'updateSession'])->name('ManagePresence.session.update');
+    Route::get('/Manage-presence-pdf/{classrooms_id}', [PresenceController::class, 'pdf'])->name('ManagePresence.pdf');
     Route::get('/Manage-presence/{id}/{classrooms_id}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
     Route::get('/Manage-presence/add/to/presence/{id}/{classrooms_id}', [PresenceController::class, 'addStudentToPresence'])->name('ManagePresence.presence.add.student');
     Route::post('/Manage-presence/store/to/presence/{id}/{classrooms_id}', [PresenceController::class, 'storeAddStudentToPresence'])->name('ManagePresence.presence.store.student');
@@ -116,4 +118,3 @@ Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function(
     Route::put('/Manage-presence/pratikum/classrooms/edit/asisten/{classrooms_pratikum_id}', [PresencePratikumController::class, 'editAsistenPratikum'])->name('ManagePresence.classrooms.pratikum.editAsisten');
     Route::put('/Manage-presence/pratikum/classrooms/sessiont/edit/{id}/{classrooms_pratikum_id}', [PresencePratikumController::class, 'updateSession'])->name('ManagePresence.classrooms.pratikum.session.update');
 });
-
