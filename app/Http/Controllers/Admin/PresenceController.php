@@ -93,43 +93,39 @@ class PresenceController extends Controller
 
         $studentsList = student_subject::where('classrooms_id', $classrooms_id)->get();
 
+        $classroom = classroom::where('id', $classrooms_id)->first();
+        $lecturer = lecturer_subject::where('classrooms_id', $classrooms_id)->get();
+        $jumlah = $classroom->subject->is_pratikum  ? 11 : 16;
+        $pertemuan = [];
+
+        for ($i = 0; $i < $jumlah; $i++) {
+            $pertemuan['ke-' . $i + 1] = 0;
+        }
 
         foreach ($studentsList as $students) {
 
             $presence = presence::where([['classrooms_id', $classrooms_id], ['student_nsn', $students->student_nsn]])->get();
 
+            // dd($classroom->subject);
 
             foreach ($presence as $data) {
                 $students["pertemuan" . $data->session_id] = $data->status;
+                if ($data->status == 'hadir') {
+
+                    $pertemuan['ke-' . $data->session_id]++;
+                }
+
                 // var_dump($data->session_id);
             }
         }
 
-        // foreach ($studentsList as $item) {
 
 
-        //     for ($i = 0; $i < 18; $i++) {
-        //         if ($item['pertemuan' . $i]) {
-        //             var_dump($i);
-        //         } else {
-        //             echo ("--");
-        //         }
-        //     }
-        // }
-
-        // <td class="absen-mark"><img width="20px" class="img-test"
-        //         src="{{ asset('/assets/img/checkicon.png') }}" alt=""
-        //         srcset=""></td>
+        // dd();
 
 
-        // dd($studentsList);
-        // die;
-        // $studentsList[0]->test = 0;
 
-
-        // die;
-
-        return view('pages.admin.presence.pdf', compact('studentsList'));
+        return view('pages.admin.presence.pdf', compact('studentsList', 'classroom', 'lecturer', 'pertemuan', 'jumlah'));
         // dd($studentsList);
     }
 
