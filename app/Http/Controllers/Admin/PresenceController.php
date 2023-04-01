@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\ProcessChangeQrCode;
 use App\Models\check_que;
 use App\Models\classroom;
+use App\Models\classroomspratikum;
 use App\Models\lecturer;
 use App\Models\lecturer_subject;
 use App\Models\presence;
@@ -16,9 +17,12 @@ use App\Models\student;
 use App\Models\student_subject;
 use App\Models\subject;
 use App\Models\file;
+use App\Models\presence_pratikum;
+use App\Models\sessionpratikum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Queue;
@@ -92,21 +96,95 @@ class PresenceController extends Controller
     {
 
         $studentsList = student_subject::where('classrooms_id', $classrooms_id)->get();
+        $session = session::where('classrooms_id', $classrooms_id)->get();
 
         $classroom = classroom::where('id', $classrooms_id)->first();
         $lecturer = lecturer_subject::where('classrooms_id', $classrooms_id)->get();
-        $jumlah = $classroom->subject->is_pratikum  ? 11 : 16;
-        $pertemuan = [];
+        $kelaspraktikum = classroomspratikum::where('subject_course_code', $classroom->subject_course_code)->get();
+        // $praktikum_session = sessionpratikum::where('student_nsn', '193010501001')->get();
+        // $kelasid = [];
 
-        for ($i = 0; $i < $jumlah; $i++) {
-            $pertemuan['ke-' . $i + 1] = 0;
+        // foreach ($kelaspraktikum as $key => $value) {
+        //     $kelasid[] = ['classroomspratikum_id ', $value->id];
+        // }
+
+        // dd($kelasid);
+        // $s =  16;
+        // if ($classroom->subject->is_pratikum) {
+
+        //     $data = [];
+        //     foreach ($kelaspraktikum as $a) {
+        //         $data[] = sessionpratikum::where('classroomspratikum_id', $a->id)->get();
+        //     }
+        //     dd($data);
+        // }
+        // $pertemuan = [];
+
+        foreach ($session as $key => $value) {
+            $pertemuan['ke-' . $value->id] = 0;
         }
+
+        if ($classroom->subject->is_pratikum) {
+
+            for ($i = 0; $i < 5; $i++) {
+                $pertemuan['ke-p' . $i + 1] = 0;
+            }
+        }
+
+
+
 
         foreach ($studentsList as $students) {
 
+
+
             $presence = presence::where([['classrooms_id', $classrooms_id], ['student_nsn', $students->student_nsn]])->get();
 
-            // dd($classroom->subject);
+            if ($classroom->subject->is_pratikum) {
+                // var_dump($students->student_nsn);
+                $presencePraktikum = presence_pratikum::where([['student_nsn', $students->student_nsn]])->where(function ($query) use ($kelaspraktikum) {
+                    // $classroom = classroom::where('id', $classrooms_id)->first();
+
+                    foreach ($kelaspraktikum as $key => $value) {
+
+                        if ($key == 0) {
+
+                            $query->where('classroomspratikum_id', $value->id);
+                        } else {
+
+                            $query->orWhere('classroomspratikum_id', $value->id);
+                        }
+
+
+                        // $query->where('email', 'jdoe@example.com')
+                        //     ->orWhere('email', 'johndoe@example.com');
+                    }
+                })->get();
+
+
+
+
+                foreach ($presencePraktikum as $i => $data) {
+                    $sessionPraktikum = sessionpratikum::where('classroomspratikum_id', $data->classroomspratikum_id)->get();
+
+                    foreach ($sessionPraktikum as $key => $value) {
+                        // dd($value->session_pratikum_id);
+                        if ($value->id == $data->session_pratikum_id) {
+                            $students["pertemuanp" . $key + 1] = $data->status;
+                            if ($data->status == 'hadir') {
+
+                                $pertemuan['ke-p' . $key + 1]++;
+                            }
+                            break;
+                        }
+                    }
+                    // $pertemuan['ke-p' . $data->session_pratikum_id] = 0;
+
+
+                    // var_dump($data->session_id);
+                }
+            }
+
 
             foreach ($presence as $data) {
                 $students["pertemuan" . $data->session_id] = $data->status;
@@ -114,18 +192,17 @@ class PresenceController extends Controller
 
                     $pertemuan['ke-' . $data->session_id]++;
                 }
-
-                // var_dump($data->session_id);
             }
+            // dd($pertemuan);
         }
 
 
 
-        // dd();
+        // dd($pertemuan);
 
 
 
-        return view('pages.admin.presence.pdf', compact('studentsList', 'classroom', 'lecturer', 'pertemuan', 'jumlah'));
+        return view('pages.admin.presence.pdf', compact('studentsList', 'classroom', 'lecturer', 'pertemuan', 'session'));
         // dd($studentsList);
     }
 

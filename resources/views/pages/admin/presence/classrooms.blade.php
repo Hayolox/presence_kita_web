@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
-       <!-- Content Wrapper -->
-       <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
         <div id="content">
@@ -24,34 +24,37 @@
 
                                     </tr>
                                 </thead>
-                                @foreach ( $classrooms  as $data => $item )
-                                <tbody>
-                                    @if (auth()->guard('web')->check())
-                                        <tr>
-                                            <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
-                                            <td>{{ $item->name}}</td>
-                                            <td>
-                                                <a href="{{ route('ManagePresence.session', $item->id) }}" class="btn btn-info">Session</a>
-                                                <a href="{{ route('ManagePresence.pdf',$item->id) }}" class="btn btn-info">Pdf</a>
-                                            <td>
-                                        </tr>
-                                    @endif
-
-                                    @if (auth()->guard('lecturer')->check())
-                                        @if ($item->classroom->subject_course_code == $subject_course_code)
+                                @foreach ($classrooms as $data => $item)
+                                    <tbody>
+                                        @if (auth()->guard('web')->check())
                                             <tr>
-                                                <th scope="row">{{  $loop->iteration  }}</th>
-                                                <td>{{ $item->classroom->name}}</td>
+                                                <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
+                                                <td>{{ $item->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('ManagePresence.session',$item->classroom->id) }}" class="btn btn-info">Session</a>
-                                                    <a href="{{ route('ManagePresence.pdf',$item->classroom->id) }}" class="btn btn-info">Pdf</a>
+                                                    <a href="{{ route('ManagePresence.session', $item->id) }}"
+                                                        class="btn btn-info">Session</a>
+                                                    <a href="{{ route('ManagePresence.pdf', $item->id) }}" target="_blank"
+                                                        class="btn btn-info">Pdf</a>
                                                 <td>
                                             </tr>
                                         @endif
 
-                                @endif
+                                        @if (auth()->guard('lecturer')->check())
+                                            @if ($item->classroom->subject_course_code == $subject_course_code)
+                                                <tr>
+                                                    <th scope="row">{{ $loop->iteration }}</th>
+                                                    <td>{{ $item->classroom->name }}</td>
+                                                    <td>
+                                                        <a href="{{ route('ManagePresence.session', $item->classroom->id) }}"
+                                                            class="btn btn-info">Session</a>
+                                                        <a href="{{ route('ManagePresence.pdf', $item->classroom->id) }}"
+                                                            target="_blank" class="btn btn-info">Pdf</a>
+                                                    <td>
+                                                </tr>
+                                            @endif
+                                        @endif
 
-                                </tbody>
+                                    </tbody>
                                 @endforeach
                             </table>
                             {{ $classrooms->links() }}
@@ -77,5 +80,4 @@
 
     </div>
     <!-- End of Content Wrapper -->
-
 @endsection
