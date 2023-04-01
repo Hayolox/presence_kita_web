@@ -19,6 +19,7 @@ use App\Models\file;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Queue;
@@ -68,6 +69,53 @@ class PresenceController extends Controller
 
 
         return view('pages.admin.presence.classrooms', compact('classrooms', 'subject_course_code'));
+    }
+
+    public function statistik($classrooms_id)
+    {
+
+        // $presence = DB::table('presences')
+        //         ->select('student_nsn', DB::raw('COUNT(*) as total'))
+        //         ->where('classrooms_id', $classrooms_id)
+        //         ->where('status', 'izin')
+        //         ->groupBy('student_nsn')
+        //         ->orderByDesc('total')
+        //         ->first();
+
+        // $student = Student::where('nsn', $presence->student_nsn)->first();
+        // if(!$student){
+        //     $student = 'tidak ada';
+        // }else{
+        //     $student = $student->name;
+        // }
+
+        $students =  student_subject::where('classrooms_id', $classrooms_id)->get();
+
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+        $sessions = session::where('classrooms_id',  $classrooms_id)->where('semester_id',$setting->semester_id )->get();
+
+        $nameStudentAlpha = [];
+        foreach($students as $item){
+                foreach($sessions  as $session){
+                    $presence = presence::where('session_id', $session->id)->where('student_nsn', $item->student_nsn)->first();
+                    if(!$presence){
+                        array_push($nameStudentAlpha, $item->student->name);
+                    }
+                }
+        }
+        $countAlpha = count($nameStudentAlpha);
+        $countIzin = presence::where('classrooms_id', $classrooms_id)->where('status', 'izin')->count();
+        $countPresent =  presence::where('classrooms_id', $classrooms_id)->where('status', 'hadir')->count();
+        $countStudentSubject =  $students =  student_subject::where('classrooms_id', $classrooms_id)->count();
+        $data = [
+            'countPresent' => $countPresent,
+            'countIzin' => $countIzin,
+            'countAlpha' => $countAlpha,
+            'countAction' => $countStudentSubject * 16
+        ];
+
+        return view('pages.admin.presence.statistik', compact('data'));
     }
 
 

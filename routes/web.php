@@ -81,6 +81,7 @@ Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function 
 
     Route::get('/Manage-presence', [PresenceController::class, 'index'])->name('ManagePresence');
     Route::get('/Manage-presence/classrooms/{subject_course_code}', [PresenceController::class, 'classroom'])->name('ManagePresence.classrooms');
+    Route::get('/Manage-presence/statistik/{classrooms_id}', [PresenceController::class, 'statistik'])->name('ManagePresence.statistik');
     Route::get('/Manage-presence-session/{classrooms_id}', [PresenceController::class, 'session'])->name('ManagePresence.session');
     Route::get('/Manage-presence/create/{classrooms_id}', [PresenceController::class, 'createSession'])->name('ManagePresence.session.create');
     Route::post('/Manage-presence/create/{classrooms_id}', [PresenceController::class, 'storeSession'])->name('ManagePresence.session.store');
