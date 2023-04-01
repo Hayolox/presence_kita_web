@@ -33,6 +33,7 @@
                                             <td>
                                                 <a href="{{ route('ManagePresence.session', $item->id) }}" class="btn btn-info">Session</a>
                                                 <a href="{{ route('ManagePresence.pdf',$item->id) }}" class="btn btn-info">Pdf</a>
+                                                <a href="{{ route('ManagePresence.statistik', $item->id) }}," class="btn btn-info">Statistik</a>
                                             <td>
                                         </tr>
                                     @endif
