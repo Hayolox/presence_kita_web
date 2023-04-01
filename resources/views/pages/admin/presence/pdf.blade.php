@@ -1,6 +1,7 @@
-{{-- @php
-    dd($studentsList[0]->student->toArray());
-@endphp --}}
+@php
+    // dd($pertemuan);
+@endphp
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -264,7 +265,7 @@
                                         <th>No</th>
                                         <th>NIM</th>
                                         <th>NAMA MAHASISWA</th>
-                                        <th colspan="{{ $jumlah }}">Paraf Kehadiran Tanggal</th>
+                                        <th colspan="16">Paraf Kehadiran Tanggal</th>
                                         <th>Catatan</th>
                                     </tr>
                                 </thead>
@@ -275,9 +276,15 @@
                                             <td>{{ $data + 1 }}</td>
                                             <td>{{ $item->student_nsn }}</td>
                                             <td>{{ $item->student->name }}</td>
-                                            @for ($i = 0; $i < $jumlah; $i++)
-                                                @if ($item['pertemuan' . $i + 1])
-                                                    @if ($item['pertemuan' . $i + 1] == 'hadir')
+                                            @foreach ($pertemuan as $i => $session)
+                                                @php
+                                                    // dd($i);
+                                                    $index = explode('-', $i)[1];
+                                                    // dd($index);
+                                                @endphp
+
+                                                @if ($item['pertemuan' . $index])
+                                                    @if ($item['pertemuan' . $index] == 'hadir')
                                                         <td class="absen-mark"><img width="20px" class="img-test"
                                                                 src="{{ asset('/assets/img/checkicon.png') }}"
                                                                 alt="" srcset=""></td>
@@ -294,7 +301,7 @@
                                                             style="display: flex; justify-content: center;">X</span>
                                                     </td>
                                                 @endif
-                                            @endfor
+                                            @endforeach
                                             <td></td>
                                         </tr>
                                     @endforeach
@@ -303,10 +310,15 @@
                                             Mahasiswa
                                             Hadir</td>
 
-                                        @for ($i = 0; $i < $jumlah; $i++)
+                                        @foreach ($pertemuan as $i => $session)
+                                            @php
+                                                // dd($i);
+                                                $index = explode('-', $i)[1];
+                                                // dd($index);
+                                            @endphp
                                             <td style="text-align: center; vertical-align: middle;">
-                                                {{ $pertemuan['ke-' . $i + 1] }}</td>
-                                        @endfor
+                                                {{ $pertemuan['ke-' . $index] }}</td>
+                                        @endforeach
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -314,7 +326,7 @@
                                             Dosen
                                             Mata Kuliah</td>
 
-                                        @for ($i = 0; $i < $jumlah; $i++)
+                                        @for ($i = 0; $i < 16; $i++)
                                             <td></td>
                                         @endfor
                                         <td></td>
