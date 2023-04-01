@@ -47,6 +47,7 @@
                                                             class="btn btn-info">Session</a>
                                                         <a href="{{ route('ManagePresence.pdf', $item->classroom->id) }}"
                                                             target="_blank" class="btn btn-info">Pdf</a>
+                                                        <a href="{{ route('ManagePresence.statistik', $item->id) }}," class="btn btn-info">Statistik</a>
                                                     <td>
                                                 </tr>
                                             @endif
