@@ -118,5 +118,5 @@ Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function 
     Route::post('/Manage-presence/pratikum/classrooms/session/presence/student/store/{session_id}/{classrooms_pratikum_id}', [PresencePratikumController::class, 'storeAddStudentToPresence'])->name('ManagePresence.classrooms.pratikum.presence.student.store');
     Route::put('/Manage-presence/pratikum/classrooms/edit/asisten/{classrooms_pratikum_id}', [PresencePratikumController::class, 'editAsistenPratikum'])->name('ManagePresence.classrooms.pratikum.editAsisten');
     Route::put('/Manage-presence/pratikum/classrooms/sessiont/edit/{id}/{classrooms_pratikum_id}', [PresencePratikumController::class, 'updateSession'])->name('ManagePresence.classrooms.pratikum.session.update');
-    Route::delete('/Manage-presence/destroy/{classrooms_pratikum_id}', [PresencePratikumController::class, 'destroy'])->name('ManagePresence.classrooms.pratikum.student.destroy');
+    Route::delete('/Manage-presence/destroy/{id}', [PresencePratikumController::class, 'destroy'])->name('ManagePresence.classrooms.pratikum.student.destroy');
 });
