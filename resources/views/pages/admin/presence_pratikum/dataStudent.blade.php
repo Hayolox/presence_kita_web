@@ -46,7 +46,7 @@
                                 </div>
                                 <a href="{{ route('ManageSubject.dataStudentDownloadTemplate') }}">   <div class="btn btn-primary mt-2 mb-4 mr-3">Download Template</div></a>
                                 <a href="{{ route('ManagePresence.classrooms.pratikum.student.create', $classroomsPratikumId) }}">   <div class="btn btn-primary mt-2 mb-4 mr-3">Tambah Mahasiswa</div></a>
-                                <form action="{{ route('ManageSubject.student', $classroomsPratikumId) }}">
+                                <form action="{{ route('ManagePresence.classrooms.pratikum.student.destroy', $classroomsPratikumId) }}">
                                     <div class="input-group col-12 mb-3 mt-2 mb-4">
                                         <input type="search" name="search" class="form-control rounded" placeholder="Search NIM" aria-label="Search"
                                           aria-describedby="search-addon" />

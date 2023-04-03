@@ -434,4 +434,13 @@ class PresencePratikumController extends Controller
         Alert::success('Succes', 'Student Berhasil Ditambahkan Ke Presensi');
         return back();
     }
+
+    public function destroy($classroomspratikum_id)
+    {
+        $student = student_pratikum::where('course_code', $classroomspratikum_id)->first();
+        $student->delete();
+        Alert::success('Success', 'Data Berhasil Dihapus');
+        return back();
+    }
+
 }
