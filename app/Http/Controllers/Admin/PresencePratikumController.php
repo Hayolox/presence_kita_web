@@ -437,7 +437,7 @@ class PresencePratikumController extends Controller
 
     public function destroy($classroomspratikum_id)
     {
-        $student = student_pratikum::where('course_code', $classroomspratikum_id)->first();
+        $student = student_pratikum::where('classroomspratikum_id', $classroomspratikum_id)->first();
         $student->delete();
         Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
