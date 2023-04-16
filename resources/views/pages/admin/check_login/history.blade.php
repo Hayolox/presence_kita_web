@@ -11,17 +11,15 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Kecurangan</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar History Kecurangan</h6>
                     </div>
                     <div class="card-body">
                         <div class="col-12  d-flex  d-inline d-flex justify-content-end">
-                            <form action="{{ route('check.login') }}">
+                            <form action="{{ route('check.history') }}">
                                 <div class="input-group col-12 mb-3">
                                     <input type="search" name="search" class="form-control rounded"
                                         placeholder="Search NIM" aria-label="Search" aria-describedby="search-addon" />
                                     <button type="submit" class="btn btn-outline-primary">search</button>
-                                    <a type="submit" href="{{ route('check.history') }}"
-                                        class="btn btn-primary ml-2">history</a>
                                 </div>
                             </form>
                         </div>
@@ -32,28 +30,19 @@
                                         <th>No</th>
                                         <th>NIM</th>
                                         <th>Nama</th>
-                                        <th>Action</th>
+                                        <th>Tahun</th>
+                                        <th>Semester</th>
 
                                     </tr>
                                 </thead>
-                                @foreach ($duplicateRecords as $data => $item)
+                                @foreach ($data as $data => $item)
                                     <tbody>
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $item->student_nsn }}</td>
                                             <td>{{ $item->student->name }}</td>
-                                            <td>
-                                                <form action="{{ route('check.login.destroy', $item->student_nsn) }}"
-                                                    method="POST" class="d-inline-block">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit"
-                                                        onclick="return confirm('Yakin untuk menghapus?')"
-                                                        class="btn btn-danger btn-circle btn-lg"><i
-                                                            class="fas fa-trash"></i></button>
-                                                </form>
-                                            </td>
-
+                                            <td>{{ $item->tahun }}</td>
+                                            <td>{{ $item->semester->name }}</td>
                                         </tr>
                                     </tbody>
                                 @endforeach

@@ -40,7 +40,5 @@ class ProcessChangeQrCode implements ShouldQueue
         $session->update([
             'QrCode' => $qrCode,
         ]);
-
-
     }
 }

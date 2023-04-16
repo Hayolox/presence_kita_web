@@ -158,16 +158,11 @@
 
 
                     <div>
-                        {{-- <div style="display: flex; width: 100%;">
-                        <div style="width: 120px;"></div>
-                        <p style="text-align: center; font-size: 14px;  width: 100%;">DAFTAR HADIR KULIAH</p>
-                    </div> --}}
+
 
                         <div style="margin-bottom: 20px;">
                             <table id="list-info" class="list-info ">
-                                {{-- <tr>
-                                    <td colspan="100" style="text-align: center;">DAFTAR HADIR KULIAH</td>
-                                </tr> --}}
+
                                 <tr>
                                     <td>Mata Kuliah</td>
                                     <td>:</td>
@@ -262,11 +257,22 @@
                                 <thead>
 
                                     <tr>
-                                        <th>No</th>
-                                        <th>NIM</th>
-                                        <th>NAMA MAHASISWA</th>
+                                        <th rowspan="2">No</th>
+                                        <th rowspan="2">NIM</th>
+                                        <th rowspan="2">NAMA MAHASISWA</th>
                                         <th colspan="16">Paraf Kehadiran Tanggal</th>
-                                        <th>Catatan</th>
+                                        <th rowspan="2">Catatan</th>
+                                    </tr>
+                                    <tr>
+
+                                        @foreach ($pertemuan as $i => $session)
+                                            @php
+                                                
+                                                $index = explode('-', $i)[1];
+                                                
+                                            @endphp
+                                            <th>{{ $index }}</th>
+                                        @endforeach
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -278,9 +284,9 @@
                                             <td>{{ $item->student->name }}</td>
                                             @foreach ($pertemuan as $i => $session)
                                                 @php
-                                                    // dd($i);
+                                                    
                                                     $index = explode('-', $i)[1];
-                                                    // dd($index);
+                                                    
                                                 @endphp
 
                                                 @if ($item['pertemuan' . $index])
@@ -509,8 +515,6 @@
                         }
                     }
                     // },
-
-
                     // verticalPageBreakRepeat: 'id',
                 }
 

@@ -52,6 +52,9 @@ Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function 
 
 
     Route::get('/Check-Login', [CheckLoginController::class, 'index'])->name('check.login');
+    Route::get('/Check-Login/History', [CheckLoginController::class, 'history'])->name('check.history');
+
+
     Route::delete('/check-login/{id}', [CheckLoginController::class, 'destroy'])->name('check.login.destroy');
 
     Route::resource('/ManageSubject', ManageSubjectsController::class);
@@ -93,6 +96,7 @@ Route::prefix('Admin')->middleware('auth:web,lecturer,student')->group(function 
     Route::get('/Manage-presence/{id}/{classrooms_id}', [PresenceController::class, 'presence'])->name('ManagePresence.presence');
     Route::get('/Manage-presence/add/to/presence/{id}/{classrooms_id}', [PresenceController::class, 'addStudentToPresence'])->name('ManagePresence.presence.add.student');
     Route::post('/Manage-presence/store/to/presence/{id}/{classrooms_id}', [PresenceController::class, 'storeAddStudentToPresence'])->name('ManagePresence.presence.store.student');
+    Route::get('/Manage-presence/Qr-Code/get/{id}', [PresenceController::class, 'getqRCode'])->name('ManagePresence.GetQrCode');
     Route::get('/Manage-presence/Qr-Code/{id}/{QrCode}', [PresenceController::class, 'qRCode'])->name('ManagePresence.QrCode');
 
 
