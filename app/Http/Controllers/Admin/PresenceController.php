@@ -53,8 +53,11 @@ class PresenceController extends Controller
             }])->where('lecturer_nip',  strval(Auth::user()->nip))->paginate(10);
         }
 
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
 
-        return view('pages.admin.presence.index', compact('subjects'));
+
+        return view('pages.admin.presence.index', compact('subjects', 'setting'));
     }
 
     public function classroom($subject_course_code)
@@ -69,9 +72,13 @@ class PresenceController extends Controller
             }])->where('lecturer_nip', strval(Auth::user()->nip))->paginate(10);
         }
 
+        $subject = subject::where('course_code', $subject_course_code)->first();
+
+        // dd($subject);
 
 
-        return view('pages.admin.presence.classrooms', compact('classrooms', 'subject_course_code'));
+
+        return view('pages.admin.presence.classrooms', compact('classrooms', 'subject_course_code', 'subject'));
     }
 
     public function statistik($classrooms_id)
@@ -135,8 +142,9 @@ class PresenceController extends Controller
 
         $countIzin = presence::where('classrooms_id', $classrooms_id)->where('status', 'proses')->count();
 
+        $classroom = classroom::where('id', $classrooms_id)->first();
 
-        return view('pages.admin.presence.session', compact('session', 'classrooms_id', 'countIzin', 'countSession'));
+        return view('pages.admin.presence.session', compact('session', 'classrooms_id', 'countIzin', 'countSession', 'classroom'));
     }
 
     public function pdf($classrooms_id)
@@ -437,18 +445,18 @@ class PresenceController extends Controller
             check_que::create([
                 'QrCode' => $qrCode
             ]);
-            $job = new ProcessChangeQrCode($id, $qrCode);
+            $job = new ProcessChangeQrCode($id, $qrCode, 'kuliah');
 
             $queue = Queue::getFacadeRoot();
             $count = $queue->size();
 
             if ($count > 1) {
-                ProcessChangeQrCode::dispatch($id, $qrCode)->delay(now()->addMinutes(1));
+                ProcessChangeQrCode::dispatch($id, $qrCode, 'kuliah')->delay(now()->addMinutes(1));
             } elseif ($count > 2) {
-                ProcessChangeQrCode::dispatch($id, $qrCode);
+                ProcessChangeQrCode::dispatch($id, $qrCode, 'kuliah');
             } else {
 
-                ProcessChangeQrCode::dispatch($id, $qrCode)->delay(now()->addMinutes($setting->count_down_qrcode));
+                ProcessChangeQrCode::dispatch($id, $qrCode, 'kuliah')->delay(now()->addMinutes($setting->count_down_qrcode));
             }
         }
         $session = session::where('id', $id)->where('QrCode', $qrCode)->firstOrFail();

@@ -15,7 +15,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Session</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Session {{ $classroom->subject->full_name }}
+                            {{ $classroom->name }}</h6>
                     </div>
                     <div class="card-body">
                         <div class="col-12  d-flex  d-inline d-flex justify-content-end">
@@ -59,7 +60,8 @@
                                                 <a onclick="test(this,'{{ $item->id }}')"
                                                     style="{{ $item->date == date('Y-m-d') ? '' : 'pointer-events: none; opacity: 0.5;' }}"
                                                     href="{{ route('ManagePresence.QrCode', [$item->id, $item->QrCode]) }}"
-                                                    target="_blank" class="btn btn-secondary "
+                                                    target="_blank"
+                                                    class="btn {{ $item->date == date('Y-m-d') ? 'btn-success' : 'btn-secondary' }} "
                                                     idqrcode="{{ $item->QrCode }}">Qr-Code</a>
                                             </td>
                                             <td>

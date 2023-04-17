@@ -11,7 +11,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Dosen Pengajar</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar Dosen Pengajar
+                            {{ $classroom->subject->full_name }} {{ $classroom->name }}</h6>
                     </div>
                     <div class="card-body">
 
@@ -30,7 +31,8 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Tambah Data Dosen Pengajar</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Tambah Data Dosen Pengajar
+                                                {{ $classroom->subject->full_name }} {{ $classroom->name }}</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>

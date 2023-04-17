@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\check_que;
 use App\Models\session;
+use App\Models\sessionpratikum;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Queue;
@@ -17,14 +18,15 @@ class ProcessChangeQrCode implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $id, $qrCode;
+    protected $id, $qrCode, $type;
 
 
 
-    public function __construct($id, $qrCode)
+    public function __construct($id, $qrCode, $type)
     {
         $this->id = $id;
         $this->qrCode = $qrCode;
+        $this->type = $type;
     }
 
     /**
@@ -36,7 +38,12 @@ class ProcessChangeQrCode implements ShouldQueue
     {
         $qrCode = Str::random(20);
         check_que::where('QrCode', $this->qrCode)->delete();
-        $session = session::findOrFail($this->id);
+        if ($this->type == 'praktikum') {
+            $session = sessionpratikum::findOrFail($this->id);
+        } else {
+
+            $session = session::findOrFail($this->id);
+        }
         $session->update([
             'QrCode' => $qrCode,
         ]);

@@ -28,28 +28,45 @@ class ManageSubjectsController extends Controller
     {
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
-        $subjects = subject::where('semester_id',$setting->semester_id)
-                            ->orWhere('semester_id', 3)
-                            ->paginate(10);
+        $subjects = subject::where('semester_id', $setting->semester_id)
+            ->orWhere('semester_id', 3)
+            ->paginate(10);
 
-        if($request->has('search'))
-        {
-            $subjects = subject::where('full_name', 'LIKE', '%' .$request->search. '%')->paginate(10);
+        if ($request->has('search')) {
+            $subjects = subject::where('full_name', 'LIKE', '%' . $request->search . '%')->paginate(10);
         }
-        return view('pages.admin.manage_subject.index', compact('subjects'));
+
+        foreach ($subjects as $index => $value) {
+            $jumlah = student_subject::join('classrooms', 'classrooms.id', '=', 'student_subjects.classrooms_id')->where('subject_course_code', $value->course_code)->count();
+            $subjects[$index]->jumlah = $jumlah;
+        }
+
+        // dd($subjects);
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+
+        // dd($setting);
+
+        return view('pages.admin.manage_subject.index', compact('subjects', 'setting'));
     }
 
 
-    public function classroom($subject_course_code){
-      $classrooms = classroom::where('subject_course_code', $subject_course_code)->paginate(10);
-      return view('pages.admin.manage_subject.classrooms', compact('classrooms', 'subject_course_code'));
+    public function classroom($subject_course_code)
+    {
+        $classrooms = classroom::where('subject_course_code', $subject_course_code)->paginate(10);
+        $subject = subject::where('course_code', $subject_course_code)->first();
+        // dd($test);
+        return view('pages.admin.manage_subject.classrooms', compact('classrooms', 'subject_course_code', 'subject'));
     }
 
-    public function createClassroom($subject_course_code){
-        return view('pages.admin.manage_subject.create_classroom', compact('subject_course_code'));
+    public function createClassroom($subject_course_code)
+    {
+        $subject = subject::where('course_code', $subject_course_code)->first();
+        return view('pages.admin.manage_subject.create_classroom', compact('subject_course_code', 'subject'));
     }
 
-    public function storeClassromm($subject_course_code, Request $request){
+    public function storeClassromm($subject_course_code, Request $request)
+    {
         $request->validate([
             'name' => 'required',
 
@@ -83,7 +100,7 @@ class ManageSubjectsController extends Controller
     {
         $majors = major::get();
         $semesters = semester::get();
-        return view('pages.admin.manage_subject.create', compact('majors','semesters'));
+        return view('pages.admin.manage_subject.create', compact('majors', 'semesters'));
     }
 
     /**
@@ -100,21 +117,21 @@ class ManageSubjectsController extends Controller
             'nickname' => 'required',
             'major_id' => 'required|numeric',
             'semester_id' => 'required|numeric',
-       ],[
-          'major_id.numeric' => 'The majors field is required.',
-          'semester_id.numeric' => 'The semesters field is required.',
-       ]);
+        ], [
+            'major_id.numeric' => 'The majors field is required.',
+            'semester_id.numeric' => 'The semesters field is required.',
+        ]);
 
 
-       subject::create([
-        'course_code' => $request->course_code,
-        'full_name' => $request->full_name,
-        'nickname' => $request->nickname,
-        'major_id' => $request->major_id,
-        'semester_id' => $request->semester_id,
-       ]);
-       Alert::success('Success', 'Data Berhasil Ditambahkan');
-       return back();
+        subject::create([
+            'course_code' => $request->course_code,
+            'full_name' => $request->full_name,
+            'nickname' => $request->nickname,
+            'major_id' => $request->major_id,
+            'semester_id' => $request->semester_id,
+        ]);
+        Alert::success('Success', 'Data Berhasil Ditambahkan');
+        return back();
     }
 
     /**
@@ -139,7 +156,7 @@ class ManageSubjectsController extends Controller
         $majors = major::get();
         $semesters = semester::get();
         $subject = subject::findOrFail($id);
-        return view('pages.admin.manage_subject.edit', compact('majors','semesters','subject'));
+        return view('pages.admin.manage_subject.edit', compact('majors', 'semesters', 'subject'));
     }
 
     /**
@@ -154,8 +171,8 @@ class ManageSubjectsController extends Controller
         $subject = subject::findOrFail($id);
 
         $check = subject::where('course_code', $request->course_code)->first();
-        if($check){
-            if($subject->course_code != $request->course_code){
+        if ($check) {
+            if ($subject->course_code != $request->course_code) {
                 Alert::alert('Fail', 'Course Code Tidak Boleh Sama');
                 return redirect()->route('ManageSubject.index');
             }
@@ -166,16 +183,16 @@ class ManageSubjectsController extends Controller
             'full_name' => 'required',
             'nickname' => 'required',
             'sks' => 'required',
-       ]);
+        ]);
 
-       $subject->update([
-        'course_code' => $request->course_code,
-        'full_name' => $request->full_name,
-        'nickname' => $request->nickname,
-        'sks' => $request->sks,
-       ]);
-       Alert::success('Success', 'Data Berhasil Diedit');
-       return redirect()->route('ManageSubject.index');
+        $subject->update([
+            'course_code' => $request->course_code,
+            'full_name' => $request->full_name,
+            'nickname' => $request->nickname,
+            'sks' => $request->sks,
+        ]);
+        Alert::success('Success', 'Data Berhasil Diedit');
+        return redirect()->route('ManageSubject.index');
     }
 
     /**
@@ -192,91 +209,99 @@ class ManageSubjectsController extends Controller
         return back();
     }
 
-    public function dataLecturer($classrooms_id){
+    public function dataLecturer($classrooms_id)
+    {
 
         $duplicates = lecturer_subject::select('lecturer_nip', 'classrooms_id')
-        ->selectRaw('COUNT(*) as count')
-        ->groupBy('lecturer_nip', 'classrooms_id')
-        ->having('count', '>', 1)
-        ->get();
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('lecturer_nip', 'classrooms_id')
+            ->having('count', '>', 1)
+            ->get();
 
         foreach ($duplicates as $duplicate) {
             lecturer_subject::where('lecturer_nip', $duplicate->lecturer_nip)
                 ->where('classrooms_id', $duplicate->classrooms_id)
-                ->whereNotIn('id', function($query) use ($duplicate) {
+                ->whereNotIn('id', function ($query) use ($duplicate) {
                     $query->selectRaw('MIN(id)')
                         ->from('lecturer_subjects')
                         ->where('lecturer_nip', $duplicate->lecturer_nip)
                         ->where('classrooms_id', $duplicate->classrooms_id);
-        })->delete();
-    }
+                })->delete();
+        }
         $lecturers = lecturer_subject::where('classrooms_id', $classrooms_id)->paginate(10);
         $lecturerss = lecturer::get();
-        return view('pages.admin.manage_subject.dataLecturer', compact('lecturers','classrooms_id','lecturerss'));
+
+        $classroom = classroom::where('id', $classrooms_id)->first();
+
+        return view('pages.admin.manage_subject.dataLecturer', compact('lecturers', 'classrooms_id', 'lecturerss', 'classroom'));
     }
 
-    public function dataLecturerStore(Request $request, $classrooms_id){
+    public function dataLecturerStore(Request $request, $classrooms_id)
+    {
 
-        if($request->lecturer_nip == 0){
+        if ($request->lecturer_nip == 0) {
             Alert::warning('Warning ', 'Harus Memilih Dosen');
-        }else{
+        } else {
             lecturer_subject::create([
                 'lecturer_nip' => $request->lecturer_nip,
                 'classrooms_id' => $classrooms_id,
             ]);
         }
-         return back();
+        return back();
     }
 
 
-    public function dataLecturerDestroy($id){
+    public function dataLecturerDestroy($id)
+    {
         $lecturers = lecturer_subject::findOrFail($id);
         $lecturers->delete();
         Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
     }
 
-    public function dataStudent(Request $request, $classrooms_id){
-
-
-
-
+    public function dataStudent(Request $request, $classrooms_id)
+    {
         $duplicates = student_subject::select('student_nsn', 'classrooms_id')
-                ->selectRaw('COUNT(*) as count')
-                ->groupBy('student_nsn', 'classrooms_id')
-                ->having('count', '>', 1)
-                ->get();
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('student_nsn', 'classrooms_id')
+            ->having('count', '>', 1)
+            ->get();
 
-                foreach ($duplicates as $duplicate) {
-                    student_subject::where('student_nsn', $duplicate->student_nsn)
-                        ->where('classrooms_id', $duplicate->classrooms_id)
-                        ->whereNotIn('id', function($query) use ($duplicate) {
-                            $query->selectRaw('MIN(id)')
-                                ->from('student_subjects')
-                                ->where('student_nsn', $duplicate->student_nsn)
-                                ->where('classrooms_id', $duplicate->classrooms_id);
+        foreach ($duplicates as $duplicate) {
+            student_subject::where('student_nsn', $duplicate->student_nsn)
+                ->where('classrooms_id', $duplicate->classrooms_id)
+                ->whereNotIn('id', function ($query) use ($duplicate) {
+                    $query->selectRaw('MIN(id)')
+                        ->from('student_subjects')
+                        ->where('student_nsn', $duplicate->student_nsn)
+                        ->where('classrooms_id', $duplicate->classrooms_id);
                 })->delete();
-            }
+        }
 
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
 
         $students = student_subject::where('classrooms_id', $classrooms_id)->where('year',  $setting->year)->paginate(10);
 
-        if($request->has('search'))
-        {
-            $students = student_subject::where('student_nsn', 'LIKE', '%' .$request->search. '%')->where('classrooms_id', $classrooms_id)->paginate(10);
+        if ($request->has('search')) {
+            $students = student_subject::where('student_nsn', 'LIKE', '%' . $request->search . '%')->where('classrooms_id', $classrooms_id)->paginate(10);
         }
 
-        return view('pages.admin.manage_subject.dataStudent', compact('students','classrooms_id'));
+        $classroom = classroom::where('id', $classrooms_id)->first();
+        // dd($classroom->subject->full_name);
+
+        return view('pages.admin.manage_subject.dataStudent', compact('students', 'classrooms_id', 'classroom'));
     }
 
-    public function dataStudentCreate($classrooms_id){
+    public function dataStudentCreate($classrooms_id)
+    {
+        $classroom = classroom::where('id', $classrooms_id)->first();
 
-        return view('pages.admin.manage_subject.dataStudentCreate', compact('classrooms_id'));
+        return view('pages.admin.manage_subject.dataStudentCreate', compact('classrooms_id', 'classroom'));
     }
 
-    public function dataStudentStore($classrooms_id, Request $request){
+    public function dataStudentStore($classrooms_id, Request $request)
+    {
         $request->validate([
             'student_nsn' => 'required'
         ]);
@@ -285,7 +310,7 @@ class ManageSubjectsController extends Controller
         $setting = setting::findOrfail($lastSetting->id);
 
         student_subject::create([
-            'student_nsn' =>$request->student_nsn,
+            'student_nsn' => $request->student_nsn,
             'classrooms_id' => $classrooms_id,
             'year' => $setting->year
         ]);
@@ -305,17 +330,17 @@ class ManageSubjectsController extends Controller
         return back();
     }
 
-    public function downloadTemplate(){
+    public function downloadTemplate()
+    {
         $templatePath = public_path('template/template_import_student_to_subject.xlsx');
         return response()->download($templatePath, 'template_untuk_import_mahasisswa_ke_matakuliah.xlsx');
     }
 
-    public function dataStudentDestroy($id){
+    public function dataStudentDestroy($id)
+    {
         $lecturers = student_subject::findOrFail($id);
         $lecturers->delete();
         Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
     }
-
-
 }

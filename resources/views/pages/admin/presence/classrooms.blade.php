@@ -11,7 +11,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Kelas</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar Kelas {{ $subject->full_name }}</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -24,19 +24,22 @@
 
                                     </tr>
                                 </thead>
-                                @foreach ( $classrooms  as $data => $item )
-                                <tbody>
-                                    @if (auth()->guard('web')->check())
-                                        <tr>
-                                            <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
-                                            <td>{{ $item->name}}</td>
-                                            <td>
-                                                <a href="{{ route('ManagePresence.session', $item->id) }}" class="btn btn-info">Session</a>
-                                                <a href="{{ route('ManagePresence.pdf',$item->id) }}" class="btn btn-info">Pdf</a>
-                                                <a href="{{ route('ManagePresence.statistik', $item->id) }}," class="btn btn-info">Statistik</a>
-                                            <td>
-                                        </tr>
-                                    @endif
+                                @foreach ($classrooms as $data => $item)
+                                    <tbody>
+                                        @if (auth()->guard('web')->check())
+                                            <tr>
+                                                <th scope="row">{{ $classrooms->firstItem() + $data }}</th>
+                                                <td>{{ $item->name }}</td>
+                                                <td>
+                                                    <a href="{{ route('ManagePresence.session', $item->id) }}"
+                                                        class="btn btn-info">Session</a>
+                                                    <a href="{{ route('ManagePresence.pdf', $item->id) }}"
+                                                        class="btn btn-info">Pdf</a>
+                                                    <a href="{{ route('ManagePresence.statistik', $item->id) }},"
+                                                        class="btn btn-info">Statistik</a>
+                                                <td>
+                                            </tr>
+                                        @endif
 
                                         @if (auth()->guard('lecturer')->check())
                                             @if ($item->classroom->subject_course_code == $subject_course_code)
@@ -48,7 +51,8 @@
                                                             class="btn btn-info">Session</a>
                                                         <a href="{{ route('ManagePresence.pdf', $item->classroom->id) }}"
                                                             target="_blank" class="btn btn-info">Pdf</a>
-                                                        <a href="{{ route('ManagePresence.statistik', $item->id) }}," class="btn btn-info">Statistik</a>
+                                                        <a href="{{ route('ManagePresence.statistik', $item->id) }},"
+                                                            class="btn btn-info">Statistik</a>
                                                     <td>
                                                 </tr>
                                             @endif

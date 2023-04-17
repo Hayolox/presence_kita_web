@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
-       <!-- Content Wrapper -->
-       <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
         <div id="content">
@@ -19,7 +19,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-2">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Tambah Mahasiswa</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Tambah Mahasiswa
+                            {{ $classroom->subject->full_name . ' ' . $classroom->name }}</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -27,12 +28,12 @@
                                 @csrf
 
                                 <div class="mb-3">
-                                  <label  class="form-label">NIM</label>
-                                  <input type="text" name="student_nsn" class="form-control">
+                                    <label class="form-label">NIM</label>
+                                    <input type="text" name="student_nsn" class="form-control">
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
-                              </form>
+                            </form>
                         </div>
                     </div>
                 </div>

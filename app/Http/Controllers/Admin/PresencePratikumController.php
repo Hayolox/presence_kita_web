@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Imports\StudentPratikumImport;
 use App\Jobs\ProcessChangeQrCode;
+use App\Jobs\ProcessChangeQrCodePraktikum;
 use App\Models\asistantpratikum;
 use App\Models\check_que;
 use App\Models\classroom;
@@ -28,48 +29,58 @@ use Illuminate\Support\Facades\Storage;
 
 class PresencePratikumController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
 
-        if(auth()->guard('web')->check()){
+        if (auth()->guard('web')->check()) {
 
-            $subjects = subject::where('semester_id',$setting->semester_id)->where('is_pratikum', true)
-            ->orWhere('semester_id', 3)
-            ->paginate(10);
+            $subjects = subject::where('semester_id', $setting->semester_id)->where('is_pratikum', true)
+                ->orWhere('semester_id', 3)
+                ->paginate(10);
         }
 
-        if(auth()->guard('student')->check()){
+        if (auth()->guard('student')->check()) {
             $subjects = asistantpratikum::with(['classroompratikum.subject' => function ($query) {
-                    $lastSetting = setting::all()->last();
-                    $setting = setting::findOrFail($lastSetting->id);
-                    $query->where('semester_id', $setting->semester_id)->orWhere('semester_id', 3);
-            }])->where('student_nsn', strval(Auth::user()->nsn))->paginate(10);
-        }
-
-        return view('pages.admin.presence_pratikum.index', compact('subjects'));
-    }
-
-    public function classroom($subject_course_code){
-        $classrooms = classroomspratikum::where('subject_course_code', $subject_course_code)->paginate(10);
-
-        if(auth()->guard('web')->check()){
-            $classrooms = classroomspratikum::where('subject_course_code', $subject_course_code)->paginate(10);
-        }else{
-        $classrooms = asistantpratikum::with(['classroompratikum.subject' => function ($query) {
                 $lastSetting = setting::all()->last();
                 $setting = setting::findOrFail($lastSetting->id);
                 $query->where('semester_id', $setting->semester_id)->orWhere('semester_id', 3);
-        }])->where('student_nsn', strval(Auth::user()->nsn))->paginate(10);
+            }])->where('student_nsn', strval(Auth::user()->nsn))->paginate(10);
         }
-        return view('pages.admin.presence_pratikum.classrooms', compact('classrooms','subject_course_code'));
+
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
+
+        return view('pages.admin.presence_pratikum.index', compact('subjects', 'setting'));
     }
 
-    public function createClassroom($subject_course_code){
-        return view('pages.admin.presence_pratikum.create_classroom', compact('subject_course_code'));
+    public function classroom($subject_course_code)
+    {
+        $classrooms = classroomspratikum::where('subject_course_code', $subject_course_code)->paginate(10);
+
+        if (auth()->guard('web')->check()) {
+            $classrooms = classroomspratikum::where('subject_course_code', $subject_course_code)->paginate(10);
+        } else {
+            $classrooms = asistantpratikum::with(['classroompratikum.subject' => function ($query) {
+                $lastSetting = setting::all()->last();
+                $setting = setting::findOrFail($lastSetting->id);
+                $query->where('semester_id', $setting->semester_id)->orWhere('semester_id', 3);
+            }])->where('student_nsn', strval(Auth::user()->nsn))->paginate(10);
+        }
+        $subject = subject::where('course_code', $subject_course_code)->first();
+
+        return view('pages.admin.presence_pratikum.classrooms', compact('classrooms', 'subject_course_code', 'subject'));
     }
 
-    public function storeClassromm($subject_course_code, Request $request){
+    public function createClassroom($subject_course_code)
+    {
+        $subject = subject::where('course_code', $subject_course_code)->first();
+        return view('pages.admin.presence_pratikum.create_classroom', compact('subject_course_code', 'subject'));
+    }
+
+    public function storeClassromm($subject_course_code, Request $request)
+    {
 
         $request->validate([
             'name' => 'required',
@@ -85,16 +96,17 @@ class PresencePratikumController extends Controller
         return back();
     }
 
-    public function addAsistenPratikum($classroomsPratikumId, Request $request){
+    public function addAsistenPratikum($classroomsPratikumId, Request $request)
+    {
 
-        if(!$request->nim){
+        if (!$request->nim) {
             Alert::info('Info', 'Harus Input Nim');
             return back();
         }
 
         $student = student::where('nsn', $request->nim)->first();
 
-        if(!$student){
+        if (!$student) {
             Alert::info('Info', 'Student Tidak Ditemukan');
             return back();
         }
@@ -107,16 +119,17 @@ class PresencePratikumController extends Controller
         return back();
     }
 
-    public function editAsistenPratikum($classroomsPratikumId, Request $request){
+    public function editAsistenPratikum($classroomsPratikumId, Request $request)
+    {
 
-        if(!$request->nim){
+        if (!$request->nim) {
             Alert::info('Info', 'Harus Input Nim');
             return back();
         }
 
         $student = student::where('nsn', $request->nim)->first();
 
-        if(!$student){
+        if (!$student) {
             Alert::info('Info', 'Student Tidak Ditemukan');
             return back();
         }
@@ -131,46 +144,52 @@ class PresencePratikumController extends Controller
         return back();
     }
 
-    public function dataStudent(Request $request, $classroomsPratikumId){
+    public function dataStudent(Request $request, $classroomsPratikumId)
+    {
 
         $duplicates = student_pratikum::select('student_nsn', 'classroomspratikum_id')
-                ->selectRaw('COUNT(*) as count')
-                ->groupBy('student_nsn', 'classroomspratikum_id')
-                ->having('count', '>', 1)
-                ->get();
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('student_nsn', 'classroomspratikum_id')
+            ->having('count', '>', 1)
+            ->get();
 
-                foreach ($duplicates as $duplicate) {
-                    student_pratikum::where('student_nsn', $duplicate->student_nsn)
-                        ->where('classroomspratikum_id', $duplicate->classroomspratikum_id)
-                        ->whereNotIn('id', function($query) use ($duplicate) {
-                            $query->selectRaw('MIN(id)')
-                                ->from('student_pratikums')
-                                ->where('student_nsn', $duplicate->student_nsn)
-                                ->where('classroomspratikum_id', $duplicate->classroomspratikum_id);
+        foreach ($duplicates as $duplicate) {
+            student_pratikum::where('student_nsn', $duplicate->student_nsn)
+                ->where('classroomspratikum_id', $duplicate->classroomspratikum_id)
+                ->whereNotIn('id', function ($query) use ($duplicate) {
+                    $query->selectRaw('MIN(id)')
+                        ->from('student_pratikums')
+                        ->where('student_nsn', $duplicate->student_nsn)
+                        ->where('classroomspratikum_id', $duplicate->classroomspratikum_id);
                 })->delete();
-            }
+        }
 
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
 
         $students = student_pratikum::where('classroomspratikum_id', $classroomsPratikumId)->where('year',  $setting->year)->paginate(10);
 
-        if($request->has('search'))
-        {
-            $students = student_pratikum::where('student_nsn', 'LIKE', '%' .$request->search. '%')->where('classroomspratikum_id', $classroomsPratikumId)->paginate(10);
+        if ($request->has('search')) {
+            $students = student_pratikum::where('student_nsn', 'LIKE', '%' . $request->search . '%')->where('classroomspratikum_id', $classroomsPratikumId)->paginate(10);
         }
 
+        $praktikum = classroomspratikum::where('id', $classroomsPratikumId)->first();
 
 
-        return view('pages.admin.presence_pratikum.dataStudent', compact('students','classroomsPratikumId'));
+
+        return view('pages.admin.presence_pratikum.dataStudent', compact('students', 'classroomsPratikumId', 'praktikum'));
     }
 
-    public function dataStudentCreate($classroomsPratikumId){
+    public function dataStudentCreate($classroomsPratikumId)
+    {
 
-        return view('pages.admin.presence_pratikum.dataStudentCreate', compact('classroomsPratikumId'));
+        $praktikum = classroomspratikum::where('id', $classroomsPratikumId)->first();
+
+        return view('pages.admin.presence_pratikum.dataStudentCreate', compact('classroomsPratikumId', 'praktikum'));
     }
 
-    public function dataStudentStore($classroomsPratikumId, Request $request){
+    public function dataStudentStore($classroomsPratikumId, Request $request)
+    {
 
         $request->validate([
             'nsn' => 'required'
@@ -181,13 +200,13 @@ class PresencePratikumController extends Controller
 
         $student = student::where('nsn', $request->nsn)->first();
 
-        if(!$student){
+        if (!$student) {
             Alert::info('Info', 'Data Student Tidak Ditemukan');
             return back();
         }
 
         student_pratikum::create([
-            'student_nsn' =>$request->nsn,
+            'student_nsn' => $request->nsn,
             'classroomspratikum_id' => $classroomsPratikumId,
             'year' => $setting->year
         ]);
@@ -207,67 +226,71 @@ class PresencePratikumController extends Controller
         return back();
     }
 
-    public function session($classroomsPratikumId){
+    public function session($classroomsPratikumId)
+    {
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
         $session = sessionpratikum::where('classroomspratikum_id', $classroomsPratikumId)
-                    ->where('semester_id', $setting->semester_id)
-                    ->where('year', $setting->year)->paginate(10);
+            ->where('semester_id', $setting->semester_id)
+            ->where('year', $setting->year)->paginate(10);
         $countSession = sessionpratikum::where('classroomspratikum_id', $classroomsPratikumId)
-                    ->where('semester_id', $setting->semester_id)
-                    ->where('year', $setting->year)->count();
+            ->where('semester_id', $setting->semester_id)
+            ->where('year', $setting->year)->count();
 
         $countIzin = presence_pratikum::where('classroomspratikum_id', $classroomsPratikumId)->where('status', 'proses')->count();
 
+        $praktikum = classroomspratikum::where('id', $classroomsPratikumId)->first();
 
-        return view('pages.admin.presence_pratikum.session', compact('session','classroomsPratikumId', 'countIzin','countSession'));
+        return view('pages.admin.presence_pratikum.session', compact('session', 'classroomsPratikumId', 'countIzin', 'countSession', 'praktikum'));
     }
 
-    public function izin($classroomsPratikumId){
+    public function izin($classroomsPratikumId)
+    {
 
-       $presence = presence_pratikum::where('classroomspratikum_id', $classroomsPratikumId)->where('status', 'proses')->paginate();
-       return view('pages.admin.presence_pratikum.izin', compact('presence','classroomsPratikumId'));
+        $presence = presence_pratikum::where('classroomspratikum_id', $classroomsPratikumId)->where('status', 'proses')->paginate();
+        return view('pages.admin.presence_pratikum.izin', compact('presence', 'classroomsPratikumId'));
     }
 
-    public function confirmIzin($sessionId, $useriId, $number){
+    public function confirmIzin($sessionId, $useriId, $number)
+    {
 
         $presence = presence_pratikum::where('session_pratikum_id', $sessionId)->where('student_nsn', $useriId)->first();
         $file = file_pratikum::where('session_pratikum_id', $sessionId)->where('student_nsn', $useriId)->first();
         $path = 'public/' . $file->path;
 
-       if($number == 1){
-        $filename = basename($path);
-        return Storage::download($path, $filename, ['Content-Type' => 'application/pdf']);
+        if ($number == 1) {
+            $filename = basename($path);
+            return Storage::download($path, $filename, ['Content-Type' => 'application/pdf']);
+        }
 
-       }
+        if ($number == 2) {
+            $presence->update([
+                'status' => 'izin',
+            ]);
+            Storage::delete($path);
+            $file->delete();
 
-       if($number == 2){
-        $presence->update([
-            'status' => 'izin',
-        ]);
-        Storage::delete($path);
-        $file->delete();
+            Alert::success('Success', 'Surat Diterima');
+        }
 
-        Alert::success('Success', 'Surat Diterima');
-       }
-
-       if($number == 3){
+        if ($number == 3) {
             $presence->delete();
             Storage::delete($path);
             $file->delete();
             Alert::success('Success', 'Surat Ditolak');
-       }
+        }
 
-       return back();
-
+        return back();
     }
 
-    public function createSession($classroomsPratikumId){
+    public function createSession($classroomsPratikumId)
+    {
         $rooms = room::get();
-        return view('pages.admin.presence_pratikum.create', compact('rooms','classroomsPratikumId'));
+        return view('pages.admin.presence_pratikum.create', compact('rooms', 'classroomsPratikumId'));
     }
 
-    public function storeSession(Request $request, $classroomsPratikumId){
+    public function storeSession(Request $request, $classroomsPratikumId)
+    {
 
         $request->validate([
             'title' => 'required',
@@ -284,28 +307,28 @@ class PresencePratikumController extends Controller
         $year = $setting->year;
         $qrCode = Str::random(20);
 
-        $asisten = asistantpratikum::where('classroomspratikum_id',$classroomsPratikumId)->first();
+        $asisten = asistantpratikum::where('classroomspratikum_id', $classroomsPratikumId)->first();
 
         $session = sessionpratikum::where('classroomspratikum_id', $classroomsPratikumId)->latest()->first();
-            $date = $session ? $session->date : $request->date;
-            for( $i = 1; $i <= 5; $i++){
-                if($i > 1){
-                    $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
-                }
-                sessionpratikum::create([
-                    'QrCode' => $qrCode,
-                    'title' => $request->title,
-                    'start' => $request->start,
-                    'finish' => $request->finish,
-                    'date' => $date,
-                    'student_nsn' =>  $asisten->student_nsn,
-                    'semester_id' => $semester_id,
-                    'classroomspratikum_id' => $classroomsPratikumId,
-                    'year' => $year,
-                    'room_id' => $request->room_id,
-                    'geolocation' => $request->geolocation,
-                ]);
+        $date = $session ? $session->date : $request->date;
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i > 1) {
+                $date = Carbon::parse($date)->addDays(7)->format('Y-m-d');
             }
+            sessionpratikum::create([
+                'QrCode' => $qrCode,
+                'title' => $request->title,
+                'start' => $request->start,
+                'finish' => $request->finish,
+                'date' => $date,
+                'student_nsn' =>  $asisten->student_nsn,
+                'semester_id' => $semester_id,
+                'classroomspratikum_id' => $classroomsPratikumId,
+                'year' => $year,
+                'room_id' => $request->room_id,
+                'geolocation' => $request->geolocation,
+            ]);
+        }
 
 
 
@@ -313,14 +336,16 @@ class PresencePratikumController extends Controller
         return redirect()->route('ManagePresence.classrooms.pratikum.session', ['classrooms_pratikum_id' => $classroomsPratikumId]);
     }
 
-    public function editSession($id,$classroomsPratikumId){
+    public function editSession($id, $classroomsPratikumId)
+    {
 
         $session = sessionpratikum::findOrFail($id);
         $rooms = room::get();
-       return view('pages.admin.presence_pratikum.edit', compact('session','rooms','classroomsPratikumId'));
+        return view('pages.admin.presence_pratikum.edit', compact('session', 'rooms', 'classroomsPratikumId'));
     }
 
-    public function updateSession($id,$classroomsPratikumId, Request $request){
+    public function updateSession($id, $classroomsPratikumId, Request $request)
+    {
 
         $session = sessionpratikum::findOrFail($id);
         $request->validate([
@@ -346,44 +371,46 @@ class PresencePratikumController extends Controller
         return redirect()->route('ManagePresence.classrooms.pratikum.session', ['classrooms_pratikum_id' => $classroomsPratikumId]);
     }
 
-    public function presence($id, $classroomsPratikumId){
+    public function presence($id, $classroomsPratikumId)
+    {
 
         $students = presence_pratikum::where('session_pratikum_id', $id)->paginate(10);
         return view('pages.admin.presence_pratikum.presence', compact('students', 'classroomsPratikumId', 'id'));
     }
 
-    public function addStudentToPresence($session_id, $classroomsPratikumId){
+    public function addStudentToPresence($session_id, $classroomsPratikumId)
+    {
         return view('pages.admin.presence_pratikum.add_student_to_session', compact('session_id', 'classroomsPratikumId'));
     }
 
-    public function qRCode($id, $qrCode){
-
+    public function qRCode($id, $qrCode)
+    {
+        // dd('praktikum');
         $countQue = check_que::where('QrCode', $qrCode)->count();
 
         $lastSetting = setting::all()->last();
         $setting = setting::findOrfail($lastSetting->id);
 
-        if($countQue == 0){
+        if ($countQue == 0) {
             check_que::create([
                 'QrCode' => $qrCode
             ]);
-            $job = new ProcessChangeQrCode($id, $qrCode);
+            $job = new ProcessChangeQrCode($id, $qrCode, 'praktikum');
 
 
             $queue = Queue::getFacadeRoot();
             $count = $queue->size();
 
-            if($count > 1){
-                ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes(1));
-            }elseif($count > 2){
-                 ProcessChangeQrCode::dispatch($id, $qrCode );
-            }
-            else{
+            if ($count > 1) {
+                ProcessChangeQrCode::dispatch($id, $qrCode, 'praktikum')->delay(now()->addMinutes(1));
+            } elseif ($count > 2) {
+                ProcessChangeQrCode::dispatch($id, $qrCode, 'praktikum');
+            } else {
 
-                ProcessChangeQrCode::dispatch($id, $qrCode )->delay(now()->addMinutes($setting->count_down_qrcode));
+                ProcessChangeQrCode::dispatch($id, $qrCode, 'praktikum')->delay(now()->addMinutes($setting->count_down_qrcode));
             }
         }
-        $session = sessionpratikum::where('id', $id)->where('QrCode',$qrCode )->firstOrFail();
+        $session = sessionpratikum::where('id', $id)->where('QrCode', $qrCode)->firstOrFail();
 
 
         $dataArray = array(
@@ -395,14 +422,33 @@ class PresencePratikumController extends Controller
             'longitude' =>  $session->room->longitude,
         );
         $dataString = json_encode($dataArray);
-        return view('pages.admin.presence.QrCode', compact('dataString'));
+        $id = $session->id;
+        $code = "'" . $session->QrCode . "'";
+        return view('pages.admin.presence_pratikum.QrCode', compact('dataString', 'id', 'code'));
     }
 
-    public function storeAddStudentToPresence($session_id, $classroomspratikum_id, Request $request){
+    public function getqRCode($id)
+    {
+
+
+        $session = sessionpratikum::where('id', $id)->firstOrFail();
+
+
+        $dataArray = array(
+            'qrCode' => $session->QrCode,
+
+        );
+        $dataString = json_encode($dataArray);
+        return $dataString;
+    }
+
+
+    public function storeAddStudentToPresence($session_id, $classroomspratikum_id, Request $request)
+    {
 
         $checkStudent = student::where('nsn', $request->nim)->first();
 
-        if(!$checkStudent){
+        if (!$checkStudent) {
 
             Alert::warning('Student Tidak Terdaftar', 'Maaf Akun Student Tidak Di Temukan');
             return back();
@@ -410,16 +456,16 @@ class PresencePratikumController extends Controller
 
         $checkStudent = student_pratikum::where('classroomspratikum_id', $classroomspratikum_id)->where('student_nsn', $request->nim)->first();
 
-        if(!$checkStudent){
+        if (!$checkStudent) {
             Alert::warning('Student Tidak Terdaftar', 'Maaf Student Tidak Terdaftar Pada Pratikum');
             return back();
         }
 
         $checkStudent = presence_pratikum::where('session_pratikum_id', $session_id)
-                                  ->where('classroomspratikum_id', $classroomspratikum_id)
-                                  ->where('student_nsn', $request->nim)->first();
+            ->where('classroomspratikum_id', $classroomspratikum_id)
+            ->where('student_nsn', $request->nim)->first();
 
-        if($checkStudent){
+        if ($checkStudent) {
             Alert::warning('Student Sudah Melakukan Presensi', 'Maaf Student Sudah Melakukan Presensi');
             return back();
         }
@@ -442,5 +488,4 @@ class PresencePratikumController extends Controller
         Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
     }
-
 }
