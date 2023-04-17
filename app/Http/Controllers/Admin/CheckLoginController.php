@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\cheating_history;
 use App\Models\check_login;
 use App\Models\history_kecurangan;
+use App\Models\setting;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\student;
 use App\Models\student_subject;
@@ -66,19 +67,19 @@ class CheckLoginController extends Controller
 
     public function destroy($id)
     {
-        $bulan = intval(date('m'));
-        if ($bulan <= 1 || $bulan >= 8) $semester = 1;
-        else $semester = 2;
+
+        $lastSetting = setting::all()->last();
+        $setting = setting::findOrfail($lastSetting->id);
 
         $data = check_login::where('student_nsn', $id)->first();
         cheating_history::create(
             [
                 "student_nsn" => $data->student_nsn,
-                "tahun" => date('Y'),
-                "semester_id" => $semester,
+                "tahun" => $setting->year,
+                "semester_id" => $setting->semester_id,
             ]
         );
-        // dd('test');
+
         check_login::where('student_nsn', $id)->delete();
         Alert::success('Success', 'Data Berhasil Dihapus');
         return back();
