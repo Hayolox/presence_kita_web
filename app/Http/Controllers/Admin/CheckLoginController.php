@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\cheating_history;
 use App\Models\check_login;
 use App\Models\history_kecurangan;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -50,7 +51,7 @@ class CheckLoginController extends Controller
         //     ->havingRaw('COUNT(*) > 1')
         //     ->get();
 
-        $data = history_kecurangan::all();
+        $data = cheating_history::all();
 
         // dd($data);
 
@@ -70,7 +71,7 @@ class CheckLoginController extends Controller
         else $semester = 2;
 
         $data = check_login::where('student_nsn', $id)->first();
-        history_kecurangan::create(
+        cheating_history::create(
             [
                 "student_nsn" => $data->student_nsn,
                 "tahun" => date('Y'),

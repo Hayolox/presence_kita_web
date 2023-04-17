@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('file_pratikums', function (Blueprint $table) {
+        Schema::create('cheating_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('session_pratikum_id');
-            $table->foreign('session_pratikum_id')->references('id')->on('sessionpratikums');
             $table->string('student_nsn');
             $table->foreign('student_nsn')->references('nsn')->on('students');
-            $table->string("path");
-            $table->boolean("status")->nullable();
+            $table->integer("year");
+            $table->unsignedBigInteger('semester_id');
+            $table->foreign('semester_id')->references('id')->on('semesters');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('file_pratikums');
+        Schema::dropIfExists('cheating_histories');
     }
 };
