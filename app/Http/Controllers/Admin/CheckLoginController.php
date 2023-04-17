@@ -52,7 +52,6 @@ class CheckLoginController extends Controller
         }else{
             $data = cheating_history::get();
         }
-        $data = cheating_history::all();
         return view('pages.admin.check_login.history', compact('data'));
     }
 
