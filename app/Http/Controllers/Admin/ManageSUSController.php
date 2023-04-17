@@ -21,7 +21,7 @@ class ManageSUSController extends Controller
         $students =  sus_student::paginate(10);
         $sumAmount = sus_student::sum('amount');
         $countAnswer = sus_student::count();
-        dd($sumAmount);
+
         if($sumAmount != 0 && $countAnswer != 0){
             $total = $sumAmount / $countAnswer;
         }else{
