@@ -43,22 +43,16 @@ class CheckLoginController extends Controller
 
         return view('pages.admin.check_login.index', compact('duplicateRecords'));
     }
-    public function history()
+    public function history(Request $request)
     {
 
-        // $duplicateRecords = DB::table('check_logins')
-        //     ->selectRaw('student_nsn , COUNT(*) as count')
-        //     ->groupBy('student_nsn')
-        //     ->havingRaw('COUNT(*) > 1')
-        //     ->get();
-
+        if($request->has('search'))
+        {
+            $data = cheating_history::where('student_nsn', 'LIKE', '%' . $request->search . '%')->all();
+        }else{
+            $data = cheating_history::all();
+        }
         $data = cheating_history::all();
-
-        // dd($data);
-
-
-
-
         return view('pages.admin.check_login.history', compact('data'));
     }
 
