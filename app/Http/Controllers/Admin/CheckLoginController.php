@@ -48,9 +48,9 @@ class CheckLoginController extends Controller
 
         if($request->has('search'))
         {
-            $data = cheating_history::where('student_nsn', 'LIKE', '%' . $request->search . '%')->all();
+            $data = cheating_history::where('student_nsn', 'LIKE', '%' . $request->search . '%')->get();
         }else{
-            $data = cheating_history::all();
+            $data = cheating_history::get();
         }
         $data = cheating_history::all();
         return view('pages.admin.check_login.history', compact('data'));
