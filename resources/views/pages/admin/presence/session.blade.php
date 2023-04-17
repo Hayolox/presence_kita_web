@@ -57,7 +57,7 @@
                                             <td>{{ $item->lecturer->full_name }}</td>
                                             <td>
                                                 <a onclick="test(this,'{{ $item->id }}')"
-                                                    style="{{ $item->date == dd(date('Y-m-d')) ? '' : 'pointer-events: none; opacity: 0.5;' }}"
+                                                    style="{{ $item->date == date('Y-m-d') ? '' : 'pointer-events: none; opacity: 0.5;' }}"
                                                     href="{{ route('ManagePresence.QrCode', [$item->id, $item->QrCode]) }}"
                                                     target="_blank" class="btn btn-secondary "
                                                     idqrcode="{{ $item->QrCode }}">Qr-Code</a>
