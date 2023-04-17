@@ -9,7 +9,7 @@ class cheating_history extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_nsn', 'tahun', 'semester_id'];
+    protected $fillable = ['student_nsn', 'year', 'semester_id'];
 
     public function student()
     {

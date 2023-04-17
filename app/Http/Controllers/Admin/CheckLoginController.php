@@ -75,7 +75,7 @@ class CheckLoginController extends Controller
         cheating_history::create(
             [
                 "student_nsn" => $data->student_nsn,
-                "tahun" => $setting->year,
+                "year" => $setting->year,
                 "semester_id" => $setting->semester_id,
             ]
         );
