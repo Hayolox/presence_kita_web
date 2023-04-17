@@ -41,7 +41,7 @@
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $item->student_nsn }}</td>
                                             <td>{{ $item->student->name }}</td>
-                                            <td>{{ $item->tahun }}</td>
+                                            <td>{{ $item->year }}</td>
                                             <td>{{ $item->semester->name }}</td>
                                         </tr>
                                     </tbody>
