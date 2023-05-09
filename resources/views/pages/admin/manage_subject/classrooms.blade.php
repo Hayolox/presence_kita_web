@@ -11,7 +11,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Kelas {{ $subject->full_name }}</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar Kelas {{ $subject_course_code }} | {{ $subject->full_name }}</h6>
                     </div>
                     <div class="card-body">
                         <div class="col-12  d-flex  d-inline d-flex justify-content-end">
